@@ -1,3 +1,37 @@
+### 717. 1-bit and 2-bit Characters
+
+- level: 1-easy
+
+```go
+func isOneBitCharacter(bits []int) bool {
+    i, n := 0, len(bits)
+    for i < n - 1{
+        i += bits[i] + 1
+    }
+    return i == n - 1
+}
+```
+
+### 121. Best Time to Buy and Sell Stock
+
+- level: 1-easy
+
+```go
+func maxProfit(prices []int) int {
+    res := 0
+    lowest := 324324
+    for _, x := range prices {
+        if x > lowest && x - lowest > res {
+            res = x - lowest
+        }
+        if x < lowest {
+            lowest = x
+        }
+    }
+    return res
+}
+```
+
 ### 112. Path Sum
 
 - level: 1-easy
@@ -22,6 +56,30 @@ func hasPathSum(root *TreeNode, sum int) bool {
 }
 ```
 
+### 100. Same Tree
+
+- level: 1-easy
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+    if p == nil && q == nil{
+        return true
+    }
+    if p == nil || q == nil || p.Val != q.Val {
+        return false
+    }
+    return isSameTree(p.Right, q.Right) && isSameTree(p.Left, q.Left)
+}
+```
+
 ### 66. Plus One
 
 - level: 1-easy
@@ -37,6 +95,67 @@ func plusOne(digits []int) []int {
         digits[i] = 0
     }
     return append([]int{1}, digits...)
+}
+```
+
+### 58. Length of Last Word
+
+- level: 1-easy
+
+```go
+func lengthOfLastWord(s string) int {
+    n := len(s)
+    for i:=len(s)-1; i>=0; i-- {
+        if s[i] != ' ' {
+            break
+        }
+        n -= 1 
+    }
+    for i:=n-1; i>=0; i-- {
+        if s[i] == ' ' {
+            return n-1-i   
+        }
+    }
+    return n
+}
+```
+
+### 14. Longest Common Prefix
+
+- level: 1-easy
+
+```go
+func longestCommonPrefix(strs []string) string {
+    if len(strs) == 0 {
+        return ""
+    }
+    first := strs[0]
+    for i:=0; i<len(first); i++ {
+        for _, str := range strs[1:] {
+            if i >= len(str) || str[i] != first[i] {
+                return first[:i]
+            }
+        }
+    }
+    return first
+}
+```
+
+### 1. Two Sum
+
+- level: 1-easy
+
+```go
+func twoSum(nums []int, target int) []int {
+    m := make(map[int]int)
+    for i, x := range nums {
+        if v, ok := m[x]; ok {
+            return []int{v, i}
+        } else {
+            m[target-x] = i
+        }
+    }
+    return make([]int, 2)
 }
 ```
 
