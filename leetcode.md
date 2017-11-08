@@ -1,3 +1,60 @@
+### 720. Longest Word in Dictionary
+
+- level: 1-easy
+
+```go
+func longestWord(words []string) string {
+    set := make(map[string]int)
+    for _, x := range words {
+        set[x] = len(x)
+    }
+    ans := ""
+    for _, word := range words {
+        if set[word] < set[ans] || set[word] == set[ans] && word >= ans {
+            continue
+        willAdd := true
+        for k:=1; k<set[word]; k++ {
+            if _, ok := set[word[:k]]; !ok {
+                willAdd = false
+                break
+            } 
+        }
+        if willAdd {ans = word}
+    }
+    return ans
+}
+```
+
+### 718. Maximum Length of Repeated Subarray
+
+- level: 2-medium
+
+```go
+func findLength(A []int, B []int) int {
+    n, m := len(A), len(B)
+    dp := make([][]int, n+1)
+    for i := range dp {
+        dp[i] = make([]int, m+1)
+    } 
+    for i:=n-1; i>=0; i-- {
+        for j:=m-1; j>=0; j-- {
+            if A[i] == B[j] {
+                dp[i][j] = dp[i+1][j+1] + 1
+            }
+        }
+    }
+    res := -1
+    for _, x := range dp {
+        for _, y := range x {
+            if y > res {
+                res = y
+            }
+        }
+    }
+    return res
+}
+```
+
 ### 717. 1-bit and 2-bit Characters
 
 - level: 1-easy
@@ -9,6 +66,65 @@ func isOneBitCharacter(bits []int) bool {
         i += bits[i] + 1
     }
     return i == n - 1
+}
+```
+
+### 714. Best Time to Buy and Sell Stock with Transaction Fee
+
+- level: 2-medium
+
+```go
+func maxProfit(prices []int, fee int) int {
+    n := len(prices)
+    cash, hold := 0, -prices[0]
+    var currentCash, currentHold int
+    for i:=1; i<n; i++ {
+        currentCash = hold + prices[i] - fee
+        if currentCash > cash {
+            cash = currentCash
+        }
+        currentHold = cash - prices[i]
+        if currentHold > hold {
+            hold = currentHold
+        }
+    }
+    return cash
+}
+```
+
+### 697. Degree of an Array
+
+- level: 1-easy
+
+```go
+func findShortestSubArray(nums []int) int {
+    left, right, count := make(map[int]int), make(map[int]int), make(map[int]int)
+    for i, x := range nums {
+        if _, ok := left[x]; !ok {
+            left[x] = i
+        }
+        right[x] = i
+        l, ok := count[x] 
+        if ok {
+            count[x] = l + 1
+        } else {
+            count[x] = 1
+        }
+    }     
+    ans := len(nums)
+    degree := -1
+    for _, v := range count {
+        if v > degree {
+            degree = v
+        }
+    }
+    for x := range count {
+        current := right[x] - left[x] + 1
+        if count[x] == degree && current < ans {
+            ans = current
+        }
+    }
+    return ans
 }
 ```
 
@@ -120,6 +236,38 @@ func lengthOfLastWord(s string) int {
 }
 ```
 
+### 38. Count and Say
+
+- level: 1-easy
+
+```go
+func countAndSay(n int) string {
+	res := "1"
+	for i := 1; i < n; i++ {
+		res = nextState(res)
+	}
+	return res
+}
+
+func nextState(s string) string {
+	res, prev := "", ""
+	count := 0
+	for _, x := range s {
+		current := string(x)
+		if prev != current  {
+			if count != 0 {
+				res += strconv.Itoa(count) + prev
+			}
+			prev = current
+			count = 1
+		} else {
+			count += 1
+		}
+	}
+	return res + strconv.Itoa(count) + prev
+}
+```
+
 ### 14. Longest Common Prefix
 
 - level: 1-easy
@@ -138,6 +286,36 @@ func longestCommonPrefix(strs []string) string {
         }
     }
     return first
+}
+```
+
+### 6. ZigZag Conversion
+
+- level: 2-medium
+
+```go
+func convert(s string, numRows int) string {
+    if numRows == 0 {return ""}
+    if numRows == 1 {return s}
+    buffer := make([]string, numRows)
+    down, j := true, 0
+    for _, x := range s {
+        buffer[j] += string(x)
+        if down {
+            j += 1
+        } else {
+            j -= 1
+        }
+        if j >= numRows {
+            j = numRows - 2
+            down = false
+        } 
+        if j < 0 {
+            j = 1
+            down = true
+        }
+    }
+    return strings.Join(buffer, "")
 }
 ```
 
