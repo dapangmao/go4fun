@@ -83,10 +83,11 @@ for root, dirs, files in os.walk("/Users/admin/projects/gobyexample/examples", t
 
 
 index = index.replace("'", "")
-idx = ['-'.join(re.findall(r"[\w']+", x.lower())) for x in index.split('\n') if x]
+idx = [re.findall(r"[\w']+", x.lower()) for x in index.split('\n') if x]
 
 with open("go-by-example.md", "w") as outfile:
-    for x in idx:
-        print("- {}\n".format(x), file=outfile)
-        current_codes = res[x+'.go']
+    for i, x in enumerate(idx):
+        key = '-'.join(x) + '.go'
+        print("- {}. {}\n".format(i+1, ' '.join(x)), file=outfile)
+        current_codes = res[key]
         print('```go\n{}\n```\n'.format(current_codes), file=outfile)
