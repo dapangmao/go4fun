@@ -1,6 +1,6 @@
 - hello-world
 
-"""go
+```go
 // Our first program will print the classic "hello world"
 // message. Here's the full source code.
 package main
@@ -11,11 +11,11 @@ func main() {
     fmt.Println("hello world")
 }
 
-"""
+```
 
 - values
 
-"""go
+```go
 // Go has various value types including strings,
 // integers, floats, booleans, etc. Here are a few
 // basic examples.
@@ -39,11 +39,11 @@ func main() {
     fmt.Println(!true)
 }
 
-"""
+```
 
 - variables
 
-"""go
+```go
 // In Go, _variables_ are explicitly declared and used by
 // the compiler to e.g. check type-correctness of function
 // calls.
@@ -79,11 +79,11 @@ func main() {
     fmt.Println(f)
 }
 
-"""
+```
 
 - constants
 
-"""go
+```go
 // Go supports _constants_ of character, string, boolean,
 // and numeric values.
 
@@ -118,11 +118,11 @@ func main() {
     fmt.Println(math.Sin(n))
 }
 
-"""
+```
 
 - for
 
-"""go
+```go
 // `for` is Go's only looping construct. Here are
 // three basic types of `for` loops.
 
@@ -162,11 +162,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - if-else
 
-"""go
+```go
 // Branching with `if` and `else` in Go is
 // straight-forward.
 
@@ -203,11 +203,11 @@ func main() {
 // Note that you don't need parentheses around conditions
 // in Go, but that the braces are required.
 
-"""
+```
 
 - switch
 
-"""go
+```go
 // _Switch statements_ express conditionals across many
 // branches.
 
@@ -270,11 +270,11 @@ func main() {
     whatAmI("hey")
 }
 
-"""
+```
 
 - arrays
 
-"""go
+```go
 // In Go, an _array_ is a numbered sequence of elements of a
 // specific length.
 
@@ -318,11 +318,11 @@ func main() {
     fmt.Println("2d: ", twoD)
 }
 
-"""
+```
 
 - slices
 
-"""go
+```go
 // _Slices_ are a key data type in Go, giving a more
 // powerful interface to sequences than arrays.
 
@@ -400,11 +400,11 @@ func main() {
     fmt.Println("2d: ", twoD)
 }
 
-"""
+```
 
 - maps
 
-"""go
+```go
 // _Maps_ are Go's built-in [associative data type](http://en.wikipedia.org/wiki/Associative_array)
 // (sometimes called _hashes_ or _dicts_ in other languages).
 
@@ -456,11 +456,11 @@ func main() {
     fmt.Println("map:", n)
 }
 
-"""
+```
 
 - range
 
-"""go
+```go
 // _range_ iterates over elements in a variety of data
 // structures. Let's see how to use `range` with some
 // of the data structures we've already learned.
@@ -510,11 +510,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - functions
 
-"""go
+```go
 // _Functions_ are central in Go. We'll learn about
 // functions with a few different examples.
 
@@ -551,11 +551,11 @@ func main() {
     fmt.Println("1+2+3 =", res)
 }
 
-"""
+```
 
 - multiple-return-values
 
-"""go
+```go
 // Go has built-in support for _multiple return values_.
 // This feature is used often in idiomatic Go, for example
 // to return both result and error values from a function.
@@ -584,11 +584,11 @@ func main() {
     fmt.Println(c)
 }
 
-"""
+```
 
 - variadic-functions
 
-"""go
+```go
 // [_Variadic functions_](http://en.wikipedia.org/wiki/Variadic_function)
 // can be called with any number of trailing arguments.
 // For example, `fmt.Println` is a common variadic
@@ -623,11 +623,11 @@ func main() {
     sum(nums...)
 }
 
-"""
+```
 
 - closures
 
-"""go
+```go
 // Go supports [_anonymous functions_](http://en.wikipedia.org/wiki/Anonymous_function),
 // which can form <a href="http://en.wikipedia.org/wiki/Closure_(computer_science)"><em>closures</em></a>.
 // Anonymous functions are useful when you want to define
@@ -669,11 +669,11 @@ func main() {
     fmt.Println(newInts())
 }
 
-"""
+```
 
 - recursion
 
-"""go
+```go
 // Go supports
 // <a href="http://en.wikipedia.org/wiki/Recursion_(computer_science)"><em>recursive functions</em></a>.
 // Here's a classic factorial example.
@@ -695,11 +695,11 @@ func main() {
     fmt.Println(fact(7))
 }
 
-"""
+```
 
 - pointers
 
-"""go
+```go
 // Go supports <em><a href="http://en.wikipedia.org/wiki/Pointer_(computer_programming)">pointers</a></em>,
 // allowing you to pass references to values and records
 // within your program.
@@ -743,11 +743,11 @@ func main() {
     fmt.Println("pointer:", &i)
 }
 
-"""
+```
 
 - structs
 
-"""go
+```go
 // Go's _structs_ are typed collections of fields.
 // They're useful for grouping data together to form
 // records.
@@ -790,11 +790,11 @@ func main() {
     fmt.Println(sp.age)
 }
 
-"""
+```
 
 - methods
 
-"""go
+```go
 // Go supports _methods_ defined on struct types.
 
 package main
@@ -833,11 +833,11 @@ func main() {
     fmt.Println("perim:", rp.perim())
 }
 
-"""
+```
 
 - interfaces
 
-"""go
+```go
 // _Interfaces_ are named collections of method
 // signatures.
 
@@ -901,11 +901,11 @@ func main() {
     measure(c)
 }
 
-"""
+```
 
 - errors
 
-"""go
+```go
 // In Go it's idiomatic to communicate errors via an
 // explicit, separate return value. This contrasts with
 // the exceptions used in languages like Java and Ruby and
@@ -992,11 +992,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - goroutines
 
-"""go
+```go
 // A _goroutine_ is a lightweight thread of execution.
 
 package main
@@ -1036,11 +1036,11 @@ func main() {
     fmt.Println("done")
 }
 
-"""
+```
 
 - channels
 
-"""go
+```go
 // _Channels_ are the pipes that connect concurrent
 // goroutines. You can send values into channels from one
 // goroutine and receive those values into another
@@ -1068,11 +1068,11 @@ func main() {
     fmt.Println(msg)
 }
 
-"""
+```
 
 - channel-buffering
 
-"""go
+```go
 // By default channels are _unbuffered_, meaning that they
 // will only accept sends (`chan <-`) if there is a
 // corresponding receive (`<- chan`) ready to receive the
@@ -1101,11 +1101,11 @@ func main() {
     fmt.Println(<-messages)
 }
 
-"""
+```
 
 - channel-synchronization
 
-"""go
+```go
 // We can use channels to synchronize execution
 // across goroutines. Here's an example of using a
 // blocking receive to wait for a goroutine to finish.
@@ -1139,11 +1139,11 @@ func main() {
     <-done
 }
 
-"""
+```
 
 - channel-directions
 
-"""go
+```go
 // When using channels as function parameters, you can
 // specify if a channel is meant to only send or receive
 // values. This specificity increases the type-safety of
@@ -1175,11 +1175,11 @@ func main() {
     fmt.Println(<-pongs)
 }
 
-"""
+```
 
 - select
 
-"""go
+```go
 // Go's _select_ lets you wait on multiple channel
 // operations. Combining goroutines and channels with
 // select is a powerful feature of Go.
@@ -1219,11 +1219,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - timeouts
 
-"""go
+```go
 // _Timeouts_ are important for programs that connect to
 // external resources or that otherwise need to bound
 // execution time. Implementing timeouts in Go is easy and
@@ -1273,11 +1273,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - non-blocking-channel-operations
 
-"""go
+```go
 // Basic sends and receives on channels are blocking.
 // However, we can use `select` with a `default` clause to
 // implement _non-blocking_ sends, receives, and even
@@ -1325,11 +1325,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - closing-channels
 
-"""go
+```go
 // _Closing_ a channel indicates that no more values
 // will be sent on it. This can be useful to communicate
 // completion to the channel's receivers.
@@ -1381,11 +1381,11 @@ func main() {
     <-done
 }
 
-"""
+```
 
 - range-over-channels
 
-"""go
+```go
 // In a [previous](range) example we saw how `for` and
 // `range` provide iteration over basic data structures.
 // We can also use this syntax to iterate over
@@ -1412,11 +1412,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - timers
 
-"""go
+```go
 // We often want to execute Go code at some point in the
 // future, or repeatedly at some interval. Go's built-in
 // _timer_ and _ticker_ features make both of these tasks
@@ -1457,11 +1457,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - tickers
 
-"""go
+```go
 // [Timers](timers) are for when you want to do
 // something once in the future - _tickers_ are for when
 // you want to do something repeatedly at regular
@@ -1494,11 +1494,11 @@ func main() {
     fmt.Println("Ticker stopped")
 }
 
-"""
+```
 
 - worker-pools
 
-"""go
+```go
 // In this example we'll look at how to implement
 // a _worker pool_ using goroutines and channels.
 
@@ -1548,11 +1548,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - rate-limiting
 
-"""go
+```go
 // _[Rate limiting](http://en.wikipedia.org/wiki/Rate_limiting)_
 // is an important mechanism for controlling resource
 // utilization and maintaining quality of service. Go
@@ -1623,11 +1623,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - atomic-counters
 
-"""go
+```go
 // The primary mechanism for managing state in Go is
 // communication over channels. We saw this for example
 // with [worker pools](worker-pools). There are a few other
@@ -1678,11 +1678,11 @@ func main() {
     fmt.Println("ops:", opsFinal)
 }
 
-"""
+```
 
 - mutexes
 
-"""go
+```go
 // In the previous example we saw how to manage simple
 // counter state using [atomic operations](atomic-counters).
 // For more complex state we can use a _[mutex](http://en.wikipedia.org/wiki/Mutual_exclusion)_
@@ -1769,11 +1769,11 @@ func main() {
     mutex.Unlock()
 }
 
-"""
+```
 
 - stateful-goroutines
 
-"""go
+```go
 // In the previous example we used explicit locking with
 // [mutexes](mutexes) to synchronize access to shared state
 // across multiple goroutines. Another option is to use the
@@ -1890,11 +1890,11 @@ func main() {
     fmt.Println("writeOps:", writeOpsFinal)
 }
 
-"""
+```
 
 - sorting
 
-"""go
+```go
 // Go's `sort` package implements sorting for builtins
 // and user-defined types. We'll look at sorting for
 // builtins first.
@@ -1925,11 +1925,11 @@ func main() {
     fmt.Println("Sorted: ", s)
 }
 
-"""
+```
 
 - sorting-by-functions
 
-"""go
+```go
 // Sometimes we'll want to sort a collection by something
 // other than its natural order. For example, suppose we
 // wanted to sort strings by their length instead of
@@ -1974,11 +1974,11 @@ func main() {
     fmt.Println(fruits)
 }
 
-"""
+```
 
 - panic
 
-"""go
+```go
 // A `panic` typically means something went unexpectedly
 // wrong. Mostly we use it to fail fast on errors that
 // shouldn't occur during normal operation, or that we
@@ -2005,11 +2005,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - defer
 
-"""go
+```go
 // _Defer_ is used to ensure that a function call is
 // performed later in a program's execution, usually for
 // purposes of cleanup. `defer` is often used where e.g.
@@ -2055,11 +2055,11 @@ func closeFile(f *os.File) {
     f.Close()
 }
 
-"""
+```
 
 - collection-functions
 
-"""go
+```go
 // We often need our programs to perform operations on
 // collections of data, like selecting all items that
 // satisfy a given predicate or mapping all items to a new
@@ -2172,11 +2172,11 @@ func main() {
 
 }
 
-"""
+```
 
 - string-functions
 
-"""go
+```go
 // The standard library's `strings` package provides many
 // useful string-related functions. Here are some examples
 // to give you a sense of the package.
@@ -2227,11 +2227,11 @@ func main() {
 // See [strings, bytes, runes and characters in Go](https://blog.golang.org/strings)
 // for more information.
 
-"""
+```
 
 - string-formatting
 
-"""go
+```go
 // Go offers excellent support for string formatting in
 // the `printf` tradition. Here are some examples of
 // common string formatting tasks.
@@ -2341,11 +2341,11 @@ func main() {
     fmt.Fprintf(os.Stderr, "an %s\n", "error")
 }
 
-"""
+```
 
 - regular-expressions
 
-"""go
+```go
 // Go offers built-in support for [regular expressions](http://en.wikipedia.org/wiki/Regular_expression).
 // Here are some examples of  common regexp-related tasks
 // in Go.
@@ -2428,11 +2428,11 @@ func main() {
     fmt.Println(string(out))
 }
 
-"""
+```
 
 - json
 
-"""go
+```go
 // Go offers built-in support for JSON encoding and
 // decoding, including to and from built-in and custom
 // data types.
@@ -2553,11 +2553,11 @@ func main() {
     enc.Encode(d)
 }
 
-"""
+```
 
 - time
 
-"""go
+```go
 // Go offers extensive support for times and durations;
 // here are some examples.
 
@@ -2620,11 +2620,11 @@ func main() {
     p(then.Add(-diff))
 }
 
-"""
+```
 
 - epoch
 
-"""go
+```go
 // A common requirement in programs is getting the number
 // of seconds, milliseconds, or nanoseconds since the
 // [Unix epoch](http://en.wikipedia.org/wiki/Unix_time).
@@ -2659,11 +2659,11 @@ func main() {
     fmt.Println(time.Unix(0, nanos))
 }
 
-"""
+```
 
 - time-formatting-parsing
 
-"""go
+```go
 // Go supports time formatting and parsing via
 // pattern-based layouts.
 
@@ -2715,11 +2715,11 @@ func main() {
     p(e)
 }
 
-"""
+```
 
 - random-numbers
 
-"""go
+```go
 // Go's `math/rand` package provides
 // [pseudorandom number](http://en.wikipedia.org/wiki/Pseudorandom_number_generator)
 // generation.
@@ -2775,11 +2775,11 @@ func main() {
     fmt.Print(r3.Intn(100))
 }
 
-"""
+```
 
 - number-parsing
 
-"""go
+```go
 // Parsing numbers from strings is a basic but common task
 // in many programs; here's how to do it in Go.
 
@@ -2821,11 +2821,11 @@ func main() {
     fmt.Println(e)
 }
 
-"""
+```
 
 - url-parsing
 
-"""go
+```go
 // URLs provide a [uniform way to locate resources](http://adam.heroku.com/past/2010/3/30/urls_are_the_uniform_way_to_locate_resources/).
 // Here's how to parse URLs in Go.
 
@@ -2882,11 +2882,11 @@ func main() {
     fmt.Println(m["k"][0])
 }
 
-"""
+```
 
 - sha1-hashes
 
-"""go
+```go
 // [_SHA1 hashes_](http://en.wikipedia.org/wiki/SHA-1) are
 // frequently used to compute short identities for binary
 // or text blobs. For example, the [git revision control
@@ -2925,11 +2925,11 @@ func main() {
     fmt.Printf("%x\n", bs)
 }
 
-"""
+```
 
 - base64-encoding
 
-"""go
+```go
 // Go provides built-in support for [base64
 // encoding/decoding](http://en.wikipedia.org/wiki/Base64).
 
@@ -2968,11 +2968,11 @@ func main() {
     fmt.Println(string(uDec))
 }
 
-"""
+```
 
 - reading-files
 
-"""go
+```go
 // Reading and writing files are basic tasks needed for
 // many Go programs. First we'll look at some examples of
 // reading files.
@@ -3058,11 +3058,11 @@ func main() {
 
 }
 
-"""
+```
 
 - writing-files
 
-"""go
+```go
 // Writing files in Go follows similar patterns to the
 // ones we saw earlier for reading.
 
@@ -3122,11 +3122,11 @@ func main() {
 
 }
 
-"""
+```
 
 - line-filters
 
-"""go
+```go
 // A _line filter_ is a common type of program that reads
 // input on stdin, processes it, and then prints some
 // derived result to stdout. `grep` and `sed` are common
@@ -3169,11 +3169,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - command-line-arguments
 
-"""go
+```go
 // [_Command-line arguments_](http://en.wikipedia.org/wiki/Command-line_interface#Arguments)
 // are a common way to parameterize execution of programs.
 // For example, `go run hello.go` uses `run` and
@@ -3201,11 +3201,11 @@ func main() {
     fmt.Println(arg)
 }
 
-"""
+```
 
 - command-line-flags
 
-"""go
+```go
 // [_Command-line flags_](http://en.wikipedia.org/wiki/Command-line_interface#Command-line_option)
 // are a common way to specify options for command-line
 // programs. For example, in `wc -l` the `-l` is a
@@ -3256,11 +3256,11 @@ func main() {
     fmt.Println("tail:", flag.Args())
 }
 
-"""
+```
 
 - environment-variables
 
-"""go
+```go
 // [Environment variables](http://en.wikipedia.org/wiki/Environment_variable)
 // are a universal mechanism for [conveying configuration
 // information to Unix programs](http://www.12factor.net/config).
@@ -3293,11 +3293,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - spawning-processes
 
-"""go
+```go
 // Sometimes our Go programs need to spawn other, non-Go
 // processes. For example, the syntax highlighting on this
 // site is [implemented](https://github.com/mmcgrana/gobyexample/blob/master/tools/generate.go)
@@ -3370,11 +3370,11 @@ func main() {
     fmt.Println(string(lsOut))
 }
 
-"""
+```
 
 - execing-processes
 
-"""go
+```go
 // In the previous example we looked at
 // [spawning external processes](spawning-processes). We
 // do this when we need an external process accessible to
@@ -3424,11 +3424,11 @@ func main() {
     }
 }
 
-"""
+```
 
 - signals
 
-"""go
+```go
 // Sometimes we'd like our Go programs to intelligently
 // handle [Unix signals](http://en.wikipedia.org/wiki/Unix_signal).
 // For example, we might want a server to gracefully
@@ -3474,11 +3474,11 @@ func main() {
     fmt.Println("exiting")
 }
 
-"""
+```
 
 - exit
 
-"""go
+```go
 // Use `os.Exit` to immediately exit with a given
 // status.
 
@@ -3502,5 +3502,5 @@ func main() {
 // you'd like to exit with a non-zero status you should
 // use `os.Exit`.
 
-"""
+```
 
