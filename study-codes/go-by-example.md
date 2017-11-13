@@ -1,4 +1,4 @@
-- 1. hello world
+1. hello world
 
 ```go
 // Our first program will print the classic "hello world"
@@ -13,7 +13,7 @@ func main() {
 
 ```
 
-- 2. values
+2. values
 
 ```go
 // Go has various value types including strings,
@@ -41,7 +41,7 @@ func main() {
 
 ```
 
-- 3. variables
+3. variables
 
 ```go
 // In Go, _variables_ are explicitly declared and used by
@@ -81,7 +81,7 @@ func main() {
 
 ```
 
-- 4. constants
+4. constants
 
 ```go
 // Go supports _constants_ of character, string, boolean,
@@ -120,7 +120,7 @@ func main() {
 
 ```
 
-- 5. for
+5. for
 
 ```go
 // `for` is Go's only looping construct. Here are
@@ -164,7 +164,7 @@ func main() {
 
 ```
 
-- 6. if else
+6. if else
 
 ```go
 // Branching with `if` and `else` in Go is
@@ -205,7 +205,7 @@ func main() {
 
 ```
 
-- 7. switch
+7. switch
 
 ```go
 // _Switch statements_ express conditionals across many
@@ -272,7 +272,7 @@ func main() {
 
 ```
 
-- 8. arrays
+8. arrays
 
 ```go
 // In Go, an _array_ is a numbered sequence of elements of a
@@ -320,7 +320,7 @@ func main() {
 
 ```
 
-- 9. slices
+9. slices
 
 ```go
 // _Slices_ are a key data type in Go, giving a more
@@ -402,7 +402,7 @@ func main() {
 
 ```
 
-- 10. maps
+10. maps
 
 ```go
 // _Maps_ are Go's built-in [associative data type](http://en.wikipedia.org/wiki/Associative_array)
@@ -458,7 +458,7 @@ func main() {
 
 ```
 
-- 11. range
+11. range
 
 ```go
 // _range_ iterates over elements in a variety of data
@@ -512,7 +512,7 @@ func main() {
 
 ```
 
-- 12. functions
+12. functions
 
 ```go
 // _Functions_ are central in Go. We'll learn about
@@ -553,7 +553,7 @@ func main() {
 
 ```
 
-- 13. multiple return values
+13. multiple return values
 
 ```go
 // Go has built-in support for _multiple return values_.
@@ -586,7 +586,7 @@ func main() {
 
 ```
 
-- 14. variadic functions
+14. variadic functions
 
 ```go
 // [_Variadic functions_](http://en.wikipedia.org/wiki/Variadic_function)
@@ -625,7 +625,7 @@ func main() {
 
 ```
 
-- 15. closures
+15. closures
 
 ```go
 // Go supports [_anonymous functions_](http://en.wikipedia.org/wiki/Anonymous_function),
@@ -671,7 +671,7 @@ func main() {
 
 ```
 
-- 16. recursion
+16. recursion
 
 ```go
 // Go supports
@@ -697,7 +697,7 @@ func main() {
 
 ```
 
-- 17. pointers
+17. pointers
 
 ```go
 // Go supports <em><a href="http://en.wikipedia.org/wiki/Pointer_(computer_programming)">pointers</a></em>,
@@ -745,7 +745,7 @@ func main() {
 
 ```
 
-- 18. structs
+18. structs
 
 ```go
 // Go's _structs_ are typed collections of fields.
@@ -792,7 +792,7 @@ func main() {
 
 ```
 
-- 19. methods
+19. methods
 
 ```go
 // Go supports _methods_ defined on struct types.
@@ -835,7 +835,7 @@ func main() {
 
 ```
 
-- 20. interfaces
+20. interfaces
 
 ```go
 // _Interfaces_ are named collections of method
@@ -903,7 +903,7 @@ func main() {
 
 ```
 
-- 21. errors
+21. errors
 
 ```go
 // In Go it's idiomatic to communicate errors via an
@@ -994,7 +994,7 @@ func main() {
 
 ```
 
-- 22. goroutines
+22. goroutines
 
 ```go
 // A _goroutine_ is a lightweight thread of execution.
@@ -1038,7 +1038,7 @@ func main() {
 
 ```
 
-- 23. channels
+23. channels
 
 ```go
 // _Channels_ are the pipes that connect concurrent
@@ -1070,7 +1070,7 @@ func main() {
 
 ```
 
-- 24. channel buffering
+24. channel buffering
 
 ```go
 // By default channels are _unbuffered_, meaning that they
@@ -1103,7 +1103,7 @@ func main() {
 
 ```
 
-- 25. channel synchronization
+25. channel synchronization
 
 ```go
 // We can use channels to synchronize execution
@@ -1141,7 +1141,7 @@ func main() {
 
 ```
 
-- 26. channel directions
+26. channel directions
 
 ```go
 // When using channels as function parameters, you can
@@ -1177,7 +1177,7 @@ func main() {
 
 ```
 
-- 27. select
+27. select
 
 ```go
 // Go's _select_ lets you wait on multiple channel
@@ -1221,7 +1221,7 @@ func main() {
 
 ```
 
-- 28. timeouts
+28. timeouts
 
 ```go
 // _Timeouts_ are important for programs that connect to
@@ -1275,7 +1275,7 @@ func main() {
 
 ```
 
-- 29. non blocking channel operations
+29. non blocking channel operations
 
 ```go
 // Basic sends and receives on channels are blocking.
@@ -1327,7 +1327,7 @@ func main() {
 
 ```
 
-- 30. closing channels
+30. closing channels
 
 ```go
 // _Closing_ a channel indicates that no more values
@@ -1383,7 +1383,7 @@ func main() {
 
 ```
 
-- 31. range over channels
+31. range over channels
 
 ```go
 // In a [previous](range) example we saw how `for` and
@@ -1414,7 +1414,7 @@ func main() {
 
 ```
 
-- 32. timers
+32. timers
 
 ```go
 // We often want to execute Go code at some point in the
@@ -1459,7 +1459,7 @@ func main() {
 
 ```
 
-- 33. tickers
+33. tickers
 
 ```go
 // [Timers](timers) are for when you want to do
@@ -1496,7 +1496,7 @@ func main() {
 
 ```
 
-- 34. worker pools
+34. worker pools
 
 ```go
 // In this example we'll look at how to implement
@@ -1550,7 +1550,7 @@ func main() {
 
 ```
 
-- 35. rate limiting
+35. rate limiting
 
 ```go
 // _[Rate limiting](http://en.wikipedia.org/wiki/Rate_limiting)_
@@ -1625,7 +1625,7 @@ func main() {
 
 ```
 
-- 36. atomic counters
+36. atomic counters
 
 ```go
 // The primary mechanism for managing state in Go is
@@ -1680,7 +1680,7 @@ func main() {
 
 ```
 
-- 37. mutexes
+37. mutexes
 
 ```go
 // In the previous example we saw how to manage simple
@@ -1771,7 +1771,7 @@ func main() {
 
 ```
 
-- 38. stateful goroutines
+38. stateful goroutines
 
 ```go
 // In the previous example we used explicit locking with
@@ -1892,7 +1892,7 @@ func main() {
 
 ```
 
-- 39. sorting
+39. sorting
 
 ```go
 // Go's `sort` package implements sorting for builtins
@@ -1927,7 +1927,7 @@ func main() {
 
 ```
 
-- 40. sorting by functions
+40. sorting by functions
 
 ```go
 // Sometimes we'll want to sort a collection by something
@@ -1976,7 +1976,7 @@ func main() {
 
 ```
 
-- 41. panic
+41. panic
 
 ```go
 // A `panic` typically means something went unexpectedly
@@ -2007,7 +2007,7 @@ func main() {
 
 ```
 
-- 42. defer
+42. defer
 
 ```go
 // _Defer_ is used to ensure that a function call is
@@ -2057,7 +2057,7 @@ func closeFile(f *os.File) {
 
 ```
 
-- 43. collection functions
+43. collection functions
 
 ```go
 // We often need our programs to perform operations on
@@ -2174,7 +2174,7 @@ func main() {
 
 ```
 
-- 44. string functions
+44. string functions
 
 ```go
 // The standard library's `strings` package provides many
@@ -2229,7 +2229,7 @@ func main() {
 
 ```
 
-- 45. string formatting
+45. string formatting
 
 ```go
 // Go offers excellent support for string formatting in
@@ -2343,7 +2343,7 @@ func main() {
 
 ```
 
-- 46. regular expressions
+46. regular expressions
 
 ```go
 // Go offers built-in support for [regular expressions](http://en.wikipedia.org/wiki/Regular_expression).
@@ -2430,7 +2430,7 @@ func main() {
 
 ```
 
-- 47. json
+47. json
 
 ```go
 // Go offers built-in support for JSON encoding and
@@ -2555,7 +2555,7 @@ func main() {
 
 ```
 
-- 48. time
+48. time
 
 ```go
 // Go offers extensive support for times and durations;
@@ -2622,7 +2622,7 @@ func main() {
 
 ```
 
-- 49. epoch
+49. epoch
 
 ```go
 // A common requirement in programs is getting the number
@@ -2661,7 +2661,7 @@ func main() {
 
 ```
 
-- 50. time formatting parsing
+50. time formatting parsing
 
 ```go
 // Go supports time formatting and parsing via
@@ -2717,7 +2717,7 @@ func main() {
 
 ```
 
-- 51. random numbers
+51. random numbers
 
 ```go
 // Go's `math/rand` package provides
@@ -2777,7 +2777,7 @@ func main() {
 
 ```
 
-- 52. number parsing
+52. number parsing
 
 ```go
 // Parsing numbers from strings is a basic but common task
@@ -2823,7 +2823,7 @@ func main() {
 
 ```
 
-- 53. url parsing
+53. url parsing
 
 ```go
 // URLs provide a [uniform way to locate resources](http://adam.heroku.com/past/2010/3/30/urls_are_the_uniform_way_to_locate_resources/).
@@ -2884,7 +2884,7 @@ func main() {
 
 ```
 
-- 54. sha1 hashes
+54. sha1 hashes
 
 ```go
 // [_SHA1 hashes_](http://en.wikipedia.org/wiki/SHA-1) are
@@ -2927,7 +2927,7 @@ func main() {
 
 ```
 
-- 55. base64 encoding
+55. base64 encoding
 
 ```go
 // Go provides built-in support for [base64
@@ -2970,7 +2970,7 @@ func main() {
 
 ```
 
-- 56. reading files
+56. reading files
 
 ```go
 // Reading and writing files are basic tasks needed for
@@ -3060,7 +3060,7 @@ func main() {
 
 ```
 
-- 57. writing files
+57. writing files
 
 ```go
 // Writing files in Go follows similar patterns to the
@@ -3124,7 +3124,7 @@ func main() {
 
 ```
 
-- 58. line filters
+58. line filters
 
 ```go
 // A _line filter_ is a common type of program that reads
@@ -3171,7 +3171,7 @@ func main() {
 
 ```
 
-- 59. command line arguments
+59. command line arguments
 
 ```go
 // [_Command-line arguments_](http://en.wikipedia.org/wiki/Command-line_interface#Arguments)
@@ -3203,7 +3203,7 @@ func main() {
 
 ```
 
-- 60. command line flags
+60. command line flags
 
 ```go
 // [_Command-line flags_](http://en.wikipedia.org/wiki/Command-line_interface#Command-line_option)
@@ -3258,7 +3258,7 @@ func main() {
 
 ```
 
-- 61. environment variables
+61. environment variables
 
 ```go
 // [Environment variables](http://en.wikipedia.org/wiki/Environment_variable)
@@ -3295,7 +3295,7 @@ func main() {
 
 ```
 
-- 62. spawning processes
+62. spawning processes
 
 ```go
 // Sometimes our Go programs need to spawn other, non-Go
@@ -3372,7 +3372,7 @@ func main() {
 
 ```
 
-- 63. execing processes
+63. execing processes
 
 ```go
 // In the previous example we looked at
@@ -3426,7 +3426,7 @@ func main() {
 
 ```
 
-- 64. signals
+64. signals
 
 ```go
 // Sometimes we'd like our Go programs to intelligently
@@ -3476,7 +3476,7 @@ func main() {
 
 ```
 
-- 65. exit
+65. exit
 
 ```go
 // Use `os.Exit` to immediately exit with a given
