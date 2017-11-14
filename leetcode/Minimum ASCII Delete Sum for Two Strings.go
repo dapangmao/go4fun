@@ -16,12 +16,12 @@ func minimumDeleteSum(s1 string, s2 string) int {
 				dp[i][j] = dp[i+1][j+1]
                 continue
 			} 
-      opt1, opt2 := dp[i+1][j] + int(s1[i]), dp[i][j+1] + int(s2[j])
-      if opt1 >= opt2 {
-          dp[i][j] = opt2
-      } else {
-          dp[i][j] = opt1
-      }
+            opt1, opt2 := dp[i+1][j] + int(s1[i]), dp[i][j+1] + int(s2[j])
+            if opt1 >= opt2 {
+                dp[i][j] = opt2
+            } else {
+                dp[i][j] = opt1
+            }
 		}
 	}
 	return dp[0][0]
