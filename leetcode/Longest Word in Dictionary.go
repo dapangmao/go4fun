@@ -5,7 +5,7 @@ func longestWord(words []string) string {
     }
     ans := ""
     for _, word := range words {
-        if set[word] < set[ans] || set[word] == set[ans] && word >= ans {
+        if set[word] < set[ans] || (set[word] == set[ans] && word >= ans) {
             continue
         willAdd := true
         for k:=1; k<set[word]; k++ {
