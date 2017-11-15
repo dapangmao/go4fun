@@ -50,3 +50,24 @@ func RandStringRunes(n int) string {
 	return string(b)
 }
 ```
+
+- WaitGroup
+
+```go
+package main
+
+import "sync"
+
+func main() {
+	var wg sync.WaitGroup
+
+	for _, word := range []string{"a", "b", "c"} {
+		wg.Add(1)
+		go func(w string) {
+			defer wg.Done()
+			println(w)
+		}(word)
+	}
+	wg.Wait()
+}
+```
