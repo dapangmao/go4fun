@@ -71,3 +71,35 @@ func main() {
 	wg.Wait()
 }
 ```
+
+- sync/Mutex
+```go
+func main() {
+	var lock = sync.Mutex{}
+	var count int
+	var wg sync.WaitGroup
+
+	for i:=0; i<5; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			lock.Lock()
+			count++
+			println("Now the counter is ", count)
+			lock.Unlock()
+		}()
+	}
+
+	for i:=0; i<5; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			lock.Lock()
+			count--
+			println("Now the counter is ", count)
+			lock.Unlock()
+		}()
+	}
+	wg.Wait()
+}
+```
