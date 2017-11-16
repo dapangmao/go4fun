@@ -122,3 +122,34 @@ fmt.Println("Unblocking goroutines...")
 close(begin)  
 wg.Wait()
 ```
+
+
+- Mod for a [sample](https://github.com/dapangmao/go4fun/blob/master/study-codes/go-in-practice.md#chapter3---scratch---closingstuffgo) 
+
+```go
+func main() {
+	ch := make(chan bool)
+	timeout := time.After(600 * time.Millisecond)
+	go send(ch)
+	for {
+		select {
+		case <-ch:
+			println("Got message.")
+		case <-timeout:
+			println("Time out")
+			return
+		default:
+			println("*yawn*")
+			time.Sleep(100 * time.Millisecond)
+		}
+	}
+}
+
+func send(ch chan bool) {
+	for {
+		time.Sleep(120 * time.Millisecond)
+		ch <- true
+		println("Sent a message")
+	}
+}
+```
