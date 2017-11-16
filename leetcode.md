@@ -1,3 +1,37 @@
+### 722. Remove Comments
+
+- level: 2-medium
+
+```go
+func removeComments(source []string) []string {
+	res := []string{}
+	inBlock := false
+	for _, line := range source {
+		var current string
+		right := strings.Index(line, "*/")
+		double := strings.Index(line, "//")
+		left := strings.Index(line, "/*")
+		if !inBlock && left >= 0 && right >= 0 {
+            current = line[:left] + line[right+2:]
+		} else if inBlock && right >= 0 {
+			current = line[right+2:len(line)]
+			inBlock = false
+		} else if !inBlock && double >= 0 {
+			current = line[:double]
+		} else if !inBlock && left >= 0 {
+			current = line[:left]
+			inBlock = true
+		} else if !inBlock {
+			current = line
+		}
+        if len(current) > 0 {
+		    res = append(res, current)
+        }
+	}
+	return res
+}
+```
+
 ### 720. Longest Word in Dictionary
 
 - level: 1-easy
@@ -10,7 +44,7 @@ func longestWord(words []string) string {
     }
     ans := ""
     for _, word := range words {
-        if set[word] < set[ans] || set[word] == set[ans] && word >= ans {
+        if set[word] < set[ans] || (set[word] == set[ans] && word >= ans) {
             continue
         willAdd := true
         for k:=1; k<set[word]; k++ {
@@ -92,6 +126,41 @@ func maxProfit(prices []int, fee int) int {
 }
 ```
 
+### 712. Minimum ASCII Delete Sum for Two Strings
+
+- level: 2-medium
+
+```go
+func minimumDeleteSum(s1 string, s2 string) int {
+	n, m := len(s1), len(s2)
+	dp := make([][]int, n+1)
+	for i := range dp {
+		dp[i] = make([]int, m+1)
+	}
+	for i := n - 1; i >= 0; i-- {
+		dp[i][m] = dp[i+1][m] + int(s1[i])
+	}
+	for i := m - 1; i >= 0; i-- {
+		dp[n][i] = dp[n][i+1] + int(s2[i])
+	}
+	for i := n - 1; i >= 0; i-- {
+		for j := m - 1; j >= 0; j-- {
+			if s1[i] == s2[j] {
+				dp[i][j] = dp[i+1][j+1]
+			} else {
+				opt1, opt2 := dp[i+1][j]+int(s1[i]), dp[i][j+1]+int(s2[j])
+				if opt1 >= opt2 {
+					dp[i][j] = opt2
+				} else {
+					dp[i][j] = opt1
+				}
+			}
+		}
+	}
+	return dp[0][0]
+}
+```
+
 ### 697. Degree of an Array
 
 - level: 1-easy
@@ -125,6 +194,98 @@ func findShortestSubArray(nums []int) int {
         }
     }
     return ans
+}
+```
+
+### 688. Knight Probability in Chessboard
+
+- level: 2-medium
+
+```go
+func makeMatrix(N int) [][]float64 {
+	res := make([][]float64, N)
+	for i := range res {
+		res[i] = make([]float64, N)
+	}
+	return res
+}
+
+func knightProbability(N int, K int, r int, c int) float64 {
+	opts := [][]int{{2,1},{2,-1},{-2,1},{-2,-1},{1,2},{1,-2},{-1,2},{-1,-2}}
+	dp := makeMatrix(N)
+    dp[r][c] = 1
+	for i:=0; i<K; i++ {
+		current := makeMatrix(N)
+		for j, x := range dp {
+			for k, y := range x {
+				for _, arr := range opts {
+					row, col := j + arr[0], k + arr[1]
+					if row >= 0 && row < N && col >=0 && col < N {
+						current[row][col] += y / 8.0
+					}
+				}
+			}
+		}
+        dp = current
+	}
+	var sum float64 
+	for _, row := range dp {
+		for _, val := range row {
+			sum += val
+		}
+	}
+	return sum
+}
+```
+
+### 387. First Unique Character in a String
+
+- level: 1-easy
+
+```go
+func firstUniqChar(s string) int {
+    m := make(map[rune]int)
+    for _, x := range s {
+        if val, ok := m[x]; ok {
+            m[x] = val + 1
+        } else {
+            m[x] = 1
+        }
+    }
+    for i, x := range s {
+        if m[x] == 1 {return i}
+    }
+    return -1
+}
+```
+
+### 165. Compare Version Numbers
+
+- level: 2-medium
+
+```go
+func compareVersion(version1 string, version2 string) int {
+	v1split := strings.Split(version1, ".")
+	v2split := strings.Split(version2, ".")
+	n, m := len(v1split), len(v2split)
+	max := n
+	if m > n {max = m}
+	for i:=0; i<max; i++ {
+		v1current, v2current := 0, 0
+		if i < n {
+			v1current, _ = strconv.Atoi(v1split[i])
+		}
+		if i < m {
+			v2current, _ = strconv.Atoi(v2split[i])
+		}
+		if v1current > v2current {
+			return 1
+		}
+		if v1current < v2current {
+			return -1
+		}
+	}
+	return 0
 }
 ```
 
