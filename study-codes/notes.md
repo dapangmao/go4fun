@@ -221,3 +221,11 @@ func main() {
 	http.ListenAndServe(":8088", nil)
 }
 ```
+
+- Use regex to extract strings 
+```go
+	re := regexp.MustCompile("\\$\\{(.*?)\\}")
+	match := re.FindAllStringSubmatch("git commit -m '${abc}' ${asdfsad } safs", -1)
+	fmt.Println(match)
+	// [[${abc} abc] [${asdfsad } asdfsad ]]
+```
