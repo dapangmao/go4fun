@@ -229,3 +229,89 @@ func main() {
 	fmt.Println(match)
 	// [[${abc} abc] [${asdfsad } asdfsad ]]
 ```
+
+
+- A crawler
+```go
+package main
+
+import (
+	"regexp"
+	"net/http"
+	"fmt"
+	"io/ioutil"
+	"strings"
+	"sync"
+	"time"
+)
+
+func main() {
+	var m = sync.Map{}
+	tasks := make(chan string, 10000)
+	tasks <- "https://xkcd.com"
+	timer := time.After(time.Minute)
+	lp:
+	for {
+		select {
+		case <- timer:
+			_, ok := <- tasks
+			if !ok {
+				println("\nThe task queue is empty\n")
+			} else {
+				println("\nstill some tasks are running\n")
+			}
+			break lp
+		case <- time.Tick(time.Second):
+			current, ok := <- tasks
+			if ok {
+				fmt.Printf("%s has been fired up\n", current)
+				go fetcher(current, tasks, &m)
+			}
+		}
+	}
+	m.Range(func(k, v interface{}) bool {
+		println(k.(string), "------>", v.(string))
+		return true
+	})
+}
+
+
+func fetcher(current string, tasks chan string, results *sync.Map) {
+	urls, size := bodyParser(current)
+	fmt.Printf("%s has been parsed.\n", current)
+	validCount := 0
+	for _, x := range urls {
+		_, ok := results.Load(x)
+		if ok {continue}
+		tasks <- x
+		results.Store(x, "")
+		validCount++
+	}
+	results.Store(current, fmt.Sprintf("%d|%d|%d", size, len(urls), validCount))
+}
+
+func bodyParser(target string) ([]string, int) {
+	response, err := http.Get(target)
+	if err != nil {
+		fmt.Printf("%s", err)
+		return []string{}, 0
+	}
+	contents, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		fmt.Printf("%s", err)
+		return []string{}, 0
+	}
+	str := string(contents)
+	response.Body.Close()
+	var re = regexp.MustCompile(`href="(.*?)"`)
+	links := re.FindAllStringSubmatch(str, -1)
+	res := []string{}
+	for _, x := range links {
+		current := x[1]
+		if strings.Contains(current, "xkcd.com") && strings.Contains(current, "http") {
+			res = append(res, current)
+		}
+	}
+	return res, len(str)
+}
+```
