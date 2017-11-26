@@ -404,3 +404,77 @@ func printDiskUsage(nfiles, nbytes int64) {
 	fmt.Printf("%d files  %.1f MB\n", nfiles, float64(nbytes)/1e6)
 }
 ```
+
+- Parse a Github source repo
+```go
+package main
+
+import (
+	"os"
+	"io/ioutil"
+	"fmt"
+	"path/filepath"
+	"regexp"
+	"strconv"
+	"strings"
+)
+
+var (
+	dedup   = make(map[string]int)
+	fileMap = make(map[string]string)
+	re      = regexp.MustCompile("[0-9]+")
+)
+
+func main() {
+	walkDir("gopl.io")
+	for k, v := range fileMap {
+		println(k, v)
+	}
+
+}
+
+func walkDir(dir string, ) {
+	entries, err := ioutil.ReadDir(dir)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, ": Dir read error: %v\n", err)
+		return
+	}
+	for _, entry := range entries {
+		name := entry.Name()
+		current := filepath.Join(dir, name)
+		if entry.IsDir() {
+			findDupDir(name)
+			walkDir(current)
+			continue
+		}
+		if !strings.Contains(current, ".go") {continue}
+		b, err := ioutil.ReadFile(current)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, ": File read error: %v\n", err)
+			continue
+		}
+		fileMap[string(current)] = string(b)
+
+	}
+}
+
+func findDupDir(name string) {
+	extract := re.FindStringIndex(name)
+	if len(extract) > 0 {
+		idx := extract[0]
+		key := name[:idx]
+		value, err := strconv.Atoi(name[idx:])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, ": %s: %v\n", name, err)
+			return
+		}
+		if val, ok := dedup[key]; ok {
+			if value > val {
+				dedup[key] = value
+			}
+		} else {
+			dedup[key] = val
+		}
+	}
+}
+```
