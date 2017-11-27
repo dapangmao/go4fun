@@ -114,7 +114,7 @@ def make_index():
 def get_init_codes():
     res = {}
 
-    for root, dirs, files in os.walk(".", topdown=False):
+    for root, dirs, files in os.walk("."):
         if '.git' in root or '.ipynb' in root:
             continue
         for name in files:
@@ -123,7 +123,7 @@ def get_init_codes():
                 with open(os.path.join(root, name), 'r') as infile:
                     for i, l in enumerate(infile):
                         current += l
-                res[root + '/' + name ] = current 
+                res[root + '/' + name ] = current
     return res
 
 def get_codes_by_chapter(init):
@@ -142,6 +142,7 @@ def get_codes_by_chapter(init):
         except:
             print(key)
             pass
+    # res = {k: res[k] for k in sorted(res)}
     return res
 
 
@@ -153,13 +154,11 @@ def output_md(codes, index):
             if k not in s:
                 print("\n{}\n".format(index[k]), file=out)
                 s.add(k)
-            print(codes[k], file=out)    
-    
+            print(codes[k], file=out)
+
 if __name__ == "__main__":
 
     index = make_index()
     init = get_init_codes()
     cbc = get_codes_by_chapter(init)
     output_md(cbc, index)
-            
-
