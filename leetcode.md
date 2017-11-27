@@ -1,3 +1,125 @@
+### 737. Sentence Similarity II
+
+- level: 2-medium
+
+```go
+func areSentencesSimilarTwo(words1 []string, words2 []string, pairs [][]string) bool {
+    if len(words1) != len(words2) {return false}
+    visited, dic := make(map[string]int), make(map[string][]string)
+    count := 1
+    for _, pair := range pairs {
+        a, b := pair[0], pair[1]
+        visited[a] = -count
+        count++
+        visited[b] = -count
+        count++
+        dic[a] = append(dic[a], b)
+        dic[b] = append(dic[b], a)
+    }
+    var group int
+    for k, v := range visited {
+        if v > 0 {continue}
+        group++
+        queue := []string{k}
+        for len(queue) > 0 {
+            first := queue[0]
+            queue = queue[1:]
+            visited[first] = group
+            for _, x := range dic[first] {
+                if visited[x] < 0 {
+                    queue = append(queue, x)
+                    visited[x] = group
+                }
+            }
+        }
+    }
+    for i:=0; i<len(words1); i++ {
+        w1, w2 := words1[i], words2[i]
+        if visited[w1] != visited[w2] {return false}
+    }
+    return true
+}
+```
+
+### 734. Sentence Similarity
+
+- level: 1-easy
+
+```go
+// empty data structure is OK for a go map
+func areSentencesSimilar(words1 []string, words2 []string, pairs [][]string) bool {
+    dic := make(map[string][]string)
+    for _, pair := range pairs {
+        a, b := pair[0], pair[1]
+        dic[a] = append(dic[a], b)
+        dic[b] = append(dic[b], a)
+    }
+    n, m := len(words1), len(words2)
+    if n != m {return false}
+    for i:=0; i<n; i++ {
+        w1, w2 := words1[i], words2[i]
+        if w1 == w2 {goto next}
+        for _, x := range dic[w1] {
+            if x == w2 {goto next}
+        }
+        return false
+        next:
+    }
+    return true
+}
+```
+
+### 733. Flood Fill
+
+- level: 1-easy
+
+```go
+func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
+    queue := [][]int{[]int{sr, sc}}
+    n, m := len(image), len(image[0])
+    visited := make([][]bool, n)
+    for i:=0; i<n; i++ {
+        visited[i] = make([]bool, m)
+    }
+    original := image[sr][sc]
+    for len(queue) > 0 {
+        r, c := queue[0][0], queue[0][1]
+        queue = queue[1:]
+        if visited[r][c] || image[r][c] != original {continue}
+        image[r][c] = newColor
+        visited[r][c] = true
+        if r > 0 {queue = append(queue, []int{r-1, c})}
+        if r + 1 < n {queue = append(queue, []int{r+1, c})}
+        if c > 0 {queue = append(queue, []int{r, c-1})}
+        if c + 1 < m {queue = append(queue, []int{r, c+1})}
+    }
+    return image  
+}
+```
+
+### 728. Self Dividing Numbers
+
+- level: 1-easy
+
+```go
+func selfDividingNumbers(left int, right int) []int {
+    res := []int{}
+    for x:=left; x<=right; x++ {
+        y := x
+        for y > 0 {
+            current := y % 10
+            if current == 0 || x % current != 0 {
+                goto end
+            }
+            y /= 10
+        }
+        res = append(res, x)
+        end:
+    }
+    return res
+}
+```
+
 ### 722. Remove Comments
 
 - level: 2-medium
@@ -238,6 +360,104 @@ func knightProbability(N int, K int, r int, c int) float64 {
 }
 ```
 
+### 661. Image Smoother
+
+- level: 1-easy
+
+```go
+func imageSmoother(M [][]int) [][]int {
+    n, m := len(M), len(M[0])
+    res := make([][]int, n)
+    for i := range M {
+        res[i] = make([]int, m)
+    }
+    var current, count int
+    for i:=0; i<n; i++ {
+        for j:=0; j<m; j++ {
+            current = 0
+            count = 0
+            for _, l := range []int{-1, 0, 1} {
+                for _, k := range []int{-1, 0, 1} {
+                    r, c := i+l, j+k
+                    if r >=0 && r < n && c >= 0 && c <m {
+                        current += M[r][c]
+                        count++
+                    }
+                }
+            }
+            res[i][j] = int(math.Floor(float64(current/count)))
+        }
+    }
+    return res
+}
+```
+
+### 636. Exclusive Time of Functions
+
+- level: 2-medium
+
+```go
+var arr = []int{}
+
+func dfs(root *TreeNode) {
+	if root == nil {
+		return
+	}
+	val := root.Val
+	if  len(arr) == 0 {
+		arr = []int{val}
+	} else if len(arr) == 1 {
+		if arr[0] > val {
+			arr = []int{arr[0], val}
+		} else if arr[0] < val {
+			arr = []int{arr[0], val}
+		}
+	} else {
+		if arr[0] < val && val < arr[1] {
+			arr = []int{val, arr[1]}
+		} else if val > arr[1] {
+			arr = []int{arr[1], val}
+		}
+	}
+    dfs(root.Left)
+	dfs(root.Right)
+}
+
+func findSecondMinimumValue(root *TreeNode) int {
+    arr = []int{}
+	dfs(root)
+	if len(arr) < 2 {return -1}
+	return arr[0]
+}
+```
+
+### 594. Longest Harmonious Subsequence
+
+- level: 1-easy
+
+```go
+func findLHS(nums []int) int {
+    m := make(map[int]int)
+    for _, x := range(nums) {
+        if _, ok := m[x]; ok {
+            m[x]++
+        } else {
+            m[x] = 1
+        }
+    }
+    var res int
+    for k := range m {
+        if val, ok := m[k-1]; ok {
+            option := m[k] + val
+            if option > res {
+                res = option
+            }
+        }
+    }
+    return res
+}
+```
+
 ### 387. First Unique Character in a String
 
 - level: 1-easy
@@ -286,6 +506,38 @@ func compareVersion(version1 string, version2 string) int {
 		}
 	}
 	return 0
+}
+```
+
+### 150. Evaluate Reverse Polish Notation
+
+- level: 2-medium
+
+```go
+func evalRPN(tokens []string) int {
+    stack := []int{}
+    for _, token := range tokens {
+        t, err := strconv.Atoi(token)
+        if len(stack) == 0 || err == nil {
+            stack = append(stack, t)
+            continue
+        } 
+        n := len(stack)
+        e1, e2 := stack[n-2], stack[n-1]
+        stack = stack[:n-2]
+        var current int
+        if token == "+" {
+            current = e1 + e2
+        } else if token == "-" {
+            current = e1 - e2
+        } else if token == "*" {
+            current = e1 * e2 
+        } else {
+            current = e1 / e2
+        }
+        stack = append(stack, current)
+    }
+    return stack[0]
 }
 ```
 
