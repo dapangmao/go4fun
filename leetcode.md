@@ -120,6 +120,39 @@ func selfDividingNumbers(left int, right int) []int {
 }
 ```
 
+### 724. Find Pivot Index
+
+- level: 1-easy
+
+```go
+func pivotIndex(nums []int) int {
+    n := len(nums)
+    if n == 0 {return -1}
+    left, right := make([]int, n), make([]int, n)
+    left[0], right[n-1] = nums[0], nums[n-1]
+    for i:=1; i<n-1; i++ {
+        left[i] += left[i-1] + nums[i]
+    }
+    for i:=n-2; i>=0; i-- {
+        right[i] += right[i+1] + nums[i]
+    }
+    for i:=0; i<n; i++ {
+        l := 0
+        if i > 0 {
+            l = left[i-1]
+        }
+        r := 0
+        if i < n-1 {
+            r = right[i+1]
+        }
+        if l == r {
+            return i 
+        }
+    }
+    return -1
+}
+```
+
 ### 722. Remove Comments
 
 - level: 2-medium
@@ -319,6 +352,42 @@ func findShortestSubArray(nums []int) int {
 }
 ```
 
+### 695. Max Area of Island
+
+- level: 1-easy
+
+```go
+func maxAreaOfIsland(grid [][]int) int {
+    n, m := len(grid), len(grid[0])
+    var res int
+    for i:=0; i<n; i++ {
+        for j:=0; j<m; j++ {
+            if grid[i][j] != 1 {continue}
+            queue := [][]int{[]int{i, j}}
+            grid[i][j] = -1
+            current := 0
+            for len(queue) > 0 {
+                var pop = queue[0]
+                queue = queue[1:]
+                var a, b = pop[0], pop[1]
+                current++
+                var options = [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+                for _, option := range options {
+                    var r = a + option[0]
+                    var c = b + option[1]
+                    if r >=0 && r < n && c >= 0 && c < m && grid[r][c] == 1 {
+                        queue = append(queue, []int{r, c})
+                        grid[r][c] = -1
+                    }
+                }
+            }
+            if current > res {res = current}
+        }
+    }
+    return res
+}
+```
+
 ### 688. Knight Probability in Chessboard
 
 - level: 2-medium
@@ -357,6 +426,34 @@ func knightProbability(N int, K int, r int, c int) float64 {
 		}
 	}
 	return sum
+}
+```
+
+### 687. Longest Univalue Path
+
+- level: 1-easy
+
+```go
+var res int
+
+func longestUnivaluePath(root *TreeNode) int {
+    dfs(root)
+    return res
+}
+
+func dfs(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    l := dfs(root.Left)
+    r := dfs(root.Right)
+    left, right := 0, 0
+    if root.Left != nil && root.Left.Val == root.Val {left = l + 1}
+    if root.Right != nil && root.Right.Val == root.Val {right = r + 1}
+    current := right + left
+    if current > res {res = current}
+    if right > left {return right}
+    return left
 }
 ```
 
