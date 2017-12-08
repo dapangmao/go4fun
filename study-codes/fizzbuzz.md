@@ -35,5 +35,33 @@ func printInt(tasks <-chan int, done <-chan bool) {
 	}
 }
 
-
 ```
+
+- Use Waitgroup
+
+```go
+package main
+
+import "sync"
+
+func main() {
+
+	var wg sync.WaitGroup
+	for i := 1; i < 16; i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			switch {
+			case i%15 == 0:
+				println("fizzbuzz", i)
+			case i%3 == 0:
+				println("fizz", i)
+			case i%5 == 0:
+				println("buzz", i)
+			}
+		}(i)
+	}
+	wg.Wait()
+}
+```
+
