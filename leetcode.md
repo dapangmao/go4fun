@@ -1,3 +1,93 @@
+### 749. Shortest Completing Word
+
+- level: 2-medium
+
+```go
+func shortestCompletingWord(licensePlate string, words []string) string {
+    var ldic = make(map[rune]int)
+    for _, x := range strings.ToLower(licensePlate) {
+        if x >= 97 && x <= 122 { 
+            ldic[x]++
+        }
+    }
+    var res string
+    for _, word := range words {
+        var dic = make(map[rune]int)
+        for _, x := range(word) {
+            dic[x]++
+        }
+        for k, v := range ldic {
+            value, ok := dic[k]
+            if !ok || value < v {goto end}
+        }
+        if len(res) == 0 || len(word) < len(res) {res = word}
+        end:
+    }
+    return res
+}
+```
+
+### 747. Min Cost Climbing Stairs
+
+- level: 1-easy
+
+```go
+func minCostClimbingStairs(cost []int) int {
+    n := len(cost)
+    var dp = make([]int, n)
+    copy(dp, cost)
+    for i:=2; i<n; i++ {
+        if dp[i-2] < dp[i-1] {
+            dp[i] += dp[i-2]
+        } else {
+            dp[i] += dp[i-1]
+        }
+    }
+    if dp[n-1] < dp[n-2] {return dp[n-1]}
+    return dp[n-2]
+}
+```
+
+### 745. Find Smallest Letter Greater Than Target
+
+- level: 1-easy
+
+```go
+func nextGreatestLetter(letters []byte, target byte) byte {
+    var res byte = letters[0]
+    for _, b := range letters {
+        if b > target && (res <= target || b - target < res - target) {
+                res = b
+            } 
+    }
+    return res
+}
+```
+
+### 739. Daily Temperatures
+
+- level: 2-medium
+
+```go
+func dailyTemperatures(temperatures []int) []int {
+	var n = len(temperatures)
+	var res, stack []int
+	for i:=0; i<n; i++ {
+		res = append(res, 0)
+	}
+    for i:=n-1; i>=0; i-- {
+        for len(stack) > 0 && temperatures[i] >= temperatures[stack[len(stack)-1]] {
+            stack = stack[:len(stack)-1]
+        }
+        if len(stack) > 0 {
+            res[i] = stack[len(stack)-1] - i
+        }
+        stack = append(stack, i)
+    }
+    return res
+}
+```
+
 ### 737. Sentence Similarity II
 
 - level: 2-medium
@@ -489,6 +579,76 @@ func imageSmoother(M [][]int) [][]int {
 }
 ```
 
+### 657. Judge Route Circle
+
+- level: 1-easy
+
+```go
+func judgeCircle(moves string) bool {
+    var v, h = 0, 0
+    for _, x := range moves {
+        switch x {
+            case 'U': v++
+            case 'D': v--
+            case 'L': h--
+            default: h++
+        }
+    }
+    return v == 0 && h == 0
+}
+```
+
+### 645. Set Mismatch
+
+- level: 1-easy
+
+```go
+func findErrorNums(nums []int) []int {
+    var res = []int{-1, -1}
+    var dic = make(map[int]int)
+    var sum, should = 0, 0
+    for i, x := range nums {
+        dic[x]++
+        should += i+1
+        sum += x
+        if dic[x] > 1 {res[0] = x}
+    }
+    res[1] = res[0] + should - sum
+    return res
+}
+```
+
+### 637. Average of Levels in Binary Tree
+
+- level: 1-easy
+
+```go
+var dic = make(map[int][]int)
+var max int
+
+func averageOfLevels(root *TreeNode) []float64 {
+    var res []float64
+    dfs(root, 0)
+    for k:=0; k<=max; k++ {
+        v := dic[k]
+        res = append(res, float64(v[1]) / float64(v[0]))
+	}
+	return res
+}
+
+func dfs(root *TreeNode, level int) {
+	if root == nil {return}
+	if val, ok := dic[level]; ok {
+		dic[level] = []int{val[0] + 1, val[1] + root.Val}
+	} else {
+		dic[level] = []int{1, root.Val}
+	}
+    if level > max {max = level}
+	dfs(root.Left, level+1)
+	dfs(root.Right, level+1)
+}
+```
+
 ### 636. Exclusive Time of Functions
 
 - level: 2-medium
@@ -576,6 +736,26 @@ func firstUniqChar(s string) int {
 }
 ```
 
+### 187. Repeated DNA Sequences
+
+- level: 2-medium
+
+```go
+func findRepeatedDnaSequences(s string) []string {
+    var dic = make(map[string]int)
+    for i:=0; i<=len(s)-10; i++ {
+        dic[s[i:i+10]]++
+    }
+    var res = []string{}
+    for k, v := range dic {
+        if v > 1 {
+            res = append(res, k)
+        }
+    }
+    return res
+}
+```
+
 ### 165. Compare Version Numbers
 
 - level: 2-medium
@@ -603,6 +783,45 @@ func compareVersion(version1 string, version2 string) int {
 		}
 	}
 	return 0
+}
+```
+
+### 155. Min Stack
+
+- level: 1-easy
+
+```go
+type MinStack struct {
+    stack []int
+    minStack []int
+}
+
+/** initialize your data structure here. */
+func Constructor() MinStack {
+    return MinStack{[]int{}, []int{}}
+}
+
+func (this *MinStack) Push(x int)  {
+    this.stack = append(this.stack, x)
+    if len(this.minStack) == 0 || x <= this.minStack[len(this.minStack)-1]{
+        this.minStack = append(this.minStack, x) 
+    }
+}
+
+func (this *MinStack) Pop()  {
+    var pop = this.stack[len(this.stack)-1]
+    this.stack = this.stack[:len(this.stack)-1]
+    if pop == this.GetMin() {
+       this.minStack = this.minStack[:len(this.minStack)-1] 
+    }
+}
+
+func (this *MinStack) Top() int {
+    return this.stack[len(this.stack)-1]
+}
+
+func (this *MinStack) GetMin() int {
+    return this.minStack[len(this.minStack)-1]
 }
 ```
 
@@ -635,6 +854,53 @@ func evalRPN(tokens []string) int {
         stack = append(stack, current)
     }
     return stack[0]
+}
+```
+
+### 146. LRU Cache
+
+- level: 3-hard
+
+```go
+type LRUCache struct {
+    capacity int
+    cache map[int]int
+    order []int
+    pos map[int]int
+}
+
+func Constructor(capacity int) LRUCache {
+    var c = make(map[int]int)
+    var o = []int{}
+    var p = make(map[int]int)
+    return LRUCache{capacity: capacity, cache: c, order: o, pos: p}
+}
+
+func (this *LRUCache) Get(key int) int {
+    if val, ok := this.cache[key]; ok {
+        var p = this.pos[key]
+        this.order = append(this.order[:p], this.order[p+1:]...)
+        this.order = append(this.order, key)
+        this.pos[key] = len(this.cache) - 1
+        return val
+    }
+    return -1
+}
+
+func (this *LRUCache) Put(key int, value int)  {
+    var current = this.Get(key)
+    if current != -1 {
+        this.cache[key] = value
+        return
+    }
+    if len(this.cache) == this.capacity {
+        var current = this.order[0]
+        delete(this.cache, current)
+        this.order = this.order[1:]
+    }
+    this.order = append(this.order, key)
+    this.cache[key] = value
+    this.pos[key] = len(this.cache) - 1
 }
 ```
 
