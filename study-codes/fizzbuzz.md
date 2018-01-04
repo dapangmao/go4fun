@@ -1,4 +1,4 @@
-- Use Done channel
+- Use Done and Task double channels and multiplexer
 
 ```go
 
@@ -37,6 +37,9 @@ func printInt(tasks <-chan int, done <-chan bool) {
 
 ```
 
+- use 
+
+
 - Use Waitgroup
 
 ```go
@@ -65,7 +68,7 @@ func main() {
 }
 ```
 
-- Use broadcaster
+- Use broadcaster/closer
 ```go
 package main
 
