@@ -1,4 +1,4 @@
-- Use sync.WaitGroup
+- Use Done channel
 
 ```go
 
@@ -65,3 +65,29 @@ func main() {
 }
 ```
 
+- Use broadcaster
+```go
+package main
+
+func main() {
+	var tasks = make(chan int)
+
+	for i := 1; i < 16; i++ {
+		go printInt(tasks)
+		tasks <- i
+	}
+	close(tasks)
+}
+
+func printInt(tasks chan int) {
+	i := <-tasks
+	switch  {
+	case i%15 == 0:
+		println("fizzbuzz", i)
+	case i%3 == 0:
+		println("fizz", i)
+	case i%5 == 0:
+		println("buzz", i)
+	}
+}
+```
