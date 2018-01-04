@@ -33,3 +33,18 @@ func main() {
 	http.ListenAndServe(":80", nil)
 }
 ```
+
+- the accompanying html
+```css
+<h1>{{.PageTitle}}  xxx</h1>
+<ul>
+{{range .Todos}}
+    {{if .Done}}
+        <li style="text-decoration: line-through">{{.Title}}</li>
+    {{else}}
+        <li>{{.Title}}</li>
+    {{end}}
+{{end}}
+</ul>
+```
+
