@@ -37,9 +37,6 @@ func printInt(tasks <-chan int, done <-chan bool) {
 
 ```
 
-- use 
-
-
 - Use Waitgroup
 
 ```go
