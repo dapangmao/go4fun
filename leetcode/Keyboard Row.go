@@ -10,7 +10,7 @@ func findWords(words []string) []string {
     }
     var res []string
     for _, w := range words {
-        var current = string.toLowerCase(w)
+        var current = strings.toLowerCase(w)
         var first = dict[current[0]]
         for _, c := range current {
             if first != dict[c] {goto end}
