@@ -547,6 +547,28 @@ func dfs(root *TreeNode) int {
 }
 ```
 
+### 686. Repeated String Match
+
+- level: 1-easy
+
+```go
+func repeatedStringMatch(A string, B string) int {
+    var increase = A
+    var res int = 1
+    for {
+        if strings.Contains(increase, B) {
+            return res
+        } else if len(increase) > 2*len(B) {
+            break
+        } else {
+            increase += A
+            res++
+        }
+    }
+    return -1
+}
+```
+
 ### 661. Image Smoother
 
 - level: 1-easy
@@ -756,6 +778,37 @@ func detectCapitalUse(word string) bool {
 }
 ```
 
+### 506. Relative Ranks
+
+- level: 1-easy
+
+```go
+func findRelativeRanks(nums []int) []string {
+	max := -1
+	for _, num := range nums {
+		if num > max {max = num}
+	}
+	var dp = make([]int, max+1)
+	for i, num := range nums {
+		dp[num] = i+1
+	}
+	var res = make([]string, len(nums))
+	var top = []string{"Gold Medal", "Silver Medal", "Bronze Medal"}
+	var j = 4
+	for i:=max; i>=0; i-- {
+		if dp[i] == 0 {continue}
+		if len(top) > 0 {
+			res[dp[i]-1] = top[0]
+			top = top[1:]
+		} else {
+            res[dp[i]-1] = fmt.Sprint(j)
+			j++
+		}
+	}
+	return res
+}
+```
+
 ### 500. Keyboard Row
 
 - level: 1-easy
@@ -809,6 +862,32 @@ func licenseKeyFormatting(S string, K int) string {
         count++
     }
     return strings.ToUpper(string(res[count:]))
+}
+```
+
+### 414. Third Maximum Number
+
+- level: 1-easy
+
+```go
+func thirdMax(nums []int) int {
+    const m = -9223372036854775808
+    var max1, max2, max3 = m, m, m
+    for _, num := range nums {
+        if num == max1 || num == max2 || num == max3 {continue}
+        if num > max1 {
+           max3 = max2
+           max2 = max1
+           max1 = num
+        } else if num > max2 {
+           max3 = max2
+           max2 = num
+        } else if num > max3 {
+           max3 = num
+        }
+    }
+    if max3 == m {return max1}
+    return max3
 }
 ```
 
@@ -1208,6 +1287,41 @@ func longestCommonPrefix(strs []string) string {
         }
     }
     return first
+}
+```
+
+### 13. Roman to Integer
+
+- level: 1-easy
+
+```go
+func romanToInt(s string) int {
+    var res = 0
+    if strings.Contains(s, "IV")  {res -= 2}
+    if strings.Contains(s, "IX")  {res -= 2}
+    if strings.Contains(s, "XL") {res -= 20}
+    if strings.Contains(s, "XC") {res -= 20}
+    if strings.Contains(s, "CD") {res -= 200}
+    if strings.Contains(s, "CM") {res -= 200}
+    for _, c := range s {
+        switch c {
+            case 'M': 
+            res += 1000
+            case 'D':
+            res += 500
+            case 'C':
+            res += 100
+            case 'L':
+            res += 50
+            case 'X':
+            res += 10
+            case 'V':
+            res += 5
+            case 'I':
+            res += 1
+        }
+    }
+    return res
 }
 ```
 
