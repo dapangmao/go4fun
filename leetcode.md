@@ -688,6 +688,26 @@ func findSecondMinimumValue(root *TreeNode) int {
 }
 ```
 
+### 605. Can Place Flowers
+
+- level: 1-easy
+
+```go
+func canPlaceFlowers(flowerbed []int, n int) bool {
+    var l = len(flowerbed)
+    if n == 0 {return true}
+    for i:=0; i<l; i++ {
+        if flowerbed[i] == 1 {continue}
+        if (i==0 || flowerbed[i-1] == 0 ) && (i == l-1 || flowerbed[i+1] == 0) {
+            n--
+            flowerbed[i] = 1
+        }
+        if n <= 0 {return true}
+    }
+    return false
+}
+```
+
 ### 594. Longest Harmonious Subsequence
 
 - level: 1-easy
@@ -715,6 +735,104 @@ func findLHS(nums []int) int {
 }
 ```
 
+### 520. Detect Capital
+
+- level: 1-easy
+
+```go
+func detectCapitalUse(word string) bool {
+    var allLower, allUpper, firstUpper = 0, 0, 0
+    var n = len(word)
+    for i, c := range word {
+        if c >= 'A' && c <= 'Z' {
+            allUpper++
+            if i == 0 {firstUpper = 1}
+        } else {
+            allLower++
+        }
+    } 
+    if allLower == n || allUpper == n || (firstUpper == 1 && allLower == n-1) {return true}
+    return false
+}
+```
+
+### 500. Keyboard Row
+
+- level: 1-easy
+
+```go
+func findWords(words []string) []string {
+    var dict = make(map[rune]int)
+    var count = 0
+    for _, c := range "qwertyuiop asdfghjkl zxcvbnm" {
+        if count == ' ' {
+            count++
+        } else {
+            dict[c] = count
+        }
+    }
+    var res []string
+    for _, w := range words {
+        var current = strings.ToLower(w)
+        var first = dict[current[0]]
+        for _, c := range current {
+            if first != dict[c] {goto end}
+        }
+        res = append(res, w)
+        end:
+    }
+    return res
+}
+```
+
+### 482. License Key Formatting
+
+- level: 1-easy
+
+```go
+func licenseKeyFormatting(S string, K int) string {
+    var res []byte
+    var count = K
+    for i:=len(S)-1; i>=0; i-- {
+        var c = S[i]
+        if c == '-' {continue}
+        res = append([]byte{c}, res...)
+        count--
+        if i > 0 && count == 0 {
+            res = append([]byte{'-'}, res...)
+            count = K
+        }
+    }
+    count = 0
+    for _, c := range res {
+        if c != '-' {break}
+        count++
+    }
+    return strings.ToUpper(string(res[count:]))
+}
+```
+
+### 409. Longest Palindrome
+
+- level: 1-easy
+
+```go
+func longestPalindrome(s string) int {
+    var set = make(map[rune]bool)
+    var res = 0
+    for _, x := range s {
+        if _, ok := set[x]; ok {
+            delete(set, x)
+            res += 2
+        } else {
+            set[x] = true
+        }
+    }
+    if len(set) > 0 {return res + 1}
+    return res
+}
+```
+
 ### 387. First Unique Character in a String
 
 - level: 1-easy
@@ -722,13 +840,7 @@ func findLHS(nums []int) int {
 ```go
 func firstUniqChar(s string) int {
     m := make(map[rune]int)
-    for _, x := range s {
-        if val, ok := m[x]; ok {
-            m[x] = val + 1
-        } else {
-            m[x] = 1
-        }
-    }
+    for _, x := range s {m[x]++}
     for i, x := range s {
         if m[x] == 1 {return i}
     }
