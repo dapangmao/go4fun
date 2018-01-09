@@ -27,6 +27,29 @@ func shortestCompletingWord(licensePlate string, words []string) string {
 }
 ```
 
+### 748. Largest Number At Least Twice of Others
+
+- level: 1-easy
+
+```go
+func dominantIndex(nums []int) int {
+	var max, max2 = -12423421, -12423421
+	var i = -1
+	for k, num := range nums {
+		if num > max {
+			max, max2 = num, max
+			i = k
+		} else if num > max2 {
+			max2 = num
+		}
+	}
+	if max >= max2*2 {
+		return i
+	}
+	return -1
+}
+```
+
 ### 747. Min Cost Climbing Stairs
 
 - level: 1-easy
@@ -1095,6 +1118,22 @@ func (this *LRUCache) Put(key int, value int)  {
 }
 ```
 
+### 122. Best Time to Buy and Sell Stock II
+
+- level: 1-easy
+
+```go
+func maxProfit(prices []int) int {
+	var res = 0
+	for i:=1; i<len(prices); i++ {
+		if prices[i] > prices[i-1] {
+			res += prices[i] - prices[i-1]
+		}
+	}
+	return res
+}
+```
+
 ### 121. Best Time to Buy and Sell Stock
 
 - level: 1-easy
@@ -1136,6 +1175,28 @@ func hasPathSum(root *TreeNode, sum int) bool {
         return sum - root.Val == 0
     }
     return hasPathSum(root.Left, sum - root.Val) || hasPathSum(root.Right, sum - root.Val)
+}
+```
+
+### 104. Maximum Depth of Binary Tree
+
+- level: 1-easy
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+ 
+func maxDepth(root *TreeNode) int {
+    if root == nil {return 0}
+    l, r := maxDepth(root.Left), maxDepth(root.Right)
+    if l > r {return 1 + l}
+    return 1 + r
 }
 ```
 
