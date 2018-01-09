@@ -465,6 +465,33 @@ func findShortestSubArray(nums []int) int {
 }
 ```
 
+### 696. Count Binary Substrings
+
+- level: 1-easy
+
+```go
+func countBinarySubstrings(s string) int {
+    var dp = []int{1}
+    var n = len(s)
+    for i:=1; i<n; i++ {
+        if s[i-1] != s[i] {
+            dp = append(dp, 1)
+        } else {
+            dp[len(dp)-1]++
+        }
+    }
+    var res = 0
+    for i:=1; i<len(dp); i++ {
+        if dp[i-1] < dp[i] {
+            res += dp[i-1]
+        } else {
+            res += dp[i]
+        }
+    }
+    return res
+}
+```
+
 ### 695. Max Area of Island
 
 - level: 1-easy
@@ -777,6 +804,33 @@ func findLHS(nums []int) int {
         }
     }
     return res
+}
+```
+
+### 557. Reverse Words in a String III
+
+- level: 1-easy
+
+```go
+func reverseWords(s string) string {
+	var i int
+  var bytes = []byte(s)   // not {}
+	for j, x := range s {
+		if x == ' ' {
+			rw(bytes[:], i, j-1) // have to use slice
+			i = j + 1
+		}
+	}
+	rw(bytes[:], i, len(s)-1) // have to use slice
+	return string(bytes)
+}
+
+func rw(b []byte, i, j int)  {
+	for i < j {
+		b[i], b[j] = b[j], b[i]
+		i++
+		j--
+	}
 }
 ```
 
