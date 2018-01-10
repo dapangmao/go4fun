@@ -619,6 +619,34 @@ func repeatedStringMatch(A string, B string) int {
 }
 ```
 
+### 682. Baseball Game
+
+- level: 1-easy
+
+```go
+func calPoints(ops []string) int {
+    var stack []int
+    for _, op := range ops {
+        var n = len(stack)
+        if op == "+" {
+            stack = append(stack, stack[n-1], stack[n-2])
+        } else if op == "C" {
+            stack = stack[:n-1]
+        } else if op == "D" {
+            stack = append(stack, 2*stack[n-1])
+        } else {
+            opint, _ := strconv.Atoi(op)
+            stack = append(stack, opint)
+        }
+    }
+    var res = 0
+    for _, x := range stack {
+        res += x
+    }
+    return res
+}
+```
+
 ### 661. Image Smoother
 
 - level: 1-easy
@@ -939,6 +967,24 @@ func licenseKeyFormatting(S string, K int) string {
         count++
     }
     return strings.ToUpper(string(res[count:]))
+}
+```
+
+### 434. Number of Segments in a String
+
+- level: 1-easy
+
+```go
+func countSegments(s string) int {
+    var res = 0
+    var prev = ' '
+    for _, x := range s + " " {
+        if x == ' ' && prev != ' ' {
+            res++
+        }
+        prev = x
+    }
+    return res
 }
 ```
 
@@ -1315,6 +1361,36 @@ func lengthOfLastWord(s string) int {
         }
     }
     return n
+}
+```
+
+### 43. Multiply Strings
+
+- level: 2-medium
+
+```go
+func multiply(num1 string, num2 string) string {
+    var len1, len2 = len(num1), len(num2)
+    var product = make([]int, len1+len2)
+    for i := len1 - 1; i >= 0; i-- {
+        for  j := len2 - 1; j >= 0; j-- {
+            var index = len1 + len2 - i - j - 2
+            product[index] += int(num1[i] - '0') * int(num2[j] - '0')
+            product[index + 1] += product[index] / 10;
+            product[index] %= 10;
+        }
+    }
+    var stringBuilder []byte
+    for i := len(product) - 1; i > 0; i-- {
+        if len(stringBuilder) == 0 && product[i] == 0 {
+            continue
+        }
+        stringBuilder = append(stringBuilder, byte(product[i]))
+    }
+    stringBuilder = append(stringBuilder, byte(product[0]))
+    var res string
+    for _, x := range stringBuilder {res += fmt.Sprint(x)}
+    return res
 }
 ```
 
