@@ -1,3 +1,20 @@
+### 762. Find Anagram Mappings
+
+- level: 1-easy
+
+```go
+func anagramMappings(A []int, B []int) []int {
+    var m = make(map[int]int)
+    for i, x := range B {
+        m[x] = i
+    }
+    for i, x := range A {
+        B[i] = m[x]
+    }
+    return B
+}
+```
+
 ### 749. Shortest Completing Word
 
 - level: 2-medium
@@ -788,6 +805,23 @@ func findSecondMinimumValue(root *TreeNode) int {
 }
 ```
 
+### 617. Merge Two Binary Trees
+
+- level: 1-easy
+
+```go
+func mergeTrees(t1 *TreeNode, t2 *TreeNode) *TreeNode {
+    if t1 == nil && t2 == nil {return nil}
+    if t1 != nil && t2 != nil {
+        return &TreeNode{t1.Val+t2.Val, mergeTrees(t1.Left, t2.Left), mergeTrees(t1.Right, t2.Right)}
+    } 
+    if t1 != nil {
+        return &TreeNode{t1.Val, mergeTrees(t1.Left, nil), mergeTrees(t1.Right, nil)}
+    } 
+    return &TreeNode{t2.Val, mergeTrees(nil, t2.Left), mergeTrees(nil, t2.Right)}
+}
+```
+
 ### 605. Can Place Flowers
 
 - level: 1-easy
@@ -1047,6 +1081,16 @@ func firstUniqChar(s string) int {
         if m[x] == 1 {return i}
     }
     return -1
+}
+```
+
+### 292. Nim Game
+
+- level: 1-easy
+
+```go
+func canWinNim(n int) bool {
+    return n % 4 != 0 
 }
 ```
 
