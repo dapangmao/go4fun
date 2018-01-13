@@ -869,6 +869,29 @@ func findLHS(nums []int) int {
 }
 ```
 
+### 581. Shortest Unsorted Continuous Subarray
+
+- level: 1-easy
+
+```go
+func findUnsortedSubarray(nums []int) int {
+    n := len(nums)
+    var should = make([]int, n)
+    copy(should, nums)
+    sort.Ints(nums)
+    var i, j = 0, n-1
+    for ; i<n; i++ {
+        if nums[i] != should[i] {break}
+    }
+    for ; j>=0; j-- {
+        if nums[j] != should[j] {break}
+    }
+    var res = j - i + 1
+    if res > 0 {return res}
+    return 0
+}
+```
+
 ### 557. Reverse Words in a String III
 
 - level: 1-easy
@@ -1004,6 +1027,27 @@ func licenseKeyFormatting(S string, K int) string {
 }
 ```
 
+### 463. Island Perimeter
+
+- level: 1-easy
+
+```go
+func islandPerimeter(grid [][]int) int {
+    var n, m = len(grid), len(grid[0])
+    var res int
+    for i:=0; i<n; i++ {
+        for j:=0; j<m; j++ {
+            if grid[i][j] != 1 {continue}
+            if i+1 >= n || grid[i+1][j] == 0 {res++}
+            if i-1 < 0 || grid[i-1][j] == 0 {res++}
+            if j+1 >= m || grid[i][j+1] == 0 {res++}
+            if j-1 < 0 || grid[i][j-1] == 0 {res++}
+        }
+    }
+    return res
+}
+```
+
 ### 434. Number of Segments in a String
 
 - level: 1-easy
@@ -1069,6 +1113,24 @@ func longestPalindrome(s string) int {
 }
 ```
 
+### 389. Find the Difference
+
+- level: 1-easy
+
+```go
+func findTheDifference(s string, t string) byte {
+    var m = make([]int, 26)
+    for _, x := range []byte(s) {
+        m[x - 'a']++
+    }
+    for _, x := range []byte(t) {
+        m[x - 'a']--
+        if m[x - 'a'] == -1 {return x}
+    }
+    return 0
+}
+```
+
 ### 387. First Unique Character in a String
 
 - level: 1-easy
@@ -1091,6 +1153,26 @@ func firstUniqChar(s string) int {
 ```go
 func canWinNim(n int) bool {
     return n % 4 != 0 
+}
+```
+
+### 242. Valid Anagram
+
+- level: 1-easy
+
+```go
+func isAnagram(s string, t string) bool {
+    var m = make(map[rune]int)
+    for _, x := range s {
+        m[x]++
+    }
+    for _, x := range t {
+        m[x]--
+    }
+    for _, v := range m {
+        if v != 0 {return false}
+    }
+    return true
 }
 ```
 
