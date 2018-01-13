@@ -664,6 +664,28 @@ func calPoints(ops []string) int {
 }
 ```
 
+### 674. Longest Continuous Increasing Subsequence
+
+- level: 1-easy
+
+```go
+func findLengthOfLCIS(nums []int) int {
+    var res, current int
+    for i, x := range nums {
+        if i == 0 || x > nums[i-1]{
+            current++
+        } else {
+            if current > res {
+                res = current
+            }
+            current = 1
+        }
+    }
+    if current > res {return current}
+    return res
+}
+```
+
 ### 661. Image Smoother
 
 - level: 1-easy
@@ -916,6 +938,31 @@ func rw(b []byte, i, j int)  {
 		i++
 		j--
 	}
+}
+```
+
+### 530. Minimum Absolute Difference in BST
+
+- level: 1-easy
+
+```go
+var res = 13123213
+var prev = new(TreeNode)
+
+
+func getMinimumDifference(root *TreeNode) int {
+    dfs(root)
+    return res
+}
+
+func dfs(root *TreeNode) {
+    if root == nil {return}
+    dfs(root.Left)
+    if prev != nil && res > root.Val - prev.Val {
+        res = root.Val - prev.Val
+    }
+    prev = root
+    dfs(root.Right)
 }
 ```
 
