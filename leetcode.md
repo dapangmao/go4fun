@@ -827,6 +827,21 @@ func findSecondMinimumValue(root *TreeNode) int {
 }
 ```
 
+### 628. Maximum Product of Three Numbers
+
+- level: 1-easy
+
+```go
+func maximumProduct(nums []int) int {
+    var n = len(nums)
+    sort.Ints(nums)
+    var cand1 = nums[n-1] * nums[n-2] * nums[n-3] 
+    var cand2 = nums[n-1] * nums[0] * nums[1]
+    if cand1 > cand2 {return cand1}
+    return cand2
+}
+```
+
 ### 617. Merge Two Binary Trees
 
 - level: 1-easy
@@ -914,6 +929,31 @@ func findUnsortedSubarray(nums []int) int {
 }
 ```
 
+### 566. Reshape the Matrix
+
+- level: 1-easy
+
+```go
+func matrixReshape(nums [][]int, r int, c int) [][]int {
+    var n, m = len(nums), len(nums[0])
+    if n * m != r * c {return nums}
+    var res = make([][]int, r)
+    for i := range res {res[i] = make([]int, c)}
+    var k, l int
+    for i:=0; i<n; i++ {
+        for j:=0; j<m; j++ {
+            res[k][l] = nums[i][j]
+            l++
+            if l == c {
+                k++
+                l = 0
+            }
+        }
+    }
+    return res
+}
+```
+
 ### 557. Reverse Words in a String III
 
 - level: 1-easy
@@ -938,6 +978,30 @@ func rw(b []byte, i, j int)  {
 		i++
 		j--
 	}
+}
+```
+
+### 543. Diameter of Binary Tree
+
+- level: 1-easy
+
+```go
+var res int
+
+func diameterOfBinaryTree(root *TreeNode) int {
+    if root == nil {return res}
+    dfs(root)
+    return res
+}
+
+func dfs(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    l, r := dfs(root.Left), dfs(root.Right)
+    if l + r > res {res = l + r}
+    if l > r {return l + 1}
+    return r + 1
 }
 ```
 
@@ -1044,6 +1108,21 @@ func findWords(words []string) []string {
         end:
     }
     return res
+}
+```
+
+### 492. Construct the Rectangle
+
+- level: 1-easy
+
+```go
+func constructRectangle(area int) []int {
+    var sqrt = int(math.Sqrt(float64(area)))
+    for i:=sqrt; i>1; i-- {
+        var div = area / i
+        if i * div == area  {return []int{div, i}}
+    }
+    return []int{area, 1}
 }
 ```
 
@@ -1190,6 +1269,17 @@ func firstUniqChar(s string) int {
         if m[x] == 1 {return i}
     }
     return -1
+}
+```
+
+### 367. Valid Perfect Square
+
+- level: 1-easy
+
+```go
+func isPerfectSquare(num int) bool {
+    var sqrt = int(math.Sqrt(float64(num)))
+    return sqrt * sqrt == num
 }
 ```
 
