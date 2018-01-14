@@ -1355,6 +1355,28 @@ func dfs(root *TreeNode) {
 }
 ```
 
+### 189. Rotate Array
+
+- level: 1-easy
+
+```go
+func rotate(nums []int, k int)  {
+    var n = len(nums)
+    k %= n
+    reverse(nums[:], 0, n-1)
+    reverse(nums[:], 0, k-1)
+    reverse(nums[:], k, n-1)
+}
+
+func reverse(nums []int, i, j int) {
+    for i < j {
+        nums[i], nums[j] = nums[j], nums[i]
+        i++
+        j--
+    }
+}
+```
+
 ### 187. Repeated DNA Sequences
 
 - level: 2-medium
@@ -1523,6 +1545,35 @@ func (this *LRUCache) Put(key int, value int)  {
 }
 ```
 
+### 125. Valid Palindrome
+
+- level: 1-easy
+
+```go
+func isPalindrome(s string) bool {
+	var bytes []int
+	for _, x := range []byte(s) {
+		var cand1 = x - 'a'
+		var cand2 = x - 'A'
+		var cand3 = x - '0'
+		if cand1 <= 25 {
+			bytes = append(bytes, int(cand1))
+		} else if cand2 <= 25 {
+			bytes = append(bytes, int(cand2))
+		} else if cand3 <= 9 {
+			bytes = append(bytes, int(cand3))
+		}
+	}
+	i, j := 0, len(bytes)-1
+	for i < j {
+		if bytes[i] != bytes[j] {return false}
+		i++
+		j--
+	}
+	return true
+}
+```
+
 ### 122. Best Time to Buy and Sell Stock II
 
 - level: 1-easy
@@ -1559,6 +1610,49 @@ func maxProfit(prices []int) int {
 }
 ```
 
+### 119. Pascal's Triangle II
+
+- level: 1-easy
+
+```go
+func getRow(rowIndex int) []int {
+    var res = []int{1}
+    for i:=1; i<=rowIndex; i++ {
+        res = append(res, 1)
+        var prev = 1
+        for j:=1; j<len(res)-1; j++ {
+            current := res[j]
+            res[j] += prev
+            prev = current
+        }
+    }
+    return res
+}
+```
+
+### 118. Pascal's Triangle
+
+- level: 1-easy
+
+```go
+func generate(numRows int) [][]int {
+    var res [][]int
+    var prev = []int{1}
+    if numRows > 0 {res = append(res, prev)}
+    for i:=1; i<numRows; i++ {
+        var n = len(prev)
+        var current = make([]int, n+1)
+        current[0], current[n] = 1, 1
+        for j:=1; j<n; j++ {
+            current[j] = prev[j-1] + prev[j]
+        }
+        res = append(res, current)
+        prev = current
+    }
+    return res
+}
+```
+
 ### 112. Path Sum
 
 - level: 1-easy
@@ -1580,6 +1674,28 @@ func hasPathSum(root *TreeNode, sum int) bool {
         return sum - root.Val == 0
     }
     return hasPathSum(root.Left, sum - root.Val) || hasPathSum(root.Right, sum - root.Val)
+}
+```
+
+### 111. Minimum Depth of Binary Tree
+
+- level: 1-easy
+
+```go
+var res = 424242
+
+func minDepth(root *TreeNode) int {
+    dfs(root, 0)
+    return res
+}
+
+func dfs(root *TreeNode, path int) {
+    if root == nil {
+        if path < res {res = path}
+        return 
+    }
+    dfs(root.Left, path+1)
+    dfs(root.Right, path+1)
 }
 ```
 
@@ -1762,6 +1878,29 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
         dummy.Next = l2
     }
     return head.Next
+}
+```
+
+### 20. Valid Parentheses
+
+- level: 1-easy
+
+```go
+func isValid(s string) bool {
+    var pairs = map[rune]rune{')': '(', ']': '[', '}': '{' }
+    var stack []rune
+    var popout rune
+    for _, x := range s {
+        if x == '(' || x == '[' || x == '{' {
+            stack = append(stack, x)
+        } else {
+            var n = len(stack)
+            if n == 0 {return false}
+            popout, stack = stack[n-1], stack[:n-1]
+            if popout != pairs[x] {return false}
+        }
+    }
+    return len(stack) == 0
 }
 ```
 
