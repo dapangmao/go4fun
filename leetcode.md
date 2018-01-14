@@ -929,6 +929,22 @@ func findUnsortedSubarray(nums []int) int {
 }
 ```
 
+### 575. Distribute Candies
+
+- level: 1-easy
+
+```go
+func distributeCandies(candies []int) int {
+    var num = len(candies) / 2
+    var m = make(map[int]int)
+    for _, x := range candies {
+        m[x]++
+    }
+    if len(m) < num {return len(m)}
+    return num
+}
+```
+
 ### 566. Reshape the Matrix
 
 - level: 1-easy
@@ -1310,6 +1326,32 @@ func isAnagram(s string, t string) bool {
         if v != 0 {return false}
     }
     return true
+}
+```
+
+### 226. Invert Binary Tree
+
+- level: 1-easy
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func invertTree(root *TreeNode) *TreeNode {
+    dfs(root)
+    return root
+}
+
+func dfs(root *TreeNode) {
+    if root == nil {return}
+    root.Left, root.Right = root.Right, root.Left
+    dfs(root.Left)
+    dfs(root.Right)
 }
 ```
 
