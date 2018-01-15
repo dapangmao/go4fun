@@ -1309,6 +1309,44 @@ func canWinNim(n int) bool {
 }
 ```
 
+### 290. Word Pattern
+
+- level: 1-easy
+
+```go
+func wordPattern(pattern string, str string) bool {
+    var words = strings.Split(str, " ")
+    if len(words) != len(pattern) {return false}
+    var m1, m2 = make(map[rune]string), make(map[string]rune)
+    for i, x := range pattern {
+        word := words[i]
+        if w, ok := m1[x]; ok{
+            if w != word {return false}
+        } else {
+            m1[x] = word
+        }
+        if r, ok := m2[word]; ok {
+            if r != x {return false}
+        } else {
+            m2[word] = x
+        }
+    }
+    return true
+}
+```
+
+### 268. Missing Number
+
+- level: 1-easy
+
+```go
+func missingNumber(nums []int) int {
+    var sum, n = 0, len(nums)
+    for _, x := range nums {sum += x}
+    return (n+1) *n/2 - sum
+}
+```
+
 ### 242. Valid Anagram
 
 - level: 1-easy
@@ -1352,6 +1390,23 @@ func dfs(root *TreeNode) {
     root.Left, root.Right = root.Right, root.Left
     dfs(root.Left)
     dfs(root.Right)
+}
+```
+
+### 219. Contains Duplicate II
+
+- level: 1-easy
+
+```go
+func containsNearbyDuplicate(nums []int, k int) bool {
+    var m = make(map[int]int)
+    for i, x := range nums {
+        if val, ok := m[x]; ok {
+            if i-val <= k {return true}
+        } 
+        m[x] = i
+    }
+    return false
 }
 ```
 
@@ -1718,6 +1773,24 @@ func maxDepth(root *TreeNode) int {
     l, r := maxDepth(root.Left), maxDepth(root.Right)
     if l > r {return 1 + l}
     return 1 + r
+}
+```
+
+### 101. Symmetric Tree
+
+- level: 1-easy
+
+```go
+func isSymmetric(root *TreeNode) bool {
+    if root == nil {return true}
+    return check(root.Left, root.Right)  
+}
+
+func check(t1 *TreeNode, t2 *TreeNode) bool {
+    if t1 == nil && t2 == nil {return true}
+    if t1 == nil || t2 == nil {return false}
+    if t1.Val != t2.Val {return false}
+    return check(t1.Left, t2.Right) && check(t1.Right, t2.Left)
 }
 ```
 
