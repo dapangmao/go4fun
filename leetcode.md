@@ -848,6 +848,25 @@ func findErrorNums(nums []int) []int {
 }
 ```
 
+### 643. Maximum Average Subarray I
+
+- level: 1-easy
+
+```go
+func findMaxAverage(nums []int, k int) float64 {
+    var sum int
+    var max int = -12312312
+    for i:=0; i<len(nums); i++ {
+        sum += nums[i]
+        if i >= k {
+            sum -= nums[i-k]
+        }
+        if i >= k-1 && sum > max {max = sum}
+    }
+    return float64(max) / float64(k)
+}
+```
+
 ### 637. Average of Levels in Binary Tree
 
 - level: 1-easy
@@ -1112,6 +1131,34 @@ func rw(b []byte, i, j int)  {
 }
 ```
 
+### 554. Brick Wall
+
+- level: 2-medium
+
+```go
+func leastBricks(wall [][]int) int {
+    var n = len(wall)
+    var max int
+    var dic = prep(wall)
+    for _, val := range dic {
+        if val > max {max = val}
+    }
+    return n - max
+}
+
+func prep(wall [][]int) map[int]int {
+    var res = make(map[int]int)
+    for _, w := range wall {
+        var current int
+        for i:=0; i<len(w)-1; i++ {
+            current += w[i]
+            res[current]++
+        }
+    }
+    return res
+}
+```
+
 ### 543. Diameter of Binary Tree
 
 - level: 1-easy
@@ -1158,6 +1205,34 @@ func dfs(root *TreeNode) {
     }
     prev = root
     dfs(root.Right)
+}
+```
+
+### 525. Contiguous Array
+
+- level: 2-medium
+
+```go
+func findMaxLength(nums []int) int {
+    var n = len(nums)
+    if n < 0 {return 0}
+    var dic = make(map[int]int)
+    dic[0] = -1
+    res, count := 0, 0
+    for i:=0; i<n; i++ {
+        if nums[i] == 0 {
+            count--
+        } else {
+            count++
+        }
+        if val, ok := dic[count]; ok {
+            var current = i - val
+            if current > res {res = current}
+        } else {
+            dic[count] = i
+        }
+    }
+    return res
 }
 ```
 
@@ -2049,6 +2124,38 @@ func lengthOfLastWord(s string) int {
         }
     }
     return n
+}
+```
+
+### 49. Group Anagrams
+
+- level: 2-medium
+
+```go
+func groupAnagrams(strs []string) [][]string {
+    var dic = make(map[string][]string)
+    for _, str := range strs {
+        var key = makeKey(str)
+        dic[key] = append(dic[key], str)
+    }
+    var res [][]string
+    for _, val := range dic {
+        res = append(res, val)
+    }
+    return res
+}
+
+func makeKey(s string) string {
+    var bucket = make([]int, 26)
+    for _, x := range s {
+        bucket[x - 'a']++
+    }
+    var res string
+    for i, x := range bucket {
+        if x <= 0 {continue}
+        res += fmt.Sprintf("%d-%d/", i, x)
+    }
+    return res
 }
 ```
 
