@@ -1,3 +1,55 @@
+### 777. Toeplitz Matrix
+
+- level: 1-easy
+
+```go
+func isToeplitzMatrix(matrix [][]int) bool {
+    n, m := len(matrix), len(matrix[0])
+    for i, j:= 0, 0; i<n; i++ {
+        if !check(i,j,n,m, matrix) {return false}
+    }
+    for i, j:= 0, 1; j<m; j++ {
+        if !check(i,j,n,m, matrix) {return false}
+    }
+    return true
+}
+
+func check(i, j, n, m int, matrix [][]int) bool {
+    var dic = make(map[int]int)
+    for i < n && j < m {
+        dic[matrix[i][j]]++
+        if len(dic) > 1 {return false}
+        i++ 
+        j++
+    }
+    return true
+}
+```
+
+### 767. Prime Number of Set Bits in Binary Representation
+
+- level: 1-easy
+
+```go
+func countPrimeSetBits(L int, R int) int {
+    var res int
+    for i:=L; i<=R; i++ {
+        var x = countOnes(i)
+        if x == 2 || x == 3 || x == 5 || x == 7 || x == 11 || x == 13 || x == 17 || x == 19  {res++}
+    }
+    return res
+}
+
+func countOnes(n int) int {
+    var count int
+    for n > 0 {
+        count += n & 1
+        n >>= 1
+    }
+    return count
+}
+```
+
 ### 762. Find Anagram Mappings
 
 - level: 1-easy
@@ -863,6 +915,30 @@ func findSecondMinimumValue(root *TreeNode) int {
 	dfs(root)
 	if len(arr) < 2 {return -1}
 	return arr[0]
+}
+```
+
+### 633. Sum of Square Numbers
+
+- level: 1-easy
+
+```go
+func judgeSquareSum(c int) bool {
+    var cand []int{0}
+    for i:=1; i*i<=c; i++ {
+        cand = append(cand, i*i)
+    }
+    i, j := 0, len(cand)-1
+    for i <= j {
+        sum := cand[i] + cand[j]
+        if sum == c {return true}
+        if sum < c {
+            i++
+        } else {
+            j--
+        }
+    }
+    return false
 }
 ```
 
