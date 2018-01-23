@@ -1525,6 +1525,31 @@ func isPerfectSquare(num int) bool {
 }
 ```
 
+### 345. Reverse Vowels of a String
+
+- level: 1-easy
+
+```go
+func reverseVowels(s string) string {
+    var bs = []byte(s)
+    i, j := 0, len(bs)-1
+    for i < j {
+        for i < j && !isVowel(bs[i]) {i++}
+        for i < j && !isVowel(bs[j]) {j--}
+        bs[i], bs[j] = bs[j], bs[i]
+        i++
+        j--
+    }
+    return string(bs)
+}
+
+func isVowel(a byte) bool {
+    if a == 'a' || a == 'e' || a == 'u' || a == 'o' || a == 'i' {return true}
+    if a == 'A' || a == 'E' || a == 'U' || a == 'O' || a == 'I' {return true}
+    return false
+}
+```
+
 ### 292. Nim Game
 
 - level: 1-easy
@@ -2084,6 +2109,33 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
         return false
     }
     return isSameTree(p.Right, q.Right) && isSameTree(p.Left, q.Left)
+}
+```
+
+### 88. Merge Sorted Array
+
+- level: 1-easy
+
+```go
+func merge(nums1 []int, m int, nums2 []int, n int)  {
+    n--
+    m--
+    var j = n + m + 1
+    for m >= 0 && n >= 0 {
+        if nums1[m] >= nums2[n] {
+            nums1[j] = nums1[m]
+            m--
+        } else {
+            nums1[j] = nums2[n]
+            n--
+        }
+        j--
+    }
+    for n >= 0 {
+        nums1[j] = nums2[n]
+        n--
+        j--
+    }
 }
 ```
 
