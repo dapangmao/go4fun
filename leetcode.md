@@ -686,6 +686,45 @@ func findLengthOfLCIS(nums []int) int {
 }
 ```
 
+### 671. Second Minimum Node In a Binary Tree
+
+- level: 1-easy
+
+```go
+var arr = []int{}
+
+func dfs(root *TreeNode) {
+	if root == nil {
+		return
+	}
+	val := root.Val
+	if  len(arr) == 0 {
+		arr = []int{val}
+	} else if len(arr) == 1 {
+		if arr[0] > val {
+			arr = []int{arr[0], val}
+		} else if arr[0] < val {
+			arr = []int{arr[0], val}
+		}
+	} else {
+		if arr[0] < val && val < arr[1] {
+			arr = []int{val, arr[1]}
+		} else if val > arr[1] {
+			arr = []int{arr[1], val}
+		}
+	}
+    dfs(root.Left)
+	dfs(root.Right)
+}
+
+func findSecondMinimumValue(root *TreeNode) int {
+    arr = []int{}
+	dfs(root)
+	if len(arr) < 2 {return -1}
+	return arr[0]
+}
+```
+
 ### 661. Image Smoother
 
 - level: 1-easy
@@ -1185,6 +1224,42 @@ func islandPerimeter(grid [][]int) int {
             if j+1 >= m || grid[i][j+1] == 0 {res++}
             if j-1 < 0 || grid[i][j-1] == 0 {res++}
         }
+    }
+    return res
+}
+```
+
+### 461. Hamming Distance
+
+- level: 1-easy
+
+```go
+func hammingDistance(x int, y int) int {
+    var a = x ^ y
+    var res int
+    for a > 0 {
+        if a % 2 == 1 {res++}
+        a >>= 1
+    }
+    return res
+}
+```
+
+### 448. Find All Numbers Disappeared in an Array
+
+- level: 1-easy
+
+```go
+func findDisappearedNumbers(nums []int) []int {
+    for _, x := range nums {
+        if x < 0 {x = -x}
+        if nums[x-1] > 0 {
+            nums[x-1] = -nums[x-1]    
+        }
+    }
+    var res []int
+    for i, x := range nums {
+        if x > 0 {res = append(res, i+1)}
     }
     return res
 }
