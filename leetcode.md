@@ -1485,6 +1485,49 @@ func containsNearbyDuplicate(nums []int, k int) bool {
 }
 ```
 
+### 205. Isomorphic Strings
+
+- level: 1-easy
+
+```go
+func isIsomorphic(s string, t string) bool {
+    if len(s) != len(t) {return false}
+    return isOnewayIsomorphic(s, t) && isOnewayIsomorphic(t, s)
+}
+
+func isOnewayIsomorphic(s, t string) bool {
+    var dic = make(map[byte]byte)
+    for i, x := range []byte(s){
+        if val, ok := dic[x]; ok {
+            if val != t[i] {return false}
+        } else {
+            dic[x] = t[i]
+        }
+    }
+    return true
+}
+```
+
+### 204. Count Primes
+
+- level: 1-easy
+
+```go
+func countPrimes(n int) int {
+    var dp = make([]bool, n)
+    if n <= 2 {return 0}
+    var res int
+    for i:=2; i<n; i++ {
+        if dp[i] == true {continue}
+        for j:=2; i*j<n; j++ {
+            dp[i*j] = true
+        }
+        res++
+    }
+    return res
+}
+```
+
 ### 189. Rotate Array
 
 - level: 1-easy
