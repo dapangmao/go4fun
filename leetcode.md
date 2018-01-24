@@ -993,6 +993,33 @@ func mergeTrees(t1 *TreeNode, t2 *TreeNode) *TreeNode {
 }
 ```
 
+### 606. Construct String from Binary Tree
+
+- level: 1-easy
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func tree2str(t *TreeNode) string {
+    if t == nil {return ""}
+    var res = fmt.Sprintf("%v", t.Val)
+    if t.Left != nil && t.Right != nil {
+        res += fmt.Sprintf("(%v)(%v)", tree2str(t.Left), tree2str(t.Right))
+    } else if t.Left != nil {
+        res += fmt.Sprintf("(%v)", tree2str(t.Left))
+    } else if t.Right != nil {
+        res += fmt.Sprintf("()(%v)", tree2str(t.Right))
+    }
+    return res
+}
+```
+
 ### 605. Can Place Flowers
 
 - level: 1-easy
@@ -1010,6 +1037,35 @@ func canPlaceFlowers(flowerbed []int, n int) bool {
         if n <= 0 {return true}
     }
     return false
+}
+```
+
+### 599. Minimum Index Sum of Two Lists
+
+- level: 1-easy
+
+```go
+func findRestaurant(list1 []string, list2 []string) []string {
+    var dic = make(map[string]int)
+    for i, x := range list1 {
+        dic[x] = -i-1
+    }
+    for i, x := range list2 {
+        if val, ok := dic[x]; ok {
+            dic[x] = -val + i + 1
+        }
+    }
+    res, count := []string{}, 13123213
+    for k, v := range dic {
+        if v < 0 {continue}
+        if v == count { 
+            res = append(res, k) 
+        } else if v < count {
+            res = []string{k}
+            count = v
+        }
+    }
+    return res
 }
 ```
 
