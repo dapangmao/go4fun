@@ -1441,6 +1441,29 @@ func findWords(words []string) []string {
 }
 ```
 
+### 494. Target Sum
+
+- level: 2-medium
+
+```go
+func findTargetSumWays(nums []int, S int) int {
+    var dic = make(map[int]int)
+    if len(nums) == 0 {return 0}
+    dic[nums[0]]++
+    dic[-nums[0]]++
+    for i:=1; i<len(nums); i++ {
+        var current = make(map[int]int)
+        for k, v := range dic {
+            current[k+nums[i]] += v
+            current[k-nums[i]] += v
+        }
+        dic = current
+    }
+    if val, ok := dic[S]; ok {return val}
+    return 0
+}
+```
+
 ### 492. Construct the Rectangle
 
 - level: 1-easy
@@ -1638,6 +1661,24 @@ func firstUniqChar(s string) int {
 }
 ```
 
+### 383. Ransom Note
+
+- level: 1-easy
+
+```go
+func canConstruct(ransomNote string, magazine string) bool {
+    var dic = make(map[rune]int)
+    for _, x := range magazine {
+        dic[x]++
+    }
+    for _, x := range ransomNote {
+        dic[x]--
+        if dic[x] < 0 {return false}
+    }
+    return true
+}
+```
+
 ### 367. Valid Perfect Square
 
 - level: 1-easy
@@ -1670,6 +1711,21 @@ func reverseVowels(s string) string {
 func isVowel(a byte) bool {
     if a == 'a' || a == 'e' || a == 'u' || a == 'o' || a == 'i' {return true}
     if a == 'A' || a == 'E' || a == 'U' || a == 'O' || a == 'I' {return true}
+    return false
+}
+```
+
+### 342. Power of Four
+
+- level: 1-easy
+
+```go
+func isPowerOfFour(num int) bool {
+    var x = 1
+    for x <= num {
+        if x == num {return true}
+        x *= 4
+    }
     return false
 }
 ```
@@ -1707,6 +1763,25 @@ func wordPattern(pattern string, str string) bool {
         }
     }
     return true
+}
+```
+
+### 283. Move Zeroes
+
+- level: 1-easy
+
+```go
+func moveZeroes(nums []int)  {
+    var j int 
+    for _, x := range nums {
+        if x != 0 {
+            nums[j] = x 
+            j++
+        }
+    }
+    for i:=j; i<len(nums); i++ {
+        nums[i] = 0
+    }
 }
 ```
 
@@ -2384,6 +2459,22 @@ func makeKey(s string) string {
         res += fmt.Sprintf("%d-%d/", i, x)
     }
     return res
+}
+```
+
+### 48. Rotate Image
+
+- level: 2-medium
+
+```go
+func rotate(matrix [][]int)  {
+    var n = len(matrix)
+    for i:=0; i<n/2; i++ {
+        for j:=i; j<n-i-1; j++ {
+            matrix[i][j], matrix[j][n-i-1], matrix[n-i-1][n-j-1], matrix[n-j-1][i] = 
+                matrix[n-j-1][i], matrix[i][j], matrix[j][n-i-1], matrix[n-i-1][n-j-1]
+        }
+    }
 }
 ```
 
