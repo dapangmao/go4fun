@@ -1069,6 +1069,21 @@ func findRestaurant(list1 []string, list2 []string) []string {
 }
 ```
 
+### 598. Range Addition II
+
+- level: 1-easy
+
+```go
+func maxCount(m int, n int, ops [][]int) int {
+    var x, y = m, n
+    for _, op := range ops {
+        if op[0] < x {x = op[0]}
+        if op[1] < y {y = op[1]}
+    }
+    return x * y
+}
+```
+
 ### 594. Longest Harmonious Subsequence
 
 - level: 1-easy
@@ -1157,6 +1172,31 @@ func matrixReshape(nums [][]int, r int, c int) [][]int {
         }
     }
     return res
+}
+```
+
+### 563. Binary Tree Tilt
+
+- level: 1-easy
+
+```go
+var res int 
+func findTilt(root *TreeNode) int {
+    sum(root)
+    return res
+}
+
+func sum(root *TreeNode) int {
+    if root == nil {return 0}
+    if root.Left == nil && root.Left == nil {return root.Val}
+    l, r :=  sum(root.Left), sum(root.Right)
+    var diff = l - r
+    if diff > 0 {
+        res += diff
+    } else {
+        res -= diff
+    }    
+    return root.Val + r + l
 }
 ```
 
