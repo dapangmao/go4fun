@@ -1572,6 +1572,28 @@ func licenseKeyFormatting(S string, K int) string {
 }
 ```
 
+### 475. Heaters
+
+- level: 1-easy
+
+```go
+func findRadius(houses []int, heaters []int) int {
+  sort.Ints(heaters)
+	var radius = 0
+	for _, x := range houses {
+		var j = sort.SearchInts(heaters, x)
+		if j < len(heaters) && x == heaters[j] {continue}
+		var a, b = 1<<32, 1<<32
+		if j-1 >= 0 {a = x - heaters[j-1] }
+		if j < len(heaters) {b = heaters[j] - x}
+		var current = a
+		if b < a {current = b}
+		if current > radius {radius = current}
+	}
+	return radius
+}
+```
+
 ### 463. Island Perimeter
 
 - level: 1-easy
@@ -1691,6 +1713,35 @@ func longestPalindrome(s string) int {
     }
     if len(set) > 0 {return res + 1}
     return res
+}
+```
+
+### 404. Sum of Left Leaves
+
+- level: 1-easy
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+var res int
+
+func sumOfLeftLeaves(root *TreeNode) int {
+    dfs(root, false)
+    return res
+}
+
+func dfs(root *TreeNode, isLeft bool) {
+    if root == nil {return}
+    if isLeft {res += root.Val}
+    dfs(root.Left, true)
+    dfs(root.Right, false)
 }
 ```
 
@@ -2069,6 +2120,21 @@ func findRepeatedDnaSequences(s string) []string {
         }
     }
     return res
+}
+```
+
+### 172. Factorial Trailing Zeroes
+
+- level: 1-easy
+
+```go
+func trailingZeroes(n int) int {
+    if n <= 1 {return 0}
+    var res int
+    for i:=n; i>0 && i%5==0; i=i/5 {
+        res++
+    }
+    return trailingZeroes(n-1) + res
 }
 ```
 
