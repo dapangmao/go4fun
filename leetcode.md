@@ -1175,6 +1175,28 @@ func matrixReshape(nums [][]int, r int, c int) [][]int {
 }
 ```
 
+### 565. Array Nesting
+
+- level: 2-medium
+
+```go
+func arrayNesting(nums []int) int {
+	var res int
+	for i:=0; i<len(nums); i++ {
+		var current = dfs(i, nums)
+		if current > res {res = current}
+	}
+	return res
+}
+
+func dfs(i int, path []int) int {
+	if path[i] < 0 {return 0}
+	var current = path[i]
+	path[i] = -1
+	return 1 + dfs(current, path)
+}
+```
+
 ### 563. Binary Tree Tilt
 
 - level: 1-easy
@@ -1628,6 +1650,47 @@ func hammingDistance(x int, y int) int {
         a >>= 1
     }
     return res
+}
+```
+
+### 455. Assign Cookies
+
+- level: 1-easy
+
+```go
+func findContentChildren(g []int, s []int) int {
+    sort.Ints(g)
+    sort.Ints(s)
+    var j, res int
+    for _, x := range g {
+        for j < len(s) && s[j] < x {
+            j++
+        } 
+        if j == len(s) {break}
+        if s[j] >= x {
+            j++
+            res++
+        }
+    }
+    return res
+}
+```
+
+### 451. Sort Characters By Frequency
+
+- level: 2-medium
+
+```go
+func frequencySort(s string) string {
+    var dic = make(map[byte]int)
+    var bs = []byte(s)
+    for _, x := range bs {
+        dic[x]++
+    }
+    sort.Slice(bs, func(i, j int) bool {
+        return float64(dic[bs[j]]) + float64(bs[j]) / 1000.0 < float64(dic[bs[i]]) + float64(bs[i]) / 1000.0 
+    })
+    return string(bs)
 }
 ```
 
