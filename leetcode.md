@@ -1,3 +1,23 @@
+### 782. Jewels and Stones
+
+- level: 1-easy
+
+```go
+func numJewelsInStones(J string, S string) int {
+    var dic = make(map[rune]int)
+    for _, x := range J {
+        dic[x] = 0
+    }
+    var res int
+    for _, x := range S {
+        if _, ok := dic[x]; ok {
+            res++
+        }
+    }
+    return res
+}
+```
+
 ### 777. Toeplitz Matrix
 
 - level: 1-easy
@@ -23,6 +43,35 @@ func check(i, j, n, m int, matrix [][]int) bool {
         j++
     }
     return true
+}
+```
+
+### 768. Partition Labels
+
+- level: 2-medium
+
+```go
+func partitionLabels(S string) []int {
+    dic := make(map[rune]int)
+    for i, x := range S {
+        dic[x] = i
+    }
+    var arrs [][]int
+    for i, x := range S {
+        if val, ok := dic[x]; ok {
+            if len(arrs) == 0 || i > arrs[len(arrs)-1][1] {
+                arrs = append(arrs, []int{i, val})
+            } else if val > arrs[len(arrs)-1][1] {
+                arrs[len(arrs)-1][1] = val
+            }
+            delete(dic, x)
+        }
+    }
+    var res []int
+    for _, arr := range arrs {
+        res = append(res, arr[1]-arr[0]+1)
+    }
+    return res
 }
 ```
 
@@ -156,6 +205,57 @@ func nextGreatestLetter(letters []byte, target byte) byte {
 }
 ```
 
+### 740. Delete and Earn
+
+- level: 2-medium
+
+```go
+`
+Given an array nums of integers, you can perform operations on the array.
+
+In each operation, you pick any nums[i] and delete it to earn nums[i] points. After, you must delete every element equal to nums[i] - 1 or nums[i] + 1.
+
+You start with 0 points. Return the maximum number of points you can earn by applying such operations.
+
+Example 1:
+Input: nums = [3, 4, 2]
+Output: 6
+Explanation: 
+Delete 4 to earn 4 points, consequently 3 is also deleted.
+Then, delete 2 to earn 2 points. 6 total points are earned.
+Example 2:
+Input: nums = [2, 2, 3, 3, 3, 4]
+Output: 9
+Explanation: 
+Delete 3 to earn 3 points, deleting both 2's and the 4.
+Then, delete 3 again to earn 3 points, and 3 again to earn 3 points.
+9 total points are earned.
+`
+
+func deleteAndEarn(nums []int) int {
+    if len(nums) == 0 {return 0}
+    if len(nums) == 1 {return nums[0]}
+    dic := make(map[int]int)
+    max := -1
+    for _, num := range nums {
+        dic[num] += num
+        if num > max {max = num}
+    }
+    dp := make([]int, max+1)
+    for k, v := range dic {
+        dp[k] = v
+    }
+    for i:=2; i<=max; i++ {
+        if dp[i-1] > dp[i] + dp[i-2] {
+            dp[i] = dp[i-1]
+        } else {
+            dp[i] += dp[i-2]
+        }
+    }
+    return dp[max]
+}
+```
+
 ### 739. Daily Temperatures
 
 - level: 2-medium
@@ -276,6 +376,34 @@ func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
         if c + 1 < m {queue = append(queue, []int{r, c+1})}
     }
     return image  
+}
+```
+
+### 729. My Calendar I
+
+- level: 2-medium
+
+```go
+type MyCalendar struct {
+    starts []int
+    ends []int
+    n int
+    sdic map[int]int
+}
+
+func Constructor() MyCalendar {
+    return MyCalendar{[]int{}, []int{}, 0, map[int]int{}}
+}
+
+func (this *MyCalendar) Book(start int, end int) bool {
+    if _, ok := this.sdic[start]; ok {return false}
+    var i = sort.SearchInts(this.starts, start)
+    if  (i < this.n && end > this.starts[i]) || (i > 0  && start < this.ends[i-1]) {return false}
+    this.starts = append(this.starts[:i], append([]int{start}, this.starts[i:]...)...)
+    this.ends = append(this.ends[:i], append([]int{end}, this.ends[i:]...)...)
+    this.n++
+    this.sdic[start] = 0
+    return true
 }
 ```
 
@@ -2899,6 +3027,16 @@ func nextState(s string) string {
 		}
 	}
 	return res + strconv.Itoa(count) + prev
+}
+```
+
+### 35. Search Insert Position
+
+- level: 1-easy
+
+```go
+func searchInsert(nums []int, target int) int {
+    return sort.SearchInts(nums, target)
 }
 ```
 
