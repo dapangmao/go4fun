@@ -956,6 +956,35 @@ func judgeCircle(moves string) bool {
 }
 ```
 
+### 654. Maximum Binary Tree
+
+- level: 2-medium
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func constructMaximumBinaryTree(nums []int) *TreeNode {
+    if len(nums) == 0 {return nil}
+    j, max := -1, -1
+    for i, num := range nums {
+        if num > max {
+            max = num
+            j = i
+        }
+    }
+    return &TreeNode{
+        max, 
+        constructMaximumBinaryTree(nums[:j]),
+        constructMaximumBinaryTree(nums[j+1:])} // weird behavior
+}
+```
+
 ### 645. Set Mismatch
 
 - level: 1-easy
@@ -1360,6 +1389,25 @@ func arrayPairSum(nums []int) int {
     var res int
     for i, x := range nums {
         if i%2==0 {res += x}
+    }
+    return res
+}
+```
+
+### 560. Subarray Sum Equals K
+
+- level: 2-medium
+
+```go
+func subarraySum(nums []int, k int) int {
+    dic := make(map[int]int)
+    dic[0] = 1
+    var current, res int
+    for _, x := range nums {
+        current += x
+        if val, ok := dic[current-k]; ok {res += val}
+        dic[current]++
+
     }
     return res
 }
@@ -1842,6 +1890,25 @@ func findDisappearedNumbers(nums []int) []int {
 }
 ```
 
+### 442. Find All Duplicates in an Array
+
+- level: 2-medium
+
+```go
+func findDuplicates(nums []int) []int {
+    var res []int
+    for _, num := range nums {
+        if num < 0 {num = -num}
+        if nums[num-1] < 0 {
+            res = append(res, num)
+        } else {
+            nums[num-1] = -nums[num-1]
+        }
+    }
+    return res
+}
+```
+
 ### 434. Number of Segments in a String
 
 - level: 1-easy
@@ -2160,6 +2227,25 @@ func missingNumber(nums []int) int {
     var sum, n = 0, len(nums)
     for _, x := range nums {sum += x}
     return (n+1) *n/2 - sum
+}
+```
+
+### 263. Ugly Number
+
+- level: 1-easy
+
+```go
+func isUgly(num int) bool {
+    for num > 1 && num % 2 == 0 {
+        num /= 2
+    }
+    for num > 1 && num % 3 == 0 {
+        num /= 3
+    }
+    for num > 1 && num % 5 == 0 {
+        num /= 5
+    }
+    return num == 1
 }
 ```
 
