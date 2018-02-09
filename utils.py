@@ -72,8 +72,8 @@ class LeetCode(object):
                         out += line
                 out += "```\n\n"
         # write to markdown
-        with open(title, 'w') as outfile:
-            print(out, file=outfile)
+        # with open(title, 'w') as outfile:
+        #     print(out, file=outfile)
         # write to epub
         call(["pandoc", title, "-o", "leetcode.epub"])
 
