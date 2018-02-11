@@ -905,6 +905,39 @@ func findSecondMinimumValue(root *TreeNode) int {
 }
 ```
 
+### 665. Non-decreasing Array
+
+- level: 1-easy
+
+```go
+func checkPossibility(nums []int) bool {
+    used := false   
+    var copies = make([]int, len(nums))
+    copy(copies, nums)
+    for i:=1; i< len(nums); i++ { 
+        if nums[i] >= nums[i-1] { continue } // continue once > turns to <
+        if used {
+            return false
+        } else {
+            used = true
+            nums[i-1] = nums[i]
+            copies[i] = copies[i-1]
+        }
+    }
+    unmet := 0
+     for i:=1; i< len(nums); i++ { 
+        if nums[i] < nums[i-1] {  
+            unmet++
+        }
+        if copies[i] < copies[i-1] {  
+            unmet++
+        }
+         if unmet > 1 {return false}
+     }
+    return true
+}
+```
+
 ### 661. Image Smoother
 
 - level: 1-easy
@@ -982,6 +1015,31 @@ func constructMaximumBinaryTree(nums []int) *TreeNode {
         max, 
         constructMaximumBinaryTree(nums[:j]),
         constructMaximumBinaryTree(nums[j+1:])} // weird behavior
+}
+```
+
+### 648. Replace Words
+
+- level: 2-medium
+
+```go
+func replaceWords(dict []string, sentence string) string {
+    sort.Slice(dict, func(i, j int) bool {
+        return len(dict[i]) < len(dict[j])
+    })
+    var res []string
+    var strs = strings.Split(sentence, " ")
+    for _, str := range strs {
+        var current = str
+        for _, prefix := range dict {
+            if strings.HasPrefix(str, prefix) {
+                current = prefix
+                break
+            }
+        }
+        res = append(res, current)
+    }
+    return strings.Join(res, " ")
 }
 ```
 
@@ -1770,6 +1828,24 @@ func licenseKeyFormatting(S string, K int) string {
 }
 ```
 
+### 476. Number Complement
+
+- level: 1-easy
+
+```go
+func findComplement(num int) int {
+    var res int
+    i := 1
+    for ;num > 0; num >>= 1 {
+        if num & 1 == 0 {
+            res += i
+        }
+        i *= 2
+    }
+    return res
+}
+```
+
 ### 475. Heaters
 
 - level: 1-easy
@@ -2230,6 +2306,38 @@ func missingNumber(nums []int) int {
 }
 ```
 
+### 264. Ugly Number II
+
+- level: 2-medium
+
+```go
+func nthUglyNumber(n int) int {
+    var ugly = make([]int, n)
+    ugly[0] = 1
+    var index2, index3, index5 int
+    factor2, factor3, factor5 := 2, 3, 5
+    for i:=1; i<n; i++ {
+        var min = factor2
+        if factor3 < min {min = factor3}
+        if factor5 < min {min = factor5}
+        ugly[i] = min
+        if factor2 == min {
+            index2++
+            factor2 = 2*ugly[index2]
+        }
+        if factor3 == min {
+            index3++
+            factor3 = 3*ugly[index3]
+        }
+        if factor5 == min {
+            index5++
+            factor5 = 5*ugly[index5]
+        }
+    }
+    return ugly[n-1]
+}
+```
+
 ### 263. Ugly Number
 
 - level: 1-easy
@@ -2438,6 +2546,45 @@ func numIslands(grid [][]byte) int {
         }
     }
     return res
+}
+```
+
+### 199. Binary Tree Right Side View
+
+- level: 2-medium
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+ 
+ // composite date type does not need *root.Val
+func rightSideView(root *TreeNode) []int {
+	if root == nil {
+		return []int{}
+	}
+	var res = []int{root.Val}
+	var current = []*TreeNode{root}
+	for {
+		var prev []*TreeNode
+		for _, n := range current {
+			if n.Left != nil {
+				prev = append(prev, n.Left)
+			}
+			if n.Right != nil {
+				prev = append(prev, n.Right)
+			}
+		}
+		if len(prev) == 0 {break}
+		res = append(res, prev[len(prev)-1].Val)
+		current = prev
+	}
+	return res
 }
 ```
 
@@ -2820,6 +2967,31 @@ func dfs(root *TreeNode, path int) {
     }
     dfs(root.Left, path+1)
     dfs(root.Right, path+1)
+}
+```
+
+### 108. Convert Sorted Array to Binary Search Tree
+
+- level: 1-easy
+
+```go
+var n []int
+
+func sortedArrayToBST(nums []int) *TreeNode {
+    n = nums
+    return dfs(0, len(nums)-1)
+}
+
+func dfs(lo, hi int) *TreeNode {
+    if lo > hi {
+        return nil
+    }
+    var i = (lo + hi) / 2
+    return &TreeNode{
+        n[i],
+        dfs(lo, i-1),
+        dfs(i+1, hi),
+    }
 }
 ```
 
