@@ -2630,6 +2630,24 @@ func findRepeatedDnaSequences(s string) []string {
 }
 ```
 
+### 179. Largest Number
+
+- level: 2-medium
+
+```go
+func largestNumber(nums []int) string {
+    var strs []string
+    for _, num := range nums {
+        strs = append(strs, strconv.Itoa(num))
+    }
+    sort.Slice(strs, func(i, j int) bool {
+        return strs[i] + strs[j] > strs[j] + strs[i]
+    })
+    if strs[0] == "0" {return "0"}
+    return strings.Join(strs, "")
+}
+```
+
 ### 172. Factorial Trailing Zeroes
 
 - level: 1-easy
