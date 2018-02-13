@@ -4,7 +4,7 @@ func countBattleships(board [][]byte) int {
     for i:=0; i<n; i++ {
         for j:=0; j<m; j++ {
             if board[i][j] != 'X' {continue}
-            var queue = [][]int{[]int{i, j}}
+            var queue = [][]int{{i, j}}  // save some codes
             var current []int
             for len(queue) > 0 {
                 current, queue = queue[0], queue[1:]
