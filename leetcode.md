@@ -1,3 +1,34 @@
+### 799. Minimum Distance Between BST Nodes
+
+- level: 1-easy
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var min = 23424234
+func minDiffInBST(root *TreeNode) int {
+    inorder(root)
+    return min
+}
+
+func inorder(root *TreeNode) []int {
+    if root == nil {return []int{}} 
+    var res = inorder(root.Left)
+    if len(res) > 0 && root.Val - res[len(res)-1] < min {
+        min = root.Val - res[len(res)-1]
+    }
+    res = append(res, root.Val)
+    res = append(res, inorder(root.Right)...)
+    return res
+}
+```
+
 ### 797. Rabbits in Forest
 
 - level: 2-medium
@@ -745,6 +776,24 @@ func maxAreaOfIsland(grid [][]int) int {
 }
 ```
 
+### 693. Binary Number with Alternating Bits
+
+- level: 1-easy
+
+```go
+func hasAlternatingBits(n int) bool {
+    prev := n & 1
+    n >>= 1
+    for n > 0 {
+        var current = n & 1
+        if current == prev {return false}
+        prev = current
+        n >>= 1
+    }
+    return true
+}
+```
+
 ### 688. Knight Probability in Chessboard
 
 - level: 2-medium
@@ -1225,6 +1274,32 @@ func mergeTrees(t1 *TreeNode, t2 *TreeNode) *TreeNode {
         return &TreeNode{t1.Val, mergeTrees(t1.Left, nil), mergeTrees(t1.Right, nil)}
     } 
     return &TreeNode{t2.Val, mergeTrees(nil, t2.Left), mergeTrees(nil, t2.Right)}
+}
+```
+
+### 609. Find Duplicate File in System
+
+- level: 2-medium
+
+```go
+func findDuplicate(paths []string) [][]string {
+    dic := make(map[string][]string)
+    for _, path := range paths {
+        var current = strings.Split(path, " ")
+        var prefix = current[0]
+        for _, file := range current[1:] {
+            var i = strings.Index(file, "(")
+            var value = prefix + "/" + file[:i]
+            var key = file[i+1:len(file)-1]
+            dic[key] = append(dic[key], value)  
+        }
+    }
+    var res [][]string
+    for _, v := range dic {
+        if len(v) < 2 {continue}
+        res = append(res, v)
+    }
+    return res
 }
 ```
 
