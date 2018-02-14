@@ -1,3 +1,23 @@
+### 797. Rabbits in Forest
+
+- level: 2-medium
+
+```go
+func numRabbits(answers []int) int {
+    dic := make(map[int]int)
+    for _, a := range answers {
+        dic[a]++
+    }
+    var res int
+    for k, v := range dic {
+        var current = v / (k+1)
+        if v % (k+1) != 0 {current += 1}
+        res += current * (k+1)
+    }
+    return res
+}
+```
+
 ### 782. Jewels and Stones
 
 - level: 1-easy
@@ -2003,6 +2023,35 @@ func countSegments(s string) int {
 }
 ```
 
+### 419. Battleships in a Board
+
+- level: 2-medium
+
+```go
+func countBattleships(board [][]byte) int {
+    var res int
+    n, m := len(board), len(board[0])
+    for i:=0; i<n; i++ {
+        for j:=0; j<m; j++ {
+            if board[i][j] != 'X' {continue}
+            var queue = [][]int{{i, j}}  // save some codes
+            var current []int
+            for len(queue) > 0 {
+                current, queue = queue[0], queue[1:]
+                l, k := current[0], current[1]
+                if l > 0 && board[l-1][k] == 'X' {queue = append(queue, []int{l-1, k})}
+                if l < n-1 && board[l+1][k] == 'X' {queue = append(queue, []int{l+1, k})}
+                if k > 0 && board[l][k-1] == 'X' {queue = append(queue, []int{l, k-1})}
+                if k < m-1 && board[l][k+1] == 'X' {queue = append(queue, []int{l, k+1})}
+                board[l][k] = 'Z'
+            }
+            res++
+        }
+    }
+    return res
+}
+```
+
 ### 415. Add Strings
 
 - level: 1-easy
@@ -2239,6 +2288,19 @@ func isPowerOfFour(num int) bool {
 }
 ```
 
+### 326. Power of Three
+
+- level: 1-easy
+
+```go
+func isPowerOfThree(n int) bool {
+    if n == 0 {return false}
+    if n == 1 {return true}
+    if n % 3 != 0 {return false}
+    return isPowerOfThree(n/3)
+}
+```
+
 ### 292. Nim Game
 
 - level: 1-easy
@@ -2354,6 +2416,24 @@ func isUgly(num int) bool {
         num /= 5
     }
     return num == 1
+}
+```
+
+### 258. Add Digits
+
+- level: 1-easy
+
+```go
+func addDigits(num int) int {
+    for num > 9 {
+        var current int
+        for num > 0 { 
+            current += num % 10
+            num /= 10
+        }
+        num = current
+    }
+    return num
 }
 ```
 
