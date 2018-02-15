@@ -913,6 +913,37 @@ func calPoints(ops []string) int {
 }
 ```
 
+### 677. Map Sum Pairs
+
+- level: 2-medium
+
+```go
+type MapSum struct {
+    dic map[string]int
+    lastInsert map[string]int
+}
+
+/** Initialize your data structure here. */
+func Constructor() MapSum {
+    return MapSum{map[string]int{}, map[string]int{}}
+}
+
+func (this *MapSum) Insert(key string, val int)  {
+    lastInsertVal, ok := this.lastInsert[key]
+    for i:=1; i<=len(key); i++ {
+        var current = key[:i]
+        this.dic[current] += val
+        if ok {this.dic[current] -= lastInsertVal}
+    }
+    this.lastInsert[key] = val
+}
+
+
+func (this *MapSum) Sum(prefix string) int {
+    return this.dic[prefix]
+}
+```
+
 ### 674. Longest Continuous Increasing Subsequence
 
 - level: 1-easy
@@ -1084,6 +1115,27 @@ func constructMaximumBinaryTree(nums []int) *TreeNode {
         max, 
         constructMaximumBinaryTree(nums[:j]),
         constructMaximumBinaryTree(nums[j+1:])} // weird behavior
+}
+```
+
+### 653. Two Sum IV - Input is a BST
+
+- level: 1-easy
+
+```go
+var dic = make(map[int]bool)
+var K int
+
+func findTarget(root *TreeNode, k int) bool {
+    K = k
+    return dfs(root)
+}
+
+func dfs(root *TreeNode) bool {
+    if root == nil {return false}
+    if _, ok := dic[root.Val]; ok {return true}
+    dic[K-root.Val] = true
+    return dfs(root.Left) || dfs(root.Right)
 }
 ```
 
@@ -1744,6 +1796,29 @@ func detectCapitalUse(word string) bool {
     } 
     if allLower == n || allUpper == n || (firstUpper == 1 && allLower == n-1) {return true}
     return false
+}
+```
+
+### 515. Find Largest Value in Each Tree Row
+
+- level: 2-medium
+
+```go
+var res []int
+func largestValues(root *TreeNode) []int {
+    dfs(root, 0)
+    return res
+}
+
+func dfs(root *TreeNode, level int) {
+    if root == nil {return}
+    if len(res) <= level {
+        res = append(res, root.Val)
+    } else if root.Val > res[level] {
+        res[level] = root.Val
+    }
+    dfs(root.Left, level+1)
+    dfs(root.Right, level+1)
 }
 ```
 
