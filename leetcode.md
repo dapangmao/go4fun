@@ -2075,6 +2075,26 @@ func hammingDistance(x int, y int) int {
 }
 ```
 
+### 459. Repeated Substring Pattern
+
+- level: 1-easy
+
+```go
+func repeatedSubstringPattern(s string) bool {
+    n := len(s)
+    for i:=1; i <= n/2; i++ {
+        if n%i != 0 {continue}
+        var fragment = []byte(s[:i])
+        var dup []byte
+        for j:=0; j<n/i; j++ {
+            dup = append(dup, fragment...)
+        }
+        if string(dup) == s {return true}
+    } 
+    return false
+}
+```
+
 ### 455. Assign Cookies
 
 - level: 1-easy
@@ -2093,6 +2113,24 @@ func findContentChildren(g []int, s []int) int {
             j++
             res++
         }
+    }
+    return res
+}
+```
+
+### 453. Minimum Moves to Equal Array Elements
+
+- level: 1-easy
+
+```go
+func minMoves(nums []int) int {
+    var min = 2 << 61
+    var res int
+    for _, num := range nums {
+        if num < min {min = num}
+    }
+    for _, num := range nums {
+        res += num - min
     }
     return res
 }
@@ -2909,6 +2947,35 @@ func titleToNumber(s string) int {
         j *= 26
     }
     return res
+}
+```
+
+### 166. Fraction to Recurring Decimal
+
+- level: 2-medium
+
+```go
+func fractionToDecimal(numerator int, denominator int) string {
+	var res string
+	if numerator * denominator < 0 {res += "-"}
+	if numerator < 0 {numerator = - numerator}
+	if denominator < 0 {denominator = -denominator}
+	res += strconv.Itoa(numerator / denominator)
+	var current = numerator % denominator
+	if current == 0 {return res}
+	res += "."
+	dic := make(map[int]int)
+	for {
+		if val, ok := dic[current]; ok {
+			return fmt.Sprintf("%s(%s)", res[:val], res[val:])
+		}
+		dic[current] = len(res)
+		current *= 10
+		res += strconv.Itoa(current / denominator )
+		current %= denominator;
+		if current == 0 {return res}
+	}
+	return ""
 }
 ```
 
