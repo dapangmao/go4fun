@@ -1139,6 +1139,27 @@ func dfs(root *TreeNode) bool {
 }
 ```
 
+### 650. 2 Keys Keyboard
+
+- level: 2-medium
+
+```go
+func minSteps(n int) int {
+    dp := make([]int, n+1)
+    for i:=2; i<n+1; i++ {
+        dp[i] = i
+    }
+    for i:=4; i<n+1; i++ {
+        for j:=2; j<i/2+1; j++ {
+            if i % j != 0 {continue}
+            var current = dp[j] + i / j
+            if current < dp[i] {dp[i] = current}
+        }
+    }
+    return dp[n]
+}
+```
+
 ### 648. Replace Words
 
 - level: 2-medium
@@ -1696,6 +1717,25 @@ func prep(wall [][]int) map[int]int {
 }
 ```
 
+### 553. Optimal Division
+
+- level: 2-medium
+
+```go
+func optimalDivision(nums []int) string {
+    n := len(nums)
+    if n == 0 {return ""}
+    var res = strconv.Itoa(nums[0])
+    if n == 1 {return res}
+    if n == 2 {return fmt.Sprintf("%v/%v", res, nums[1])}
+    res += "/("
+	for i:=1; i<n-1; i++ {
+		res += strconv.Itoa(nums[i]) + "/"
+	}
+    return fmt.Sprintf("%v%v)", res, nums[n-1])  
+}
+```
+
 ### 551. Student Attendance Record I
 
 - level: 1-easy
@@ -2237,6 +2277,40 @@ func findDuplicates(nums []int) []int {
         }
     }
     return res
+}
+```
+
+### 438. Find All Anagrams in a String
+
+- level: 1-easy
+
+```go
+func findAnagrams(s string, p string) []int {
+    hash := make([]int, 26)
+    var res []int
+    n := len(p)
+    if n > len(s) {return res}
+    for _, x := range []byte(p) {
+        hash[int(x-'a')]++
+    }
+    for _, x := range []byte(s[:n-1]) {
+        hash[int(x-'a')]--
+    }
+    for i:=0; i<len(s)-n+1; i++{
+        var inchar = s[i+n-1]
+        hash[int(inchar-'a')]--
+        if checkHash(hash) {res = append(res, i)}
+        var outchar = s[i]
+        hash[int(outchar-'a')]++
+    }
+    return res
+}
+
+func checkHash(hash []int) bool {
+    for _, x := range hash {
+        if x != 0 {return false}
+    }
+    return true
 }
 ```
 
