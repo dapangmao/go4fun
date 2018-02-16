@@ -1373,6 +1373,27 @@ func mergeTrees(t1 *TreeNode, t2 *TreeNode) *TreeNode {
 }
 ```
 
+### 611. Valid Triangle Number
+
+- level: 2-medium
+
+```go
+func triangleNumber(nums []int) int {
+    n := len(nums)
+    if n < 2 {return 0}
+    sort.Ints(nums)
+    var res int
+    for i:=0; i<n-2; i++ {
+        for j:=i+1; j<n-1; j++ {
+            for k:=j+1; k<n; k++ {
+                if nums[i] + nums[j] > nums[k] {res++}
+            }
+        }   
+    }
+    return res
+}
+```
+
 ### 609. Find Duplicate File in System
 
 - level: 2-medium
@@ -1757,6 +1778,45 @@ func checkRecord(s string) bool {
         }
     }
     return true
+}
+```
+
+### 547. Friend Circles
+
+- level: 2-medium
+
+```go
+func findCircleNum(M [][]int) int {
+    n, m := len(M), len(M[0])
+    var visited = make(map[int]bool)
+
+    graph := make(map[int][]int)
+    for i:=0; i<n; i++ {
+        for j:=0; j<m; j++ {
+            if j > i {continue}  // don't give up those orpahns 
+            if M[i][j] == 1 {
+                graph[i] = append(graph[i], j)  
+                graph[j] = append(graph[j], i) 
+            }
+        }
+    }
+    
+    var dfs func(i int, graph map[int][]int)
+    dfs = func(i int, graph map[int][]int) {
+        if _, ok := visited[i]; ok {return}
+        visited[i] = true
+        for _, j := range graph[i] {
+            dfs(j, graph)
+        }
+    }
+    
+    var res int
+    for k, _ := range graph {
+        if _, ok := visited[k]; ok {continue}
+        dfs(k, graph)
+        res++
+    }
+    return res
 }
 ```
 
@@ -2554,6 +2614,32 @@ func canConstruct(ransomNote string, magazine string) bool {
 func isPerfectSquare(num int) bool {
     var sqrt = int(math.Sqrt(float64(num)))
     return sqrt * sqrt == num
+}
+```
+
+### 347. Top K Frequent Elements
+
+- level: 2-medium
+
+```go
+func topKFrequent(nums []int, k int) []int {
+    dic := make(map[int]int)
+    max := -1
+    for _, num := range nums {
+        dic[num]++
+        if dic[num] > max {max = dic[num]}
+    }
+    var bucket = make([][]int, max+1)
+    for k, v := range dic {
+        bucket[v] = append(bucket[v], k)
+    }
+    var res []int
+    for i:=max; i>=0; i-- {
+        if len(bucket[i]) == 0 {continue}
+        res = append(res, bucket[i]...)
+        if len(res) == k {return res}        
+    }
+    return res
 }
 ```
 
