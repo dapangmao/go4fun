@@ -1164,6 +1164,29 @@ func replaceWords(dict []string, sentence string) string {
 }
 ```
 
+### 647. Palindromic Substrings
+
+- level: 2-medium
+
+```go
+func countSubstrings(s string) int {
+    count := func(left, right int) int {
+        ans := 0
+        for left >= 0 && right < len(s) && s[left] == s[right] {
+            ans += 1
+            left -= 1
+            right += 1
+        }
+        return ans
+    }
+    var res int
+    for i:=0; i<len(s); i++ {
+        res += count(i, i) + count(i, i+1)
+    }
+    return res
+}
+```
+
 ### 645. Set Mismatch
 
 - level: 1-easy
@@ -1670,6 +1693,30 @@ func prep(wall [][]int) map[int]int {
         }
     }
     return res
+}
+```
+
+### 551. Student Attendance Record I
+
+- level: 1-easy
+
+```go
+func checkRecord(s string) bool {
+    n := len(s)
+    hasA := false
+    for i:=0; i<n; i++ {
+        if s[i] == 'A' {
+            if hasA {
+                return false
+            } else {
+                hasA = true
+            }
+        }
+        if i > 0 && i < n-1 && s[i] == 'L' && s[i-1] == 'L' && s[i+1] == 'L' {
+            return false
+        }
+    }
+    return true
 }
 ```
 
@@ -2709,6 +2756,35 @@ func containsNearbyDuplicate(nums []int, k int) bool {
         m[x] = i
     }
     return false
+}
+```
+
+### 216. Combination Sum III
+
+- level: 2-medium
+
+```go
+var K, N int
+var res [][]int
+
+func combinationSum3(k int, n int) [][]int {
+    N = n
+    K = k
+    dfs(0, 0, []int{})
+    return res
+}
+
+func dfs(i, sum int, path []int) {
+    if len(path) == K {
+        if sum == N {res = append(res, path)}
+        return
+    }
+    for j:=i+1; j<=9; j++ {
+        if j + sum <= N {
+            var current = append(path, j)
+            dfs(j, sum+j, current)
+        }
+    }
 }
 ```
 
