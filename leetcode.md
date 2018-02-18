@@ -1844,6 +1844,29 @@ func dfs(root *TreeNode) int {
 }
 ```
 
+### 537. Complex Number Multiplication
+
+- level: 2-medium
+
+```go
+func complexNumberMultiply(a string, b string) string {
+    partA, partB := strings.Split(a, "+"), strings.Split(b, "+")
+    
+    t := func(s string) int {
+        res, _ := strconv.Atoi(s)
+        return res
+    }
+    g := func(s string) int {
+        res, _ := strconv.Atoi(s[:len(s)-1])
+        return res
+    }
+  
+    nonI := t(partA[0])*t(partB[0]) - g(partA[1])*g(partB[1])
+    I := g(partA[1])*t(partB[0]) + t(partA[0])*g(partB[1])
+    return fmt.Sprintf("%v+%vi", nonI, I)
+}
+```
+
 ### 532. K-diff Pairs in an Array
 
 - level: 1-easy
@@ -2206,6 +2229,30 @@ func islandPerimeter(grid [][]int) int {
 }
 ```
 
+### 462. Minimum Moves to Equal Array Elements II
+
+- level: 2-medium
+
+```go
+func minMoves2(nums []int) int {
+    sort.Ints(nums)
+    n := len(nums)
+    var median int
+    if n % 2 == 0 {
+        median = (nums[n/2-1] + nums[n/2]) / 2
+    } else {
+        median = nums[n/2]
+    }
+    var res int
+    for _, num := range nums {
+        var current = median - num
+        if current < 0 {current = -current}
+        res += current
+    }
+    return res
+} 
+```
+
 ### 461. Hamming Distance
 
 - level: 1-easy
@@ -2552,6 +2599,25 @@ func countOne(n int) int {
         n >>= 1
     }
     return res
+}
+```
+
+### 392. Is Subsequence
+
+- level: 2-medium
+
+```go
+func isSubsequence(s string, t string) bool {
+    n, m := len(s), len(t)
+    if n == 0 {return true}
+    var j int
+    for i:=0; i<m; i++ {
+        if s[j] == t[i] {
+            j++
+        }
+        if j == n {return true}
+    }
+    return false
 }
 ```
 
