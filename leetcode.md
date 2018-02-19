@@ -2774,6 +2774,40 @@ func isPowerOfThree(n int) bool {
 }
 ```
 
+### 318. Maximum Product of Word Lengths
+
+- level: 2-medium
+
+```go
+func maxProduct(words []string) int {
+    hash := make(map[string]int)
+    var max int
+    for _, word := range words {
+        for k, v := range hash {
+            if v >= len(word) {continue}
+            var current = numIfDiff(k, word)
+            if current > v {
+                hash[k] = v
+                if current*len(k) > max {max = current*len(k)}
+            }
+        }
+        hash[word] = 0
+    }
+    return max
+}
+
+func numIfDiff(a, b string) int {
+    var bucket [26]int
+    for _, x := range []byte(a) {
+        bucket[int(x-'a')]++
+    }
+    for _, x := range []byte(b) {
+        if bucket[int(x-'a')] > 0 {return -1}
+    }
+    return len(b)
+}
+```
+
 ### 292. Nim Game
 
 - level: 1-easy
@@ -2807,6 +2841,20 @@ func wordPattern(pattern string, str string) bool {
         }
     }
     return true
+}
+```
+
+### 287. Find the Duplicate Number
+
+- level: 2-medium
+
+```go
+func findDuplicate(nums []int) int {
+    sort.Ints(nums)
+    for i:=1; i<len(nums); i++ {
+        if nums[i] == nums[i-1] {return nums[i]}
+    }
+    return -1
 }
 ```
 
@@ -3840,6 +3888,23 @@ func simplifyPath(path string) string {
         }
     }
     return "/" + strings.Join(res, "/")
+}
+```
+
+### 70. Climbing Stairs
+
+- level: 1-easy
+
+```go
+func climbStairs(n int) int {
+    if n == 1 {return 1}
+    prevprev, prev, current := 1, 2, 2
+    for i:=2; i<n; i++ {
+        current = prev + prevprev
+        prevprev = prev
+        prev = current
+    }
+    return current
 }
 ```
 
