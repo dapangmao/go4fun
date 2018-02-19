@@ -3201,6 +3201,27 @@ func rightSideView(root *TreeNode) []int {
 }
 ```
 
+### 198. House Robber
+
+- level: 1-easy
+
+```go
+func rob(nums []int) int {
+    n := len(nums)
+    if n == 0 {return 0}
+    if n == 1 {return nums[0]}
+    if nums[1] < nums[0] {nums[1] = nums[0]} 
+    for i:=2; i<n; i++ {
+        if nums[i-1] > nums[i-2] + nums[i] {
+            nums[i] = nums[i-1]
+        } else {
+            nums[i] += nums[i-2]
+        }
+    }
+    return nums[n-1]
+}
+```
+
 ### 189. Rotate Array
 
 - level: 1-easy
@@ -3469,6 +3490,40 @@ func (this *LRUCache) Put(key int, value int)  {
     this.order = append(this.order, key)
     this.cache[key] = value
     this.pos[key] = len(this.cache) - 1
+}
+```
+
+### 129. Sum Root to Leaf Numbers
+
+- level: 2-medium
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var res int
+
+func sumNumbers(root *TreeNode) int {
+    dfs(root, 0)
+    return res
+}
+
+func dfs(root *TreeNode, path int) {
+    if root == nil {
+        return
+    }
+    var current = path*10 + root.Val
+    if root.Left == nil && root.Right == nil {
+        res += current
+        return
+    }
+    if root.Left != nil {dfs(root.Left, current)}
+    if root.Right != nil {dfs(root.Right, current)}
 }
 ```
 
