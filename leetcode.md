@@ -2672,6 +2672,18 @@ func canConstruct(ransomNote string, magazine string) bool {
 }
 ```
 
+### 371. Sum of Two Integers
+
+- level: 1-easy
+
+```go
+func getSum(a, b int) int {
+    if b == 0 {return a}
+    return getSum(a ^ b, (a & b) << 1)
+}
+
+```
+
 ### 367. Valid Perfect Square
 
 - level: 1-easy
@@ -2939,6 +2951,37 @@ func isAnagram(s string, t string) bool {
         if v != 0 {return false}
     }
     return true
+}
+```
+
+### 238. Product of Array Except Self
+
+- level: 2-medium
+
+```go
+func productExceptSelf(nums []int) []int {
+    total, n, j := 1, len(nums), 0
+    var zeroCount int
+    for i, num := range nums {
+        if num == 0 {
+            zeroCount++
+            j = i
+        } else {
+            total *= num
+        }
+    }
+    res := make([]int, n)
+    if zeroCount > 1 {
+        return res
+    }
+    if zeroCount == 1 {
+        res[j] = total
+        return res
+    }
+    for i, x := range nums {
+        res[i] = total / x
+    }
+    return res
 }
 ```
 
