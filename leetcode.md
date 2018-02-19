@@ -1538,6 +1538,24 @@ func findLHS(nums []int) int {
 }
 ```
 
+### 593. Valid Square
+
+- level: 2-medium
+
+```go
+func validSquare(p1 []int, p2 []int, p3 []int, p4 []int) bool {
+    g := func(a, b []int) int {
+        x := a[0] - b[0]
+        y := a[1] - b[1]
+        return x*x + y*y
+    } 
+    ds := []int{g(p1, p3), g(p1, p4), g(p2, p3), g(p2, p4), g(p3, p4), g(p1, p2)}
+    sort.Ints(ds)
+    if ds[0] == 0 {return false}
+    return ds[0] == ds[1] && ds[1] == ds[2] && ds[2] == ds[3] 
+}
+```
+
 ### 581. Shortest Unsorted Continuous Subarray
 
 - level: 1-easy
@@ -2599,6 +2617,28 @@ func countOne(n int) int {
         n >>= 1
     }
     return res
+}
+```
+
+### 396. Rotate Function
+
+- level: 2-medium
+
+```go
+func maxRotateFunction(A []int) int {
+    n := len(A)
+    max, sum := 0, 0 
+    for i, x := range A {
+        max += i*x 
+        sum += x
+    }
+    var current = max 
+    for i:=n-1; i>0; i-- {
+        current += sum - A[i]*n
+        if current > max {max = current}
+
+    }
+    return max
 }
 ```
 
@@ -3977,6 +4017,22 @@ func merge(intervals []Interval) []Interval {
 }
 ```
 
+### 55. Jump Game
+
+- level: 2-medium
+
+```go
+func canJump(nums []int) bool {
+    prev := 1
+    for _, x := range nums[:len(nums)-1] {
+        prev -= 1
+        if x == 0 && prev <= 0 {return false}
+        if x > prev {prev = x}
+    } 
+    return true
+}
+```
+
 ### 49. Group Anagrams
 
 - level: 2-medium
@@ -4094,6 +4150,23 @@ func nextState(s string) string {
 ```go
 func searchInsert(nums []int, target int) int {
     return sort.SearchInts(nums, target)
+}
+```
+
+### 34. Search for a Range
+
+- level: 2-medium
+
+```go
+func searchRange(nums []int, target int) []int {
+    n := len(nums)
+    var i = sort.SearchInts(nums, target)
+    if i >= n || nums[i] != target {return []int{-1, -1}}
+    j := i 
+    for j < n && nums[j] == target {
+        j++
+    }
+    return []int{i, j-1}
 }
 ```
 
