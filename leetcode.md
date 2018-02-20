@@ -1,3 +1,54 @@
+### 803. Cheapest Flights Within K Stops
+
+- level: 2-medium
+
+```go
+func findCheapestPrice(n int, flights [][]int, src int, dst int, K int) int {
+    dis := make([]int, n)
+    for i:=0; i<n; i++ {dis[i] = 2 << 61}
+    dis[src] = 0
+    prev := make([]int, n)
+    for i:=0; i<n; i++ {prev[i] = 2 << 61}
+    prev[src] = 0
+    for i:=0; i<=K; i++ {
+        for _, flight := range flights {
+            current := prev[flight[0]] + flight[2]
+            if current < dis[flight[1]] {
+                dis[flight[1]] = current
+            }
+        }
+        prev = dis
+    }
+    if dis[dst] < 2 << 61 {return dis[dst]}
+    return -1
+}
+```
+
+### 800. Letter Case Permutation
+
+- level: 1-easy
+
+```go
+func letterCasePermutation(S string) []string {
+	var prev = []string{""}
+	for _, x := range S {
+		var current []string
+		X := string(x)
+		for _, p := range prev {
+			if unicode.IsDigit(x){
+                current = append(current, p+X)
+            } else if unicode.IsLower(x) {
+                current = append(current, p+X, p+strings.ToUpper(X))
+            } else {
+                current = append(current, p+strings.ToLower(X), p+X)
+            }
+		}
+		prev = current
+	}
+	return prev
+}
+```
+
 ### 799. Minimum Distance Between BST Nodes
 
 - level: 1-easy
@@ -2038,6 +2089,60 @@ func findRelativeRanks(nums []int) []string {
 		}
 	}
 	return res
+}
+```
+
+### 503. Next Greater Element II
+
+- level: 2-medium
+
+```go
+func nextGreaterElements(nums []int) []int {
+    n := len(nums)
+    res := make([]int, n)
+    for i:=0; i<n; i++ {res[i] = -1}
+    var stack []int
+    for i:=0; i<n*2; i++ {
+        j := i % n
+        for len(stack) > 0 && nums[stack[len(stack)-1]] < nums[j] {
+            pop, lastIdx := 0, len(stack)-1
+            pop, stack = stack[lastIdx], stack[:lastIdx]
+            res[pop] = nums[j]
+        }
+        stack = append(stack, j)
+    }
+    return res
+}
+```
+
+### 501. Find Mode in Binary Search Tree
+
+- level: 1-easy
+
+```go
+func findMode(root *TreeNode) []int {
+    max, val := -1, []int{}
+    var dfs func(root *TreeNode, freq, prev int) 
+    dfs = func(root *TreeNode, freq, prev int) {
+        if root == nil {return}
+        if (root.Left == nil && root.Right == nil) || root.Val != prev {
+            if root.Val == prev {freq++}
+            if freq > max {
+                val = []int{prev}
+                max = freq
+            } else if freq == max {
+                val = append(val, freq)
+            }
+            freq = 1
+            prev = root.Val
+        } else {
+            freq++
+        }
+        dfs(root.Left, freq, prev)
+        dfs(root.Right, freq, prev)
+    }
+    dfs(root, 0, -1)
+    return val
 }
 ```
 
