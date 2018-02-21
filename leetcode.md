@@ -2648,6 +2648,24 @@ func thirdMax(nums []int) int {
 }
 ```
 
+### 413. Arithmetic Slices
+
+- level: 2-medium
+
+```go
+func numberOfArithmeticSlices(A []int) int {
+    sum := 0
+    dp := make([]int, len(A))
+    for i:=2; i<len(A); i++ {
+        if A[i] - A[i-1] == A[i-1] - A[i-2] {
+            dp[i] = dp[i-1] + 1
+            sum += dp[i]
+        } 
+    }
+    return sum
+}
+```
+
 ### 409. Longest Palindrome
 
 - level: 1-easy
@@ -2796,6 +2814,41 @@ func firstUniqChar(s string) int {
         if m[x] == 1 {return i}
     }
     return -1
+}
+```
+
+### 384. Shuffle an Array
+
+- level: 2-medium
+
+```go
+type Solution struct {
+    raw []int
+}
+
+
+func Constructor(nums []int) Solution {
+    return Solution{raw: nums}
+}
+
+
+/** Resets the array to its original configuration and return it. */
+func (this *Solution) Reset() []int {
+    return this.raw
+
+}
+
+
+/** Returns a random shuffling of the array. */
+func (this *Solution) Shuffle() []int {
+    n := len(this.raw)
+    words := make([]int, n)
+    copy(words, this.raw)
+    for i:=n; i>1; i-- {
+        seed := rand.Intn(i)
+        words[i-1], words[seed] = words[seed], words[i-1]
+    }
+    return words
 }
 ```
 
@@ -2950,6 +3003,84 @@ func numIfDiff(a, b string) int {
         if bucket[int(x-'a')] > 0 {return -1}
     }
     return len(b)
+}
+```
+
+### 295. Find Median from Data Stream
+
+- level: 3-hard
+
+```go
+type MinHeapInt []int
+
+func (h MinHeapInt) Len() int {
+	return len(h)
+}
+
+func (h MinHeapInt) Less(i, j int) bool {
+	return h[i] < h[j]
+}
+
+func (h MinHeapInt) Swap(i, j int) {
+	h[i], h[j] = h[j], h[i]
+}
+
+func (h *MinHeapInt) Peek() interface{} {
+	return (*h)[0]
+}
+
+func (h *MinHeapInt) Push(x interface{}) {
+	*h = append(*h, x.(int))
+}
+
+func (h *MinHeapInt) Pop() interface{} {
+	length := len(*h)
+	res := (*h)[length - 1]
+	*h = (*h)[0 : length - 1]
+	return res
+}
+
+type MaxHeapInt struct {
+	MinHeapInt
+}
+
+func (h MaxHeapInt) Less(i, j int) bool {
+	return h.MinHeapInt[i] > h.MinHeapInt[j]
+}
+
+type MedianFinder struct {
+	maxHeap *MaxHeapInt
+	minHeap *MinHeapInt
+}
+
+/** initialize your data structure here. */
+func Constructor() MedianFinder {
+	minHeap := &MinHeapInt{}
+	maxHeap := &MaxHeapInt{}
+	heap.Init(minHeap)
+	heap.Init(maxHeap)
+	return MedianFinder{maxHeap, minHeap}
+}
+
+func (this *MedianFinder) AddNum(num int) {
+	if this.maxHeap.Len() == 0 || num <= this.maxHeap.Peek().(int) {
+		heap.Push(this.maxHeap, num)
+	} else {
+		heap.Push(this.minHeap, num)
+	}
+	if this.minHeap.Len() > this.maxHeap.Len() {
+		heap.Push(this.maxHeap, heap.Pop(this.minHeap))
+	} else if this.maxHeap.Len() - this.minHeap.Len() > 1 {
+		heap.Push(this.minHeap, heap.Pop(this.maxHeap))
+	}
+}
+
+func (this *MedianFinder) FindMedian() float64 {
+	if this.maxHeap.Len() == this.minHeap.Len() {
+		return (float64(this.maxHeap.Peek().(int)) + float64(this.minHeap.Peek().(int))) / 2.0
+	} else {
+		return float64(this.maxHeap.Peek().(int))
+	}
 }
 ```
 
