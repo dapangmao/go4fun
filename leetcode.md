@@ -4167,6 +4167,42 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 }
 ```
 
+### 93. Restore IP Addresses
+
+- level: 2-medium
+
+```go
+func restoreIpAddresses(s string) []string {
+	var res []string
+
+	var dfs func(a string, path string, numDot int)
+	dfs = func(a string, path string, numDot int)  {
+		if numDot == 3 && len(a) == 0 {
+			res = append(res, path)
+			return
+		}
+		if numDot >= 3 {return}
+		for i:=1; i<4 && i<=len(a); i++ {
+			cut := a[:i]
+            if len(cut) > 1 && cut[0] == '0'  {continue}
+			trans, _ := strconv.Atoi(cut)
+			if trans > 255  {continue}
+			var nextPath string
+			if len(path) == 0 {
+				nextPath = cut
+				dfs(a[i:], nextPath, numDot)
+			} else {
+				nextPath = path + "." + cut
+				dfs(a[i:], nextPath, numDot+1)
+			}
+
+		}
+	}
+	dfs(s, "", 0)
+	return res
+}
+```
+
 ### 88. Merge Sorted Array
 
 - level: 1-easy
@@ -4596,6 +4632,36 @@ func convert(s string, numRows int) string {
         }
     }
     return strings.Join(buffer, "")
+}
+```
+
+### 3. Longest Substring Without Repeating Characters
+
+- level: 2-medium
+
+```go
+func lengthOfLongestSubstring(s string) int {
+    bucket := make([]int, 256)
+    j := 0
+    var max int
+    
+    ok := func() bool {
+        for _, x := range bucket {
+            if x > 1 {return false}
+        }
+        return true
+    }
+    
+    for i, x := range []byte(s) {
+        bucket[int(x-'a')]++
+        for j < i && !ok() {
+            pop := s[j]
+            bucket[int(pop-'a')]--
+            j++
+        }
+        if i - j + 1 > max {max = i-j+1}
+    }
+    return max
 }
 ```
 
