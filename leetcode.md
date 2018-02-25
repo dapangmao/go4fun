@@ -1028,6 +1028,49 @@ func (this *MapSum) Sum(prefix string) int {
 }
 ```
 
+### 676. Implement Magic Dictionary
+
+- level: 2-medium
+
+```go
+type MagicDictionary struct {
+    dic map[int][]string
+}
+
+
+/** Initialize your data structure here. */
+func Constructor() MagicDictionary {
+    return MagicDictionary{map[int][]string{}}
+}
+
+
+/** Build a dictionary through a list of words */
+func (this *MagicDictionary) BuildDict(dict []string)  {
+    for _, word := range dict {
+        var k = len(word)
+        this.dic[k] = append(this.dic[k], word) 
+    }
+}
+
+func (this MagicDictionary) isMagic(a, b string) bool {
+    var count int
+    for i := range a {
+        if a[i] != b[i] {count++}
+        if count > 1 {return false}
+    }
+    return count == 1
+}
+
+/** Returns if there is any word in the trie that equals to the given word after modifying exactly one character */
+func (this *MagicDictionary) Search(word string) bool {
+    var target = this.dic[len(word)]
+    for _, x := range target {
+        if this.isMagic(x, word) {return true}
+    }
+    return false
+}
+```
+
 ### 674. Longest Continuous Increasing Subsequence
 
 - level: 1-easy
@@ -1086,6 +1129,21 @@ func findSecondMinimumValue(root *TreeNode) int {
 	dfs(root)
 	if len(arr) < 2 {return -1}
 	return arr[0]
+}
+```
+
+### 669. Trim a Binary Search Tree
+
+- level: 1-easy
+
+```go
+func trimBST(root *TreeNode, L int, R int) *TreeNode {
+    if root == nil {return nil}
+    if root.Val > R {return trimBST(root.Left, L, R)}
+    if root.Val < L {return trimBST(root.Right, L, R)}
+    root.Left = trimBST(root.Left, L, R)
+    root.Right = trimBST(root.Right, L, R)
+    return root
 }
 ```
 
@@ -2798,6 +2856,34 @@ func maxRotateFunction(A []int) int {
 }
 ```
 
+### 393. UTF-8 Validation
+
+- level: 2-medium
+
+```go
+func validUtf8(data []int) bool {
+    var count = 0
+    for _, c := range data {
+        if count == 0 {
+            var start = 1<<2 + 1<<1
+            if c >> 5 == start {
+                count = 1
+            } else if c >> 4 == start + 1<<3 {
+                count = 2
+            } else if c >> 3 == start + 1<<3 + 1<<4 {
+                count = 3  
+            } else if c >> 7 != 0 {
+                return false
+            }
+        } else {
+            if c >> 6 != 2 {return false}
+            count--
+        }
+    }
+    return count == 0
+}
+```
+
 ### 392. Is Subsequence
 
 - level: 2-medium
@@ -3402,6 +3488,21 @@ func containsNearbyDuplicate(nums []int, k int) bool {
 }
 ```
 
+### 217. Contains Duplicate
+
+- level: 1-easy
+
+```go
+func containsDuplicate(nums []int) bool {
+    dic := make(map[int]int)
+    for _, num := range nums {
+        dic[num]++
+        if dic[num] > 1 {return true}
+    }
+    return false
+}
+```
+
 ### 216. Combination Sum III
 
 - level: 2-medium
@@ -3428,6 +3529,28 @@ func dfs(i, sum int, path []int) {
             dfs(j, sum+j, current)
         }
     }
+}
+```
+
+### 209. Minimum Size Subarray Sum
+
+- level: 2-medium
+
+```go
+func minSubArrayLen(s int, nums []int) int {
+    dic := make(map[int]int)
+    dic[0] = -1
+    var current int
+    max := math.MaxInt32
+    for i, num := range nums {
+        current += num
+        if j, ok := dic[current-s]; ok {
+            if i-j < max {max = i-j}
+        } 
+        dic[current] = i
+    }
+    if max == math.MaxInt32 {return 0}
+    return max
 }
 ```
 
@@ -4492,6 +4615,31 @@ func searchRange(nums []int, target int) []int {
 }
 ```
 
+### 22. Generate Parentheses
+
+- level: 2-medium
+
+```go
+func generateParenthesis(n int) []string {
+    var res []string
+    var dfs func(left, right int, path string)
+    dfs = func(left, right int, path string) {
+        if left == 0 && right == 0 {
+            res = append(res, path)
+            return
+        }
+        if left > 0 {
+            dfs(left-1, right, path + "(")
+        }    
+        if right > left {
+            dfs(left, right-1, path + ")")
+        }
+    }
+    dfs(n, n, "")
+    return res
+}
+```
+
 ### 21. Merge Two Sorted Lists
 
 - level: 1-easy
@@ -4602,6 +4750,30 @@ func romanToInt(s string) int {
         }
     }
     return res
+}
+```
+
+### 11. Container With Most Water
+
+- level: 2-medium
+
+```go
+func maxArea(height []int) int {
+    i, j := 0, len(height)-1
+    max := -1
+    var current int
+    for i < j {
+        width := j - i
+        current = height[j] * width
+        if height[i] < height[j] {current = height[i] * width}
+        if current > max {max = current}
+        if height[i] < height[j] {
+            i++
+        } else {
+            j--
+        }  
+    }
+    return max
 }
 ```
 
