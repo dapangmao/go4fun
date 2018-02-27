@@ -1,3 +1,26 @@
+### 807. Custom Sort String
+
+- level: 2-medium
+
+```go
+func customSortString(S string, T string) string {
+    lookup := make(map[byte]int)
+    for i, x := range []byte(S) {
+        lookup[x] = i
+    }
+    var bs = []byte(T)
+    sort.Slice(bs, func(i, j int) bool {
+        ival, iok := lookup[bs[i]]
+        jval, jok := lookup[bs[j]]
+        if iok && jok {return ival < jval}
+        if iok && !jok {return true}
+        if !iok && jok {return false}
+        return bs[i] < bs[j]
+    })
+    return string(bs)
+}
+```
+
 ### 803. Cheapest Flights Within K Stops
 
 - level: 2-medium
@@ -1389,6 +1412,39 @@ func findMaxAverage(nums []int, k int) float64 {
 }
 ```
 
+### 640. Solve the Equation
+
+- level: 2-medium
+
+```go
+func solveEquation(equation string) string {
+	r, _ := regexp.Compile(`(=)|([-+]?)(\d*)(x?)`)
+	x, a := 0, 0
+	side := 1
+	var splits = r.FindAllStringSubmatch(equation, -1)
+	for _, row := range splits {
+		eq, _sign, _num, isx := row[1], row[2], row[3], row[4]
+		sign := 1
+		if _sign == "-" {sign = -1}
+		num, err2 := strconv.Atoi(_num)
+		if eq == "=" {
+			side = -1
+		} else if isx == "x" {
+			if err2 != nil {
+				x += side  * sign * num
+			} else {
+				x += side * sign
+			}
+		} else if err2 == nil {
+			a -= side * sign * num
+		}
+	}
+	if a == 0 {return "Infinite solutions"}
+	if x == 0 {return "No solution"}
+	return strconv.Itoa(a/x)
+}
+```
+
 ### 637. Average of Levels in Binary Tree
 
 - level: 1-easy
@@ -2149,6 +2205,38 @@ func dfs(root *TreeNode, level int) {
     }
     dfs(root.Left, level+1)
     dfs(root.Right, level+1)
+}
+```
+
+### 508. Most Frequent Subtree Sum
+
+- level: 2-medium
+
+```go
+func findFrequentTreeSum(root *TreeNode) []int {
+    var res []int
+    dic := make(map[int]int)
+    
+    var dfs func(root *TreeNode) int
+    dfs = func(root *TreeNode) int {
+        if root == nil {return 0}
+        left := dfs(root.Left)
+        right := dfs(root.Right)
+        var current = left + root.Val + right
+        dic[current]++
+        return current
+    }
+    dfs(root)
+    freq := -1
+    for k, v := range dic {
+        if v > freq {
+            res = []int{k}
+            freq = v
+        } else if v == freq {
+            res = append(res, k)
+        }
+    }
+    return res
 }
 ```
 
@@ -3554,6 +3642,36 @@ func minSubArrayLen(s int, nums []int) int {
 }
 ```
 
+### 206. Reverse Linked List
+
+- level: 1-easy
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func reverseList(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil {return head}
+    // (1) untyped nil does not work
+    // prev := nil 
+    // (2) This works
+    // prev := new(ListNode).Next
+    // (3) Best approach
+    var prev *ListNode
+    for head != nil {
+        current := head.Next
+        head.Next = prev
+        prev = head
+        head = current
+    }
+    return prev
+}
+```
+
 ### 205. Isomorphic Strings
 
 - level: 1-easy
@@ -4353,6 +4471,30 @@ func merge(nums1 []int, m int, nums2 []int, n int)  {
 }
 ```
 
+### 77. Combinations
+
+- level: 2-medium
+
+```go
+func combine(n int, k int) [][]int {
+    var res [][]int
+    var dfs func(i int, path []int) 
+    dfs = func(i int, path []int) {
+        if len(path) == k {
+            res = append(res, path)
+            return
+        }
+        if len(path) > k {return}
+        for j:=i; j<=n; j++ {
+			      newpath := append([]int{j}, path...)
+            dfs(j+1, newpath)
+        }
+    }
+    dfs(1, []int{})
+    return res
+}
+```
+
 ### 71. Simplify Path
 
 - level: 2-medium
@@ -4523,6 +4665,25 @@ func rotate(matrix [][]int)  {
                 matrix[n-j-1][i], matrix[i][j], matrix[j][n-i-1], matrix[n-i-1][n-j-1]
         }
     }
+}
+```
+
+### 46. Permutations
+
+- level: 2-medium
+
+```go
+func permute(nums []int) [][]int {
+    n := len(nums)
+    if n == 1 {return [][]int{nums}}
+    var res [][]int    
+    for i, x := range nums {  
+        var others = append(append([]int{}, nums[:i]...), nums[i+1:]...)
+        for _, y := range permute(others) {
+            res = append(res, append(y, x))
+        }
+    }
+    return res
 }
 ```
 
