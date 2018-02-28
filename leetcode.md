@@ -2632,6 +2632,26 @@ func minMoves(nums []int) int {
 }
 ```
 
+### 452. Minimum Number of Arrows to Burst Balloons
+
+- level: 2-medium
+
+```go
+func findMinArrowShots(points [][]int) int {
+    if len(points) == 0 {return 0}
+    sort.Slice(points, func(i, j int) bool{
+        return points[i][1] < points[j][1]
+    })
+    current, res := points[0][1], 1
+    for _, p := range points[1:] {
+        if current >= p[0] {continue}
+        res++
+        current = p[1]
+    }
+    return res
+}
+```
+
 ### 451. Sort Characters By Frequency
 
 - level: 2-medium
@@ -3151,6 +3171,26 @@ func isVowel(a byte) bool {
 }
 ```
 
+### 343. Integer Break
+
+- level: 2-medium
+
+```go
+func integerBreak(n int) int {
+    dp := make([]int, n+1)
+    for i:=1; i<n+1; i++ {dp[i] = i}
+    if n == 2 {return 1}
+    if n == 3 {return 2}
+    for i:=2; i<=n; i++ {
+        for j:=0; j<i; j++ {
+            var current = dp[j] * dp[i-j]
+            if current > dp[i] {dp[i] = current} 
+        }
+    }
+    return dp[n]
+}
+```
+
 ### 342. Power of Four
 
 - level: 1-easy
@@ -3513,6 +3553,20 @@ func productExceptSelf(nums []int) []int {
         res[i] = total / x
     }
     return res
+}
+```
+
+### 231. Power of Two
+
+- level: 1-easy
+
+```go
+func isPowerOfTwo(n int) bool {
+    for n > 1 {
+        if n % 2 != 0 {return false}
+        n /= 2
+    } 
+    return n == 1
 }
 ```
 
@@ -3928,6 +3982,23 @@ func titleToNumber(s string) int {
         j *= 26
     }
     return res
+}
+```
+
+### 168. Excel Sheet Column Title
+
+- level: 1-easy
+
+```go
+func convertToTitle(n int) string {
+    var res []byte
+    for n > 0 {
+        n -= 1
+        current := byte('A' + n % 26)  // implicit transformation
+        res = append([]byte{current}, res...)
+        n /= 26
+    }
+    return string(res)
 }
 ```
 
@@ -4495,6 +4566,31 @@ func combine(n int, k int) [][]int {
 }
 ```
 
+### 74. Search a 2D Matrix
+
+- level: 2-medium
+
+```go
+func searchMatrix(matrix [][]int, target int) bool {
+    n := len(matrix)
+    if n == 0  {return false}
+    m := len(matrix[0])
+    if m == 0  {return false}
+    lo, hi := 0, n-1
+    for lo <= hi {
+        mid := (hi+lo) / 2
+        var idx = sort.SearchInts(matrix[mid], target)
+        if target == matrix[mid][idx] {return true}
+        if idx == 0 {
+            hi = mid - 1
+        } else if idx == m {
+            lo = mid + 1
+        }
+    }
+    return false
+}
+```
+
 ### 71. Simplify Path
 
 - level: 2-medium
@@ -4550,6 +4646,34 @@ func plusOne(digits []int) []int {
         digits[i] = 0
     }
     return append([]int{1}, digits...)
+}
+```
+
+### 65. Valid Number
+
+- level: 3-hard
+
+```go
+func isNumber(s string) bool {
+    s = strings.Trim(s, " ")
+    _, err := strconv.Atoi(s)
+    if err == nil {return true}
+    _, err = strconv.ParseFloat(s, 64)
+    if err == nil {return true}
+    var e = strings.Count(s, "e") 
+    if strings.Count(s, ".") > 1 {return false}
+    if e > 1 {return false}
+    if e == 1 {
+        splits := strings.Split(s, "e")
+        var count int
+        for i, x := range splits {
+            if i == 0 {x = strings.Replace(x, ".", "", -1)}
+            _, err := strconv.Atoi(x)
+            if err == nil {count++}
+        }
+        if count == 2 {return true}
+    }
+    return false
 }
 ```
 
