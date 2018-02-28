@@ -4580,11 +4580,13 @@ func searchMatrix(matrix [][]int, target int) bool {
     for lo <= hi {
         mid := (hi+lo) / 2
         var idx = sort.SearchInts(matrix[mid], target)
-        if target == matrix[mid][idx] {return true}
+        if idx < m && target == matrix[mid][idx] {return true}
         if idx == 0 {
             hi = mid - 1
         } else if idx == m {
             lo = mid + 1
+        } else {
+            return false
         }
     }
     return false
