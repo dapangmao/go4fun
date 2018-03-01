@@ -555,6 +555,39 @@ func selfDividingNumbers(left int, right int) []int {
 }
 ```
 
+### 725. Split Linked List in Parts
+
+- level: 2-medium
+
+```go
+func splitListToParts(root *ListNode, k int) []*ListNode {
+    res := make([]*ListNode, k)
+    var n int
+    head := root
+    for head != nil {
+        n++
+        head = head.Next
+    }
+    size, plus := n/k, n%k
+    head = root
+    var prev = new(ListNode)
+    var i, j int
+    for head != nil {
+        if i == 0 || (plus == 0 && i == size) || (plus > 0 && i == size+1) {
+            res[j] = head
+            j++
+            prev.Next = nil
+            if i != 0 && plus > 0 {plus--}
+            i = 0
+        }
+        prev = head
+        head = head.Next
+        i++
+    }
+    return res
+}
+```
+
 ### 724. Find Pivot Index
 
 - level: 1-easy
@@ -1070,7 +1103,7 @@ func (this *MagicDictionary) BuildDict(dict []string)  {
     }
 }
 
-func (this MagicDictionary) isMagic(a, b string) bool {
+func (this *MagicDictionary) isMagic(a, b string) bool {
     var count int
     for i := range a {
         if a[i] != b[i] {count++}
@@ -1157,12 +1190,15 @@ func findSecondMinimumValue(root *TreeNode) int {
 ```go
 func trimBST(root *TreeNode, L int, R int) *TreeNode {
     if root == nil {return nil}
-    if root.Val > R {return trimBST(root.Left, L, R)}
-    if root.Val < L {return trimBST(root.Right, L, R)}
-    root.Left = trimBST(root.Left, L, R)
-    root.Right = trimBST(root.Right, L, R)
+    l, r := trimBST(root.Left, L, R), trimBST(root.Right, L, R) 
+    if root.Val > R {return l}
+    if root.Val < L {return r}
+    root.Left = l
+    root.Right = r
     return root
 }
+
+
 ```
 
 ### 665. Non-decreasing Array
