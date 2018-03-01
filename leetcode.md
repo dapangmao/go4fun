@@ -2645,6 +2645,28 @@ func findContentChildren(g []int, s []int) int {
 }
 ```
 
+### 454. 4Sum II
+
+- level: 2-medium
+
+```go
+func fourSumCount(A []int, B []int, C []int, D []int) int {
+    var res int
+    var dic = make(map[int]int)
+    for _, a := range A {
+        for _, b := range B {
+            dic[-a-b]++
+        }
+    }
+    for _, c := range C {
+        for _, d := range D {
+            if val, ok := dic[c+d]; ok {res += val}
+        }
+    }
+    return res
+}
+```
+
 ### 453. Minimum Moves to Equal Array Elements
 
 - level: 1-easy
