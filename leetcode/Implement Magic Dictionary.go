@@ -17,7 +17,7 @@ func (this *MagicDictionary) BuildDict(dict []string)  {
     }
 }
 
-func (this MagicDictionary) isMagic(a, b string) bool {
+func (this *MagicDictionary) isMagic(a, b string) bool {
     var count int
     for i := range a {
         if a[i] != b[i] {count++}
