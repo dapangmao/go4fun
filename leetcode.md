@@ -2743,6 +2743,38 @@ func findDisappearedNumbers(nums []int) []int {
 }
 ```
 
+### 443. String Compression
+
+- level: 1-easy
+
+```go
+func compress(chars []byte) int {
+	var strs []string
+	var n = len(chars)
+	if n == 0 {return 0}
+	var prev = chars[0]
+	var count int
+	for i:=0; i<=n; i++ {
+		if i == n || chars[i] != prev {
+			if count == 1 {
+				strs = append(strs, string(prev))
+			} else {
+				strs = append(strs, string(prev), strconv.Itoa(count))
+			}
+			if i < n {prev = chars[i]}
+			count = 1
+		} else {
+			count++
+		}
+	}
+	var res int
+	for _, s := range strs {
+		res += len(s)
+	}
+	return res
+}
+```
+
 ### 442. Find All Duplicates in an Array
 
 - level: 2-medium
@@ -4055,6 +4087,28 @@ func convertToTitle(n int) string {
 }
 ```
 
+### 167. Two Sum II - Input array is sorted
+
+- level: 1-easy
+
+```go
+func twoSum(numbers []int, target int) []int {
+    i, j := 0, len(numbers)-1
+    for i < j {
+        var current = numbers[i] + numbers[j]
+        if current == target {
+            return []int{i+1, j+1}
+        }
+        if i < j && current < target {
+            i++
+        } else if i < j && current > target {
+            j--
+        }
+    }
+    return []int{}
+}
+```
+
 ### 166. Fraction to Recurring Decimal
 
 - level: 2-medium
@@ -4892,6 +4946,32 @@ func multiply(num1 string, num2 string) string {
     stringBuilder = append(stringBuilder, byte(product[0]))
     var res string
     for _, x := range stringBuilder {res += fmt.Sprint(x)}
+    return res
+}
+```
+
+### 39. Combination Sum
+
+- level: 2-medium
+
+```go
+func combinationSum(candidates []int, target int) [][]int {
+    sort.Ints(candidates)
+    var res [][]int
+    var dfs func(i, sum int, path []int)
+    dfs = func(i, sum int, path []int) {
+        if sum == target {
+            res = append(res, path)
+            return
+        }
+        for j:=i; j<len(candidates); j++ {
+            var newsum = sum + candidates[j]
+            if newsum > target {break}
+            newpath := append([]int{candidates[j]}, path...) // have to exlicitly claim a new array
+            dfs(j, newsum, newpath)
+        }
+    }
+    dfs(0, 0, []int{})
     return res
 }
 ```
