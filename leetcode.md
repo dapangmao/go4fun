@@ -4649,6 +4649,35 @@ func merge(nums1 []int, m int, nums2 []int, n int)  {
 }
 ```
 
+### 79. Word Search
+
+- level: 2-medium
+
+```go
+func exist(board [][]byte, word string) bool {
+	n, m := len(board), len(board[0])
+	var dfs func(y, x, i int) bool
+	dfs = func(y, x, i int) bool {
+		if i == len(word) { return true}
+		if y<0 || x<0 || x == m || y == n || board[y][x] != word[i] {return false}
+		board[y][x] ^= 25
+		i++
+		if dfs(y, x+1, i) || dfs(y, x-1, i) || dfs(y+1, x, i) || dfs(y-1, x, i) {
+			return true
+		}
+		board[y][x] ^= 25
+		return false
+	}
+	
+	for i:=0; i<n; i++ {
+		for j:=0; j<m; j++ {
+			if dfs(i, j, 0) {return true}
+		}
+	}
+	return false
+}
+```
+
 ### 77. Combinations
 
 - level: 2-medium
@@ -4850,6 +4879,23 @@ func canJump(nums []int) bool {
         if x > prev {prev = x}
     } 
     return true
+}
+```
+
+### 53. Maximum Subarray
+
+- level: 1-easy
+
+```go
+func maxSubArray(nums []int) int {
+    var res = math.MinInt32
+    var current int
+    for _, num := range nums {
+        current += num
+        if current > res {res = current}
+        if current < 0 {current = 0}
+    }
+    return res
 }
 ```
 
@@ -5117,6 +5163,29 @@ func isValid(s string) bool {
 }
 ```
 
+### 17. Letter Combinations of a Phone Number
+
+- level: 2-medium
+
+```go
+func letterCombinations(digits string) []string {
+    if digits == "" {return []string{}}
+    var dic = []string{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}
+    var res = []string{""}
+    for _, d := range []byte(digits) {
+        var options = dic[int(d-'0')]
+        var current []string
+        for _, s := range res {
+            for _, o := range options {
+                current = append(current, s+string(o))
+            }
+        }
+        res = current
+    }
+    return res
+}
+```
+
 ### 14. Longest Common Prefix
 
 - level: 1-easy
@@ -5291,6 +5360,48 @@ func lengthOfLongestSubstring(s string) int {
         if i - j + 1 > max {max = i-j+1}
     }
     return max
+}
+```
+
+### 2. Add Two Numbers
+
+- level: 2-medium
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+
+func newNode(i int) *ListNode{
+    var res = new(ListNode)
+    res.Val = i
+    return res
+}
+
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+    var dummy = new(ListNode)
+    var head = dummy
+    var prev int
+    for l1 != nil || l2 != nil {
+        var current = prev
+        if l1 != nil {
+            current += l1.Val
+            l1 = l1.Next
+        }
+        if l2 != nil {
+            current += l2.Val
+            l2 = l2.Next
+        }
+        head.Next = newNode(current%10)
+        prev = current/10
+        head = head.Next
+    }
+    if prev > 0 {head.Next = newNode(prev)}
+    return dummy.Next
 }
 ```
 
