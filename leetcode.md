@@ -4207,6 +4207,32 @@ func (this *MinStack) GetMin() int {
 }
 ```
 
+### 152. Maximum Product Subarray
+
+- level: 2-medium
+
+```go
+func maxProduct(nums []int) int {
+    var n = len(nums)
+    minDP, maxDP := make([]int, n), make([]int, n)
+    copy(minDP, nums)
+    copy(maxDP, nums)
+    for i:=1; i<n; i++ {
+        op1 := minDP[i-1] * minDP[i]
+        op2 := maxDP[i-1] * maxDP[i]
+        if op1 > maxDP[i] {maxDP[i] = op1}
+        if op2 > maxDP[i] {maxDP[i] = op2}
+        if op1 < minDP[i] {minDP[i] = op1}
+        if op2 < minDP[i] {minDP[i] = op2}
+    }
+    var res = math.MinInt32
+    for _, x := range maxDP {
+        if x > res {res = x}
+    }
+    return res
+}
+```
+
 ### 150. Evaluate Reverse Polish Notation
 
 - level: 2-medium
@@ -5330,6 +5356,31 @@ func convert(s string, numRows int) string {
         }
     }
     return strings.Join(buffer, "")
+}
+```
+
+### 5. Longest Palindromic Substring
+
+- level: 2-medium
+
+```go
+func longestPalindrome(s string) string {
+    var res string
+    var n = len(s)
+    var getPd func(i, j int)
+    getPd = func(i, j int) {
+        for {
+            if i<0 || j>=n || s[i] != s[j] {break}
+            if j-i+1 > len(res) {res = s[i:j+1]}
+            i--
+            j++
+        }
+    }
+    for k := range s {
+        getPd(k, k)
+        getPd(k, k+1)
+    }
+    return res
 }
 ```
 
