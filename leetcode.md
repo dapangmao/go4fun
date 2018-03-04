@@ -1,3 +1,107 @@
+### 811. Number of Subarrays with Bounded Maximum
+
+- level: 2-medium
+
+```go
+func numSubarrayBoundedMax(A []int, L int, R int) int {
+    var res int
+    
+    factorial := func(n int) int {
+        var res = 0
+        for n > 0 {
+            res += n
+            n -= 1
+        }
+        return res
+    }  
+    
+    compute := func(a []int) int {
+        var res = factorial(len(a))
+        var j = -1
+        for i:=0; i<=len(a); i++{
+            if i == len(a) || a[i] >= L {
+                res -= factorial(i-j-1)
+                j = i
+            }
+        }
+        return res
+    }
+    
+    j := -1
+    for i:=0; i<=len(A); i++ {
+        if i==len(A) || A[i] > R {
+            if i>j+1 {
+                res += compute(A[j+1:i])
+            }
+            j = i
+        }
+    }
+    return res
+}
+
+```
+
+### 810. Valid Tic-Tac-Toe State
+
+- level: 2-medium
+
+```go
+func validTicTacToe(board []string) bool {
+    nx, no := 0, 0
+    winx, wino := 0, 0
+    for _, row := range board {
+        nx += strings.Count(row, "X")
+        no += strings.Count(row, "O")
+        if row == "XXX" {winx++}
+        if row == "OOO" {wino++}
+    }
+    if no > nx {return false}
+    if nx > no + 1 {return false}
+    op4 := string([]byte{board[0][0], board[1][1], board[2][2]}) // it is easy to convert byte array to a string
+    op5 := string([]byte{board[0][2], board[1][1], board[2][0]})
+    op6 := string([]byte{board[0][0], board[1][0], board[2][0]})
+    op7 := string([]byte{board[0][1], board[1][1], board[2][1]})
+    op8 := string([]byte{board[0][2], board[1][2], board[2][2]}) 
+    for _, op := range []string{op4, op5, op6, op7, op8} {
+        if op == "XXX" {winx++}
+        if op == "OOO" {wino++}
+    }
+    if winx > 0 && wino > 0 {return false}
+    if winx > 0 && nx == no {return false}
+    if wino > 0 && nx > no {return false}
+    return true
+}
+```
+
+### 808. Number of Matching Subsequences
+
+- level: 2-medium
+
+```go
+func numMatchingSubseq(S string, words []string) int {
+    var res int
+    var dic = make(map[string]int)
+    for _, word := range words {dic[word]++}
+    for word := range dic {
+        if isSubsequence(word, S) {res += dic[word]}
+    }
+    return res
+}
+
+func isSubsequence(s string, t string) bool {
+    n, m := len(s), len(t)
+    if n == 0 {return true}
+    var j int
+    for i:=0; i<m; i++ {
+        if s[j] == t[i] {
+            j++
+        }
+        if j == n {return true}
+    }
+    return false
+}
+```
+
 ### 807. Custom Sort String
 
 - level: 2-medium
