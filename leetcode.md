@@ -129,15 +129,13 @@ func numRabbits(answers []int) int {
 
 ```go
 func numJewelsInStones(J string, S string) int {
-    var dic = make(map[rune]int)
+    var set = make(map[rune]bool)
     for _, x := range J {
-        dic[x] = 0
+        set[x] = true
     }
     var res int
     for _, x := range S {
-        if _, ok := dic[x]; ok {
-            res++
-        }
+        if set[x] {res++}
     }
     return res
 }
@@ -1824,6 +1822,27 @@ func distributeCandies(candies []int) int {
 }
 ```
 
+### 572. Subtree of Another Tree
+
+- level: 1-easy
+
+```go
+func isSubtree(s *TreeNode, t *TreeNode) bool {
+    if check(s, t) {return true}
+    if s == nil {return false}
+    return isSubtree(s.Left, t) || isSubtree(s.Right, t) 
+}
+
+func check(s *TreeNode, t *TreeNode) bool {
+    if t == nil && s == nil{
+        return true
+    }
+    if s == nil || t == nil {return false}
+    if t.Val != s.Val {return false}
+    return check(s.Left, t.Left) && check(s.Right, t.Right)
+}
+```
+
 ### 566. Reshape the Matrix
 
 - level: 1-easy
@@ -3286,6 +3305,25 @@ func isPowerOfFour(num int) bool {
     for x <= num {
         if x == num {return true}
         x *= 4
+    }
+    return false
+}
+```
+
+### 335. Self Crossing
+
+- level: 3-hard
+
+```go
+func isSelfCrossing(x []int) bool {
+    for i:=3; i<len(x); i++ {
+            if x[i]>=x[i-2] && x[i-1]<=x[i-3] {
+                return true // Case 1: current line crosses the line 3 steps ahead of it
+            }  else if i>=4 && x[i-1]==x[i-3] && x[i]+x[i-4]>=x[i-2] {
+                return true // Case 2: current line crosses the line 4 steps ahead of it
+            } else if i>=5 && x[i-2]>=x[i-4] && x[i]+x[i-4]>=x[i-2] && x[i-1]<=x[i-3] && x[i-1]+x[i-5]>=x[i-3] {
+                return true // Case 3: current line crosses the line 6 steps ahead of it
+            }  
     }
     return false
 }
@@ -5018,6 +5056,38 @@ func multiply(num1 string, num2 string) string {
     stringBuilder = append(stringBuilder, byte(product[0]))
     var res string
     for _, x := range stringBuilder {res += fmt.Sprint(x)}
+    return res
+}
+```
+
+### 40. Combination Sum II
+
+- level: 2-medium
+
+```go
+func combinationSum2(candidates []int, target int) [][]int {
+    sort.Ints(candidates)
+    var res [][]int
+    var dic = make(map[string]bool)
+    var dfs func(i, sum int, path []int)
+    dfs = func(i, sum int, path []int) {
+        if sum == target {
+            var key = ""
+            for _, x := range path {key += strconv.Itoa(x) + "-"}  // since length-varialbe array cannot be map key, use string instead
+            if !dic[key] {
+                res = append(res, path)
+                dic[key] = true
+            }
+            return
+        }
+        for j:=i+1; j<len(candidates); j++ {
+            var newsum = sum + candidates[j]
+            if newsum > target {break}
+            newpath := append(append([]int{}, path...), candidates[j]) // have to exlicitly claim a new array
+            dfs(j, newsum, newpath)
+        }
+    }
+    dfs(-1, 0, []int{})
     return res
 }
 ```
