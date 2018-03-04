@@ -4350,6 +4350,27 @@ func (this *LRUCache) Put(key int, value int)  {
 }
 ```
 
+### 139. Word Break
+
+- level: 2-medium
+
+```go
+func wordBreak(s string, wordDict []string) bool {
+    set := make(map[string]bool)
+    for _, word := range wordDict {set[word] = true}
+    dp := make([]bool, len(s))
+    for i := range s {
+        for j:=0; j<=i; j++ {
+            if (j == 0 || dp[j-1]) && set[s[j:i+1]] {
+                dp[i] = true
+                break
+            }
+        }
+    }
+    return dp[len(s)-1]
+}
+```
+
 ### 129. Sum Root to Leaf Numbers
 
 - level: 2-medium
