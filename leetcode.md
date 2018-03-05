@@ -3305,6 +3305,54 @@ func canConstruct(ransomNote string, magazine string) bool {
 }
 ```
 
+### 380. Insert Delete GetRandom O(1)
+
+- level: 2-medium
+
+```go
+type RandomizedSet struct {
+	location []int
+	dict map[int]int
+
+}
+
+
+/** Initialize your data structure here. */
+func Constructor() RandomizedSet {
+	return RandomizedSet{[]int{}, map[int]int{}}
+}
+
+
+/** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+func (this *RandomizedSet) Insert(val int) bool {
+	if _, ok := this.dict[val]; ok {return false}
+	this.dict[val] = len(this.location)
+	this.location = append(this.location, val)
+	return true
+}
+
+
+/** Removes a value from the set. Returns true if the set contained the specified element. */
+func (this *RandomizedSet) Remove(val int) bool {
+	loc, ok := this.dict[val]
+	if !ok {return false}
+	if loc > 0 {
+		first := this.location[0]
+		this.location[loc] = first
+		this.dict[first] = loc
+	}
+	this.location = this.location[1:]
+	delete(this.dict, val)
+	return true
+}
+
+/** Get a random element from the set. */
+func (this *RandomizedSet) GetRandom() int {
+	loc := rand.Intn(len(this.location))
+	return this.location[loc]
+}
+```
+
 ### 371. Sum of Two Integers
 
 - level: 1-easy
@@ -3477,6 +3525,46 @@ func numIfDiff(a, b string) int {
         if bucket[int(x-'a')] > 0 {return -1}
     }
     return len(b)
+}
+```
+
+### 303. Range Sum Query - Immutable
+
+- level: 1-easy
+
+```go
+type NumArray struct {
+    left, right []int
+}
+
+
+func Constructor(nums []int) NumArray {
+    n := len(nums)
+    l, r := make([]int, n), make([]int, n)
+    for i:=0; i<n; i++ {
+        if i == 0 {
+            l[i] = nums[i]
+        } else {
+            l[i] = nums[i] + l[i-1]
+        }
+    }
+    for i:=n-1; i>=0; i-- {
+        if i == n-1 {
+            r[i] = nums[i]
+        } else {
+            r[i] += nums[i] + r[i+1]
+        }
+    }
+    return NumArray{l, r}
+}
+
+
+func (this *NumArray) SumRange(i int, j int) int {
+    var sum = this.left[len(this.left)-1]
+    l, r := 0, 0
+    if i-1 >=0 {l = this.left[i-1]}
+    if j+1 < len(this.left) {r = this.right[j+1]}
+    return sum - l - r
 }
 ```
 
@@ -3837,6 +3925,41 @@ func dfs(root *TreeNode) {
     root.Left, root.Right = root.Right, root.Left
     dfs(root.Left)
     dfs(root.Right)
+}
+```
+
+### 220. Contains Duplicate III
+
+- level: 2-medium
+
+```go
+func containsNearbyAlmostDuplicate(nums []int, k int, t int) bool {
+	if t < 0 {return false}
+	var dic = make(map[int]int)
+	var w = t + 1
+
+	subDuplicate := func(x, j, w int) bool {
+		if val, ok := dic[j]; ok {
+			current := x - val
+			if current < 0 {
+				current = -current
+			}
+			if current < w {return true}
+		}
+		return false
+	}
+
+	for i, x := range nums {
+		var m = x / w
+		if _, ok := dic[m]; ok {
+			return true
+		}
+		if subDuplicate(x, m-1, w) {return true}
+		if subDuplicate(x, m+1, w) {return true}
+		dic[m] = x
+		if i >= k {delete(dic, nums[i-k]/w)}
+	}
+	return false
 }
 ```
 
@@ -4472,6 +4595,40 @@ func wordBreak(s string, wordDict []string) bool {
         }
     }
     return dp[len(s)-1]
+}
+```
+
+### 135. Candy
+
+- level: 3-hard
+
+```go
+func candy(ratings []int) int {
+    var n = len(ratings)
+    if n == 0 {return 0}
+    if n == 1 {return 1}
+    left, right := make([]int, n), make([]int, n)
+    for i:=0; i<n; i++ {
+        left[i] = 1
+        right[i] = 1
+    }
+    for i:=1; i<n; i++ {
+        if ratings[i] > ratings[i-1] {
+            left[i] = left[i-1] + 1
+        }
+    }
+    for i:=n-2; i>=0; i-- {
+        if ratings[i] > ratings[i+1] {
+            right[i] = right[i+1] + 1
+        } 
+    }
+    var res int
+    for i:=0; i<n; i++ {
+        var current = left[i]
+        if left[i] < right[i] {current = right[i]}
+        res += current
+    }
+    return res
 }
 ```
 
