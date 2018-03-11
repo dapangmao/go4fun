@@ -1,3 +1,65 @@
+### 815. Champagne Tower
+
+- level: 2-medium
+
+```go
+func champagneTower(poured int, query_row int, query_glass int) float64 {
+    var dp = make([][]float64, 102)
+    for i:= range dp {dp[i] = make([]float64, i+1)}
+    dp[0][0] = float64(poured)
+    for r:= 0; r <= query_row; r++ {
+        for c:=0; c<=r; c++ {
+            q := dp[r][c] - 1.0
+            if q > 0 {
+                dp[r+1][c] += q / 2.0
+                dp[r+1][c+1] += q / 2.0
+            }
+        }
+    }
+    res := dp[query_row][query_glass]
+    if res > 1.0 {res = 1.0}
+    return res
+}
+```
+
+### 813. All Paths From Source to Target
+
+- level: 2-medium
+
+```go
+func allPathsSourceTarget(graph [][]int) [][]int {
+    var res [][]int
+    var n = len(graph) - 1
+    var dfs func(i int, path []int)
+    dfs = func(i int, path []int) {
+        for _, x := range graph[i] {
+            newPath := append(append([]int{}, path...), i)
+            if x == n {
+                newPath = append(newPath, n)
+                res = append(res, newPath)
+            } else {
+                dfs(x, newPath)
+            }
+        }
+    }
+    dfs(0, []int{})
+    return res
+}
+```
+
+### 812. Rotate String
+
+- level: 1-easy
+
+```go
+func rotateString(A string, B string) bool {
+    if len(A) != len(B) {return false}
+    newB := B + B 
+    if strings.Index(newB, A) == -1 {return false}
+    return true
+}
+```
+
 ### 811. Number of Subarrays with Bounded Maximum
 
 - level: 2-medium
@@ -1147,6 +1209,29 @@ func calPoints(ops []string) int {
         res += x
     }
     return res
+}
+```
+
+### 680. Valid Palindrome II
+
+- level: 1-easy
+
+```go
+func validPalindrome(s string) bool {    
+    isPal := func(s []byte) bool {
+        for i:=0; i<len(s)/2; i++ {
+            if s[i] != s[len(s)-1-i] {return false}
+        }
+        return true
+    }
+    for i,j := 0,len(s)-1; i<j; i,j=i+1,j-1 {
+        if s[i] != s[j] {
+            op1 := append([]byte(s[:i]), s[i+1:]...)
+            op2 := append([]byte(s[:j]), s[j+1:]...)
+            return isPal(op1) || isPal(op2)
+        }
+    }
+    return true
 }
 ```
 
@@ -3094,6 +3179,19 @@ func longestPalindrome(s string) int {
 }
 ```
 
+### 405. Convert a Number to Hexadecimal
+
+- level: 1-easy
+
+```go
+func toHex(num int) string {
+    if num < 0 {
+        return fmt.Sprintf("%x", math.MaxInt32 * 2 + 2 + num)     
+    }
+    return fmt.Sprintf("%x", num)
+}
+```
+
 ### 404. Sum of Left Leaves
 
 - level: 1-easy
@@ -4119,6 +4217,34 @@ func countPrimes(n int) int {
 }
 ```
 
+### 203. Remove Linked List Elements
+
+- level: 1-easy
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func removeElements(head *ListNode, val int) *ListNode {
+    dummy := new(ListNode)
+    dummy.Next = head
+    prev := dummy
+    for head != nil {
+        if head.Val == val {
+            prev.Next = head.Next
+        } else {
+            prev = head
+        }
+        head = head.Next
+    }
+    return dummy.Next
+}
+```
+
 ### 202. Happy Number
 
 - level: 1-easy
@@ -4816,6 +4942,39 @@ func generate(numRows int) [][]int {
         res = append(res, current)
         prev = current
     }
+    return res
+}
+```
+
+### 113. Path Sum II
+
+- level: 2-medium
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func pathSum(root *TreeNode, sum int) [][]int {
+    var res [][]int
+    var dfs func(root *TreeNode, path []int, total int) 
+    dfs = func(root *TreeNode, path []int, total int) {
+        if root == nil {return}
+        newTotal := total - root.Val
+        newPath := append(append([]int{}, path... ), root.Val)
+
+        if root.Left == nil && root.Right == nil  {
+            if newTotal == 0 {res = append(res, newPath)}
+            return
+        }
+        dfs(root.Left, newPath, newTotal)
+        dfs(root.Right, newPath, newTotal)
+    }
+    dfs(root, []int{}, sum)
     return res
 }
 ```
