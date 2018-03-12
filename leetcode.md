@@ -3002,6 +3002,19 @@ func findDuplicates(nums []int) []int {
 }
 ```
 
+### 441. Arranging Coins
+
+- level: 1-easy
+
+```go
+func arrangeCoins(n int) int {
+    for i:=1; ;i++ {
+        if n < i*(i+1)/2 {return i-1}
+    }
+    return 0
+}
+```
+
 ### 438. Find All Anagrams in a String
 
 - level: 1-easy
