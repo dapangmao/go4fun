@@ -1,3 +1,23 @@
+### 822. Unique Morse Code Words
+
+- level: 1-easy
+
+```go
+var codes = []string{".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."}
+
+func uniqueMorseRepresentations(words []string) int {
+    set := make(map[string]bool)
+    for _, word := range words {
+        var current string
+        for _, b := range []byte(word) {
+            current += codes[int(b-'a')]
+        }
+        set[current] = true
+    }
+    return len(set)
+}
+```
+
 ### 815. Champagne Tower
 
 - level: 2-medium
@@ -5809,6 +5829,38 @@ func letterCombinations(digits string) []string {
             }
         }
         res = current
+    }
+    return res
+}
+```
+
+### 15. 3Sum
+
+- level: 2-medium
+
+```go
+func threeSum(num []int) [][]int {   
+    sort.Ints(num)
+    var res [][]int 
+    for i:=0; i < len(num)-2; i++ {
+        if i == 0 || (i > 0 && num[i] != num[i-1]) {
+            var lo = i+1
+            var hi = len(num) - 1
+            var sum = 0 - num[i]
+            for lo < hi {
+                if (num[lo] + num[hi] == sum) {
+                    res = append(res, []int{num[i], num[lo], num[hi]})
+                    for lo < hi && num[lo] == num[lo+1] {lo++}
+                    for lo < hi && num[hi] == num[hi-1] {hi--}
+                    lo++
+                    hi--
+                } else if num[lo] + num[hi] < sum { 
+                    lo++
+                } else {
+                    hi--
+                }
+           }
+        }
     }
     return res
 }
