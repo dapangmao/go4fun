@@ -40,7 +40,6 @@ class LeetCode(object):
         s = s.replace(' ', '%20')
         return '[solution]({})'.format(url_prefix+s)
 
-
     def match_local(self, all_questions):
         all_questions = self.get_leetcode()
         logging.warning("*"*80)
@@ -85,5 +84,5 @@ class LeetCode(object):
         result.sort(key=lambda x: (-x[0], -float(x[4].replace('%', ''))))
         header = ['No', 'Name', 'Difficulty', 'Paid', 'Rate', 'Solution']
         with open('README.md', 'wt') as outfile:
-            outfile.write(self.travis_ci)
+            outfile.write(self.travis_ci + '\n')
             outfile.write(tabulate(result, header, tablefmt="pipe"))
