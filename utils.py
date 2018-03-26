@@ -84,5 +84,5 @@ class LeetCode(object):
         result.sort(key=lambda x: (-x[0], -float(x[4].replace('%', ''))))
         header = ['No', 'Name', 'Difficulty', 'Paid', 'Rate', 'Solution']
         with open('README.md', 'wt') as outfile:
-            outfile.write(self.travis_ci + '\n')
+            outfile.write(self.travis_ci + '\n\n')
             outfile.write(tabulate(result, header, tablefmt="pipe"))

@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/dapangmao/go4fun.svg?branch=master)](https://travis-ci.org/dapangmao/go4fun)
+
 |   No | Name                                                                                                                                                   | Difficulty   | Paid   | Rate   | Solution                                                                                                                                       |
 |-----:|:-------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------|:-------|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
 |  825 | [Max Increase to Keep City Skyline](https://leetcode.com/problems/max-increase-to-keep-city-skyline)                                                   | 2-medium     |        | 85%    |                                                                                                                                                |
