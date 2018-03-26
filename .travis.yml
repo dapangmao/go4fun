@@ -7,7 +7,7 @@ install:
 
 
 after_success: |
-  if [ -n "$public_token" ]; then
+  if [ -n "$GITHUB_API_KEY" ]; then
     cd "$TRAVIS_BUILD_DIR"
     # This generates a `web` directory containing the website.
     make web
@@ -18,6 +18,6 @@ after_success: |
     git -c user.name='travis' -c user.email='travis' commit -m init
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
-    git push -f -q https://dapangmao:$public_token@github.com/dapangmao/go4fun
+    git push -f -q https://dapangmao:$GITHUB_API_KEY@github.com/dapangmao/go4fun
     cd "$TRAVIS_BUILD_DIR"
   fi
