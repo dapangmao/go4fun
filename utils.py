@@ -3,7 +3,7 @@ import json
 import os
 import logging
 from tabulate import tabulate
-from subprocess import call
+# from subprocess import call
 from collections import Counter
 
 
@@ -75,7 +75,7 @@ class LeetCode(object):
         with open(title, 'w') as outfile:
             print(out, file=outfile)
         # write to epub
-        call(["pandoc", title, "-o", "leetcode.epub"])
+        # call(["pandoc", title, "-o", "leetcode.epub"])
 
     def write_readme(self):
         all_questions = self.get_leetcode()
