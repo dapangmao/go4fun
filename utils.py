@@ -12,6 +12,7 @@ class LeetCode(object):
     def __init__(self):
         self.solution = set(os.listdir('./leetcode'))
         self.lang = "go"
+        self.travis_ci = "[![Build Status](https://travis-ci.org/dapangmao/go4fun.svg?branch=master)](https://travis-ci.org/dapangmao/go4fun)"
 
     def get_leetcode(self):
         r = requests.get('https://leetcode.com/api/problems/algorithms')
@@ -84,4 +85,5 @@ class LeetCode(object):
         result.sort(key=lambda x: (-x[0], -float(x[4].replace('%', ''))))
         header = ['No', 'Name', 'Difficulty', 'Paid', 'Rate', 'Solution']
         with open('README.md', 'wt') as outfile:
+            outfile.write(self.travis_ci)
             outfile.write(tabulate(result, header, tablefmt="pipe"))
