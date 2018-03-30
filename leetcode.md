@@ -1,3 +1,52 @@
+### 825. Max Increase to Keep City Skyline
+
+- level: 2-medium
+
+```go
+func maxIncreaseKeepingSkyline(grid [][]int) int {
+    n, m := len(grid), len(grid[0])
+    var res int
+    rowMax, colMax := make([]int, n), make([]int, m)
+    for i:=0; i<n; i++ {
+        for j:=0; j<m; j++ {
+            if grid[i][j] > rowMax[i] {rowMax[i] = grid[i][j]}
+            if grid[i][j] > colMax[j] {colMax[j] = grid[i][j]}
+        }
+    }
+    for i:=0; i<n; i++ {
+        for j:=0; j<m; j++ {
+            var current = rowMax[i]
+            if current > colMax[j] {current = colMax[j]}
+            if current > grid[i][j] {
+                res += current - grid[i][j]
+            }
+        }
+    }
+    return res
+}
+```
+
+### 824. Number of Lines To Write String
+
+- level: 1-easy
+
+```go
+func numberOfLines(widths []int, S string) []int {
+    if len(S) == 0 {return []int{0, 0}}
+    rowNo, currentRow := 1, 0
+    for _, bt := range []byte(S) {
+        var current = widths[int(bt - 'a')]
+        if currentRow + current <= 100 {
+            currentRow += current
+        } else {
+            rowNo++
+            currentRow = current
+        }
+    }
+    return []int{rowNo, currentRow}
+}
+```
+
 ### 822. Unique Morse Code Words
 
 - level: 1-easy
