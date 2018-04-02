@@ -1,3 +1,29 @@
+### 829. Subdomain Visit Count
+
+- level: 1-easy
+
+```go
+func subdomainVisits(cpdomains []string) []string {
+    hash := make(map[string]int)
+    for _, cpdomain := range cpdomains {
+        fields := strings.Fields(cpdomain)
+        freq, _ := strconv.Atoi(fields[0])
+        splits := strings.Split(fields[1], ".")
+        for i:=0; i<len(splits); i++ {
+            current := strings.Join(splits[i:], ".")
+            hash[current] += freq // a default zero value
+        }
+    }
+    var res []string
+    for k, v := range hash {
+        res = append(res, fmt.Sprintf("%d %s", v, k))
+    }
+    return res
+}
+// the strings package & the string function/type
+// how to sort the hash map?
+```
+
 ### 825. Max Increase to Keep City Skyline
 
 - level: 2-medium
@@ -3565,6 +3591,28 @@ func (this *RandomizedSet) GetRandom() int {
 }
 ```
 
+### 378. Kth Smallest Element in a Sorted Matrix
+
+- level: 2-medium
+
+```go
+func kthSmallest(matrix [][]int, k int) int {
+    n := len(matrix)
+    var bf = make([]int, n*n) // don't use []int{} here
+    var l int
+    for i:=0; i<n; i++ {
+        for j:=0; j<n; j++ {
+            bf[l] = matrix[i][j]
+            l++
+        }
+    }
+    sort.Slice(bf, func(i, j int) bool {
+        return bf[i] < bf[j]
+    })
+    return bf[k-1]
+}
+```
+
 ### 371. Sum of Two Integers
 
 - level: 1-easy
@@ -3688,6 +3736,30 @@ func isPowerOfFour(num int) bool {
         x *= 4
     }
     return false
+}
+```
+
+### 337. House Robber III
+
+- level: 2-medium
+
+```go
+func rob(root *TreeNode) int {
+    var dfs func(root *TreeNode) (int, int) 
+    dfs = func(root *TreeNode) (int, int) {
+        if root == nil {
+            return 0, 0
+        }
+        rob_L, no_rob_L := dfs(root.Left)
+        rob_R, no_rob_R := dfs(root.Right)
+        var prev = rob_L + rob_R
+        var res = prev
+        var no_rob = no_rob_L + no_rob_R + root.Val
+        if no_rob > res {res = no_rob}
+        return res, prev 
+    }
+    res, _ := dfs(root)
+    return res
 }
 ```
 
