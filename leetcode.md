@@ -2516,6 +2516,38 @@ func dfs(root *TreeNode, level int) {
 }
 ```
 
+### 513. Find Bottom Left Tree Value
+
+- level: 2-medium
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func findBottomLeftValue(root *TreeNode) int {
+    prev := []*TreeNode{root}
+    for len(prev) > 0 {
+        current := []*TreeNode{}
+        for _, n := range prev {
+            if n.Left != nil {
+                current = append(current, n.Left)
+            }
+            if n.Right != nil {
+                current = append(current, n.Right)
+            }
+        }
+        if len(current) == 0 {return prev[0].Val}
+        prev = current
+    }
+    return -1
+}
+```
+
 ### 508. Most Frequent Subtree Sum
 
 - level: 2-medium
@@ -3604,6 +3636,23 @@ func isVowel(a byte) bool {
     if a == 'a' || a == 'e' || a == 'u' || a == 'o' || a == 'i' {return true}
     if a == 'A' || a == 'E' || a == 'U' || a == 'O' || a == 'I' {return true}
     return false
+}
+```
+
+### 344. Reverse String
+
+- level: 1-easy
+
+```go
+func reverseString(s string) string {
+    res := []byte(s)
+    i, j := 0, len(res)-1
+    for i < j {
+        res[i], res[j] = res[j], res[i]
+        i++
+        j--
+    }
+    return string(res)
 }
 ```
 
@@ -5775,6 +5824,16 @@ func searchRange(nums []int, target int) []int {
         j++
     }
     return []int{i, j-1}
+}
+```
+
+### 28. Implement strStr()
+
+- level: 1-easy
+
+```go
+func strStr(haystack string, needle string) int {
+    return strings.Index(haystack, needle)   
 }
 ```
 
