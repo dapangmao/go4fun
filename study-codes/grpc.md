@@ -3,10 +3,6 @@
 ```go
 syntax = "proto3";
 
-option java_multiple_files = true;
-option java_package = "io.grpc.examples.helloworld";
-option java_outer_classname = "HelloWorldProto";
-
 package helloworld;
 
 // The greeting service definition.
@@ -40,9 +36,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-const (
-	port = ":50051"
-)
+const port = ":50051"
 
 // server is used to implement helloworld.GreeterServer.
 type server struct{}
@@ -76,8 +70,8 @@ import (
 	"log"
 	"os"
 	"time"
-
-	"golang.org/x/net/context"
+	"context"
+	
 	"google.golang.org/grpc"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
