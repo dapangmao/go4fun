@@ -8,13 +8,11 @@
 
 
 // more information can be found at TGPL 7.5.1
+// **** an interface containing a Nil pointer is not nil ***
+// such as new(ListNode)
+// otherwise using *ListNode
 func reverseList(head *ListNode) *ListNode {
     if head == nil || head.Next == nil {return head}
-    // (1) untyped nil does not work
-    // prev := nil 
-    // (2) This works
-    // prev := new(ListNode).Next
-    // (3) Best approach
     var prev *ListNode
     for head != nil {
         current := head.Next
