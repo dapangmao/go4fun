@@ -5,6 +5,9 @@
  *     Next *ListNode
  * }
  */
+
+
+// more information can be found at TGPL 7.5.1
 func reverseList(head *ListNode) *ListNode {
     if head == nil || head.Next == nil {return head}
     // (1) untyped nil does not work
