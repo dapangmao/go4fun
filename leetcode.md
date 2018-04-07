@@ -914,6 +914,54 @@ func removeComments(source []string) []string {
 }
 ```
 
+### 721. Accounts Merge
+
+- level: 2-medium
+
+```go
+func accountsMerge(accounts [][]string) [][]string {
+	em_to_name := make(map[string]string)
+	graph := make(map[string]map[string]bool)
+	for _, acc := range accounts {
+		name := acc[0]
+		for _, email := range acc[1:] {
+      // how to simplify the 4 lines below
+			if _, ok := graph[email]; ok {
+				graph[email][acc[1]] = true
+			} else {
+				graph[email] = map[string]bool{acc[1]: true}
+			}
+			graph[acc[1]][email] = true
+			em_to_name[email] = name
+		}
+	}
+	seen := make(map[string]bool)
+	var ans [][]string
+	for email := range graph {
+		if !seen[email] {
+			seen[email] = true
+			stack := []string{email}
+			var component []string
+			for len(stack) > 0 {
+				node := stack[len(stack)-1]
+				stack = stack[:len(stack)-1]
+				component = append(component, node)
+				for nei := range graph[node] {
+					if !seen[nei] {
+						seen[nei] = true
+						stack = append(stack, nei)
+					}
+				}
+			}
+			sort.Strings(component)
+			component = append([]string{em_to_name[email]}, component...)
+			ans = append(ans, component)
+		}
+	}
+	return ans
+}
+```
+
 ### 720. Longest Word in Dictionary
 
 - level: 1-easy
@@ -3319,6 +3367,31 @@ func longestPalindrome(s string) int {
 }
 ```
 
+### 406. Queue Reconstruction by Height
+
+- level: 2-medium
+
+```go
+func reconstructQueue(people [][]int) [][]int {
+    sort.Slice(people, func(i, j int) bool {
+        if people[i][0] != people[j][0] {
+            return people[i][0] > people[j][0]
+        }
+        return people[i][1] < people[j][1]
+    }) 
+    var res [][]int
+    for _, p := range people {
+        var i = p[1]
+        // res = append(res[:i], append([][]int{p}, res[i:]...)...)
+        res = append(res, []int{0, 0})
+        copy(res[i+1:], res[i:])
+        res[i] = p
+    }
+    return res
+}
+
+```
+
 ### 405. Convert a Number to Hexadecimal
 
 - level: 1-easy
@@ -4359,13 +4432,19 @@ func minSubArrayLen(s int, nums []int) int {
  *     Next *ListNode
  * }
  */
+
+
+// more information can be found at TGPL 7.5.1
+// **** an interface containing a Nil pointer is not nil ***
+// func main() {
+// 	var a *ListNode
+// 	fmt.Println(a)
+// 	var b = new(ListNode)
+// 	fmt.Println(b)
+// }
+
 func reverseList(head *ListNode) *ListNode {
     if head == nil || head.Next == nil {return head}
-    // (1) untyped nil does not work
-    // prev := nil 
-    // (2) This works
-    // prev := new(ListNode).Next
-    // (3) Best approach
     var prev *ListNode
     for head != nil {
         current := head.Next
