@@ -1,3 +1,42 @@
+### 832. Binary Tree Pruning
+
+- level: 2-medium
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func pruneTree(root *TreeNode) *TreeNode {
+    hash := make(map[*TreeNode]bool)
+    var isZeroTree func(root *TreeNode) bool
+    isZeroTree = func(root *TreeNode) bool {
+        if root == nil {return true}
+        left, right := isZeroTree(root.Left), isZeroTree(root.Right)
+        if left && right && root.Val == 0 {
+            hash[root] = true
+            return true
+        }
+        return false
+    }
+    isZeroTree(root)
+    var dfs func(root *TreeNode) 
+    dfs = func(root *TreeNode) {
+        if root == nil {return}
+        if hash[root.Left] {root.Left = nil}
+        if hash[root.Right] {root.Right = nil}
+        dfs(root.Left)
+        dfs(root.Right)
+    }
+    dfs(root)
+    return root
+}
+```
+
 ### 829. Subdomain Visit Count
 
 - level: 1-easy
@@ -2439,6 +2478,29 @@ func dfs(root *TreeNode) int {
     if l + r > res {res = l + r}
     if l > r {return l + 1}
     return r + 1
+}
+```
+
+### 540. Single Element in a Sorted Array
+
+- level: 2-medium
+
+```go
+func singleNonDuplicate(nums []int) int {
+    n := len(nums)
+    lo, hi := 0, n-1
+    for lo < hi {
+        mid := (lo + hi) / 2
+        if mid % 2 == 1 {
+            mid--
+        }
+        if nums[mid] != nums[mid+1] {
+            hi = mid 
+        } else {
+            lo = mid + 2
+        }
+    }
+    return nums[lo]
 }
 ```
 
