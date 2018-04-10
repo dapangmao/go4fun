@@ -2530,6 +2530,41 @@ func singleNonDuplicate(nums []int) int {
 }
 ```
 
+### 538. Convert BST to Greater Tree
+
+- level: 1-easy
+
+```go
+func convertBST(root *TreeNode) *TreeNode {
+    var s = 0
+    dfs(root, &s)
+    return root
+}
+
+func dfs (root *TreeNode, sum *int) {
+    if root == nil {return}
+    dfs(root.Right, sum)
+    *sum += root.Val
+    root.Val = *sum
+    dfs(root.Left, sum)
+}
+
+// functional but 3 times slower
+func convertBST(root *TreeNode) *TreeNode {
+    var sum = 0
+    var dfs func(root *TreeNode) 
+    dfs = func(root *TreeNode) {
+        if root == nil {return}
+        dfs(root.Right)
+        sum += root.Val
+        root.Val = sum
+        dfs(root.Left)
+    }
+    dfs(root)
+    return root
+}
+```
+
 ### 537. Complex Number Multiplication
 
 - level: 2-medium
@@ -3312,6 +3347,33 @@ func checkHash(hash []int) bool {
 }
 ```
 
+### 437. Path Sum III
+
+- level: 1-easy
+
+```go
+func pathSum(root *TreeNode, sum int) int {
+    var res int
+    var dfs func(root *TreeNode, path []int) 
+    dfs = func(root *TreeNode, path []int) {
+        if root == nil {return}
+        newPath := make([]int, len(path)+1)
+        for i := range newPath  {
+            if i == len(path) {
+                newPath[i] = root.Val
+            } else {
+                newPath[i] = path[i] + root.Val
+            } 
+            if newPath[i] == sum {res++}
+        }
+        dfs(root.Left, newPath)
+        dfs(root.Right, newPath)
+    }
+    dfs(root, []int{})
+    return res
+}
+```
+
 ### 434. Number of Segments in a String
 
 - level: 1-easy
@@ -3701,6 +3763,43 @@ func canConstruct(ransomNote string, magazine string) bool {
         if dic[x] < 0 {return false}
     }
     return true
+}
+```
+
+### 382. Linked List Random Node
+
+- level: 2-medium
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+type Solution struct {
+    ptrs []*ListNode
+}
+
+
+/** @param head The linked list's head.
+        Note that the head is guaranteed to be not null, so it contains at least one node. */
+func Constructor(head *ListNode) Solution {
+    var ptrs []*ListNode
+    for head != nil {
+        ptrs = append(ptrs, head)
+        head = head.Next
+    }
+    return Solution{ptrs}
+}
+
+
+/** Returns a random node's value. */
+func (this *Solution) GetRandom() int {
+    // should be Intn instead of Int
+    var current = rand.Intn(len(this.ptrs))
+    return this.ptrs[current].Val
 }
 ```
 
