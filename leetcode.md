@@ -2830,6 +2830,29 @@ func findRelativeRanks(nums []int) []string {
 }
 ```
 
+### 504. Base 7
+
+- level: 1-easy
+
+```go
+var m = []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
+
+func convertToBase7(num int) string {
+    if num == 0 {return "0"}
+    var sign = ""
+    if num < 0 {
+        sign = "-"
+        num = -num
+    }
+    var res []byte
+    for num > 0 {
+        res = append([]byte{m[num%7]}, res...)
+        num /= 7
+    }
+    return sign + string(res)
+}
+```
+
 ### 503. Next Greater Element II
 
 - level: 2-medium
@@ -4423,6 +4446,32 @@ func isAnagram(s string, t string) bool {
 }
 ```
 
+### 240. Search a 2D Matrix II
+
+- level: 2-medium
+
+```go
+func searchMatrix(matrix [][]int, target int) bool {
+    n := len(matrix)
+    if n == 0 {return false}
+    m := len(matrix[0])
+    if m == 0 {return false}
+    i, j := 0, m-1
+    for i < n && j >= 0 {
+        current := matrix[i][j]
+        if current == target {
+            return true
+        }
+        if target > current {
+            i++
+        } else {
+            j--
+        }
+    }
+    return false
+}
+```
+
 ### 238. Product of Array Except Self
 
 - level: 2-medium
@@ -5605,6 +5654,20 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 }
 ```
 
+### 94. Binary Tree Inorder Traversal
+
+- level: 2-medium
+
+```go
+func inorderTraversal(root *TreeNode) []int {
+    if root == nil {
+        return []int{}
+    }
+    // use two appends to insert an element
+    return append(append(inorderTraversal(root.Left), root.Val), inorderTraversal(root.Right)...) 
+}
+```
+
 ### 93. Restore IP Addresses
 
 - level: 2-medium
@@ -5718,6 +5781,35 @@ func combine(n int, k int) [][]int {
     }
     dfs(1, []int{})
     return res
+}
+```
+
+### 75. Sort Colors
+
+- level: 2-medium
+
+```go
+func sortColors(nums []int)  {
+    zero, one:= 0, 0
+    for _, x := range nums {
+        if x == 0 {
+            zero++
+        } else if x == 1 {
+            one++
+        }
+    }
+    for i:=0 ; i<len(nums); i++ {
+        if zero > 0 {
+            nums[i] = 0
+            zero--
+        } else if one > 0 {
+            nums[i] = 1
+            one--
+        } else {
+            nums[i] = 2
+        }
+    }
+    
 }
 ```
 
