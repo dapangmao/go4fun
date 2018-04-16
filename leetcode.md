@@ -1,3 +1,34 @@
+### 837. Most Common Word
+
+- level: 1-easy
+
+```go
+func mostCommonWord(paragraph string, banned []string) string {
+    max, cand := -1, ""
+    var set = make(map[string]bool)
+    for _, x := range banned { set[x] = true }
+    var splits = strings.Fields(paragraph)
+    var dic = make(map[string]int)
+    for _, x := range splits {
+        var current = strings.ToLower(x)
+        last := x[len(x)-1] 
+        for _, y := range []byte("!?',;.") {
+            if last == y {
+                current = current[:len(x)-1]
+                break
+            }
+        }
+        if _, ok := set[current]; ok {continue}
+        dic[current]++ 
+        if dic[current] > max {
+            cand = current
+            max = dic[current]
+        }
+    }
+    return cand
+}
+```
+
 ### 832. Binary Tree Pruning
 
 - level: 2-medium
@@ -5654,6 +5685,22 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 }
 ```
 
+### 98. Validate Binary Search Tree
+
+- level: 2-medium
+
+```go
+func isValidBST(root *TreeNode) bool {
+    var dfs func(root *TreeNode, min, max int) bool
+    dfs = func(root *TreeNode, min, max int) bool {
+        if root == nil {return true}
+        if root.Val <= min || root.Val >= max {return false}
+        return dfs(root.Left, min, root.Val) && dfs(root.Right, root.Val, max)  
+    }
+    return dfs(root, math.MinInt64, math.MaxInt64)
+}
+```
+
 ### 94. Binary Tree Inorder Traversal
 
 - level: 2-medium
@@ -6514,6 +6561,30 @@ func romanToInt(s string) int {
     }
     return res
 }
+```
+
+### 12. Integer to Roman
+
+- level: 2-medium
+
+```go
+var (
+	arabs  = []int{1000,900,500,400,100,90,50,40,10,9,5,4,1}
+	romans = []string{"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"}
+)
+
+func intToRoman(num int) string {
+	var res strings.Builder
+	for  i:=0; i<len(arabs); i++ {
+		for num >= arabs[i] {
+			num -= arabs[i]
+			res.Write([]byte(romans[i]))
+		}
+	}
+	return res.String()
+}
+
+
 ```
 
 ### 11. Container With Most Water
