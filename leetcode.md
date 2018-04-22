@@ -1,3 +1,56 @@
+### 841. Shortest Distance to a Character
+
+- level: 1-easy
+
+```go
+func shortestToChar(S string, C byte) []int {
+    n := len(S)
+    res := make([]int, n)
+    var current = 888888
+    barr := []byte(S) 
+    for i, x := range barr{
+        if x == C {
+            current = i
+        } 
+        if current == 888888 {
+            res[i] = 888888
+        } else {
+            res[i] = i - current
+        }
+    }
+    current = 888888
+    for i:=n-1; i>=0; i-- {
+        if barr[i] == C {
+            current = i
+        }
+        if current == 888888 {continue}
+        if current - i < res[i] {
+            res[i] = current - i
+        }
+    }
+    return res
+}
+```
+
+### 839. Short Encoding of Words
+
+- level: 2-medium
+
+```go
+func minimumLengthEncoding(words []string) int {
+    set := make(map[string]bool)
+    for _, word := range words {set[word] = true}
+    for _, word := range words {
+        for i:=1; i<len(word); i++ {
+            delete(set, word[i:])
+        }
+    }
+    var res = len(set) 
+    for k := range set {res += len(k)}
+    return res
+}
+```
+
 ### 837. Most Common Word
 
 - level: 1-easy
@@ -3029,6 +3082,22 @@ func findDiagonalOrder(matrix [][]int) []int {
         res = append(res, current...)
     }
     return res
+}
+```
+
+### 495. Teemo Attacking
+
+- level: 2-medium
+
+```go
+func findPoisonedDuration(timeSeries []int, duration int) int {
+    n := len(timeSeries)
+    ans := duration * n
+    for i:=1; i<n; i++ {
+        current := duration - (timeSeries[i] - timeSeries[i-1])
+        if current > 0 {ans -= current}
+    }
+    return ans
 }
 ```
 
