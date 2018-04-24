@@ -156,6 +156,31 @@ func pruneTree(root *TreeNode) *TreeNode {
 }
 ```
 
+### 831. Largest Sum of Averages
+
+- level: 2-medium
+
+```go
+func largestSumOfAverages(A []int, K int) float64 {
+    n := len(A)
+    if n < K {return 0.0}
+    sort.Ints(A)
+    i := n-1
+    var res float64
+    for ; K>1; K-- {
+        res += float64(A[i])
+        i--
+    }
+    var mean float64 
+    var div = float64(i + 1)
+    for ; i>=0; i-- {
+        mean += float64(A[i])
+    }
+    res += mean / div
+    return res
+}
+```
+
 ### 830. Largest Triangle Area
 
 - level: 1-easy
@@ -3227,6 +3252,31 @@ func findRadius(houses []int, heaters []int) int {
 }
 ```
 
+### 474. Ones and Zeroes
+
+- level: 2-medium
+
+```go
+func findMaxForm(strs []string, m int, n int) int {
+    // 0-1 knapsack problem
+    var dp = make([][]int, m+1)
+    for i:=0; i<=m; i++ {dp[i] = make([]int, n+1)}
+    for _, str := range strs {
+        ones := strings.Count(str, "1") // count characters actually
+        zeros := len(str) - ones
+        for i:=m; i>=zeros; i-- {
+            for j:=n; j>=ones; j-- {
+                var current = dp[i-zeros][j-ones] + 1
+                if current > dp[i][j] {
+                    dp[i][j] = current
+                }
+            }
+        }
+    }
+    return dp[m][n]
+}
+```
+
 ### 463. Island Perimeter
 
 - level: 1-easy
@@ -5908,6 +5958,27 @@ func exist(board [][]byte, word string) bool {
 		}
 	}
 	return false
+}
+```
+
+### 78. Subsets
+
+- level: 2-medium
+
+```go
+func subsets(nums []int) [][]int {
+    n := len(nums)
+    var res = [][]int{}
+    var dfs func(current []int, start int) 
+    dfs = func(current []int, start int) {
+        res = append(res, current)
+        for i:=start; i<n; i++ {
+            next := append([]int{nums[i]}, current...)
+            dfs(next, i+1)
+        }        
+    }
+    dfs([]int{}, 0)
+    return res
 }
 ```
 
