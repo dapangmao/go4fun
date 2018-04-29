@@ -1,3 +1,29 @@
+### 851. Goat Latin
+
+- level: 1-easy
+
+```go
+var vowels = map[byte]bool{'a': true, 'A': true, 'e': true, 'E': true, 'o': true, 'O': true, 'i': true, 'I': true, 'u': true, 'U': true}
+
+func toGoatLatin(S string) string {
+    arr := strings.Fields(S)
+    parse := func(w string) string {
+        first, rest := w[0], w[1:]
+        if vowels[first] {
+            return w + "ma"
+        }
+        return rest + string(first) + "ma"
+    }
+    var res []string
+    var appendix = "a"
+    for _, x := range arr {
+        res = append(res, parse(x) + appendix)
+        appendix += "a"
+    }
+    return strings.Join(res, " ")
+}
+```
+
 ### 841. Shortest Distance to a Character
 
 - level: 1-easy
@@ -4262,9 +4288,11 @@ func isSelfCrossing(x []int) bool {
     for i:=3; i<len(x); i++ {
             if x[i]>=x[i-2] && x[i-1]<=x[i-3] {
                 return true // Case 1: current line crosses the line 3 steps ahead of it
-            }  else if i>=4 && x[i-1]==x[i-3] && x[i]+x[i-4]>=x[i-2] {
+            }  
+            if i>=4 && x[i-1]==x[i-3] && x[i]+x[i-4]>=x[i-2] {
                 return true // Case 2: current line crosses the line 4 steps ahead of it
-            } else if i>=5 && x[i-2]>=x[i-4] && x[i]+x[i-4]>=x[i-2] && x[i-1]<=x[i-3] && x[i-1]+x[i-5]>=x[i-3] {
+            } 
+            if i>=5 && x[i-2]>=x[i-4] && x[i]+x[i-4]>=x[i-2] && x[i-1]<=x[i-3] && x[i-1]+x[i-5]>=x[i-3] {
                 return true // Case 3: current line crosses the line 6 steps ahead of it
             }  
     }
