@@ -1,3 +1,491 @@
+### 1026. String Without AAA or BBB
+
+- level: 1-easy
+
+```go
+func strWithout3a3b(A int, B int) string {
+    var res []string
+    b, s := A, B
+    bc, sc := "a", "b"
+    if B > A {
+        b, s = B, A
+        bc, sc = "b", "a"
+    }
+    for i:=0; i<s; i++ {
+        res = append(res, bc)
+        res = append(res, sc)
+        b--
+    }
+    if b > 0 {
+        res = append(res, bc)
+        b--
+    }
+    for i, x := range res {
+        if b == 0 {break}
+        if x == bc {
+            res[i] = bc + bc
+            b--
+        }
+    }
+    return strings.Join(res, "")
+}
+```
+
+### 1025. Minimum Cost For Tickets
+
+- level: 2-medium
+
+```go
+func mincostTickets(days []int, costs []int) int {
+    var res = 23324324
+    var dfs func(duration int, sum int, idx int)
+    
+    var set = make(map[[3]int]bool)
+    
+    dfs = func(duration int, sum int, idx int) {
+        tuple := [3]int{duration, sum, idx}
+        if set[tuple] == true {
+            return
+        } else {
+            set[tuple] = true
+        }
+        if idx >= len(days) {
+            if sum < res {res = sum}
+            return
+        }
+        if idx > 0 && duration > 0 {
+            gap := duration - days[idx] + days[idx-1]
+            if gap >= 0 {
+                dfs(gap, sum, idx+1)
+                return
+            }
+        }
+        dfs(0, sum+costs[0], idx+1)
+        dfs(6, sum+costs[1], idx+1)
+        dfs(29, sum+costs[2], idx+1)
+
+    }
+    dfs(0, 0, 0)
+    return res
+}
+```
+
+### 1018. Largest Perimeter Triangle
+
+- level: 1-easy
+
+```go
+func largestPerimeter(A []int) int {
+    sort.Ints(A)
+    n := len(A)
+    for i:=n-3; i>=0; i-- {
+        a, b, c := A[i], A[i+1], A[i+2]
+        if a + b > c {
+            return a + b + c
+        }
+    }
+    return 0
+}
+```
+
+### 1014. K Closest Points to Origin
+
+- level: 1-easy
+
+```go
+func kClosest(points [][]int, K int) [][]int {
+    sort.Slice(points, func(i, j int) bool {
+        p1, p2 := points[i], points[j]
+        return p1[0]*p1[0] + p1[1]*p1[1] < p2[0]*p2[0] + p2[1]*p2[1]
+    })
+    return points[:K]
+}
+```
+
+### 1010. Powerful Integers
+
+- level: 1-easy
+
+```go
+func powerfulIntegers(x int, y int, bound int) []int {
+    var res []int
+    var set = make(map[int]bool)
+    for i:=0; i<17; i++ {
+        for j:=0; j<17; j++ {
+            current := pow(x, i) + pow(y, j)
+            if !set[current]  && current <= bound {
+                res = append(res, current)
+                set[current] = true
+            }
+        }
+    }
+    return res
+}
+
+func pow(i, j int) int {
+    var res = 1
+    for ; j > 0; j-- {
+        res = i*res
+        if res >= math.MaxInt32 || res <= math.MinInt32 {return 1}
+    }
+    return res
+}
+```
+
+### 1006. Vowel Spellchecker
+
+- level: 2-medium
+
+```go
+func spellchecker(wordlist []string, queries []string) []string {
+	original := make(map[string]bool)
+	capitals := make(map[string]string)
+	vowels := make(map[string]string)
+
+	for _, word := range wordlist {
+		original[word] = true
+		capKey := strings.ToUpper(word)
+		if _, ok := capitals[capKey]; !ok {
+			capitals[capKey] = word
+		}
+		vowKey := makeVowKey(word)
+		if _, ok := vowels[vowKey]; !ok {
+			vowels[vowKey] = word
+		}
+	}
+	var res []string
+	for _, q := range queries {
+		var current string
+		if original[q] {
+			current = q
+		} else if w, ok := capitals[strings.ToUpper(q)]; ok {
+			current = w
+		} else if w, ok := vowels[makeVowKey(q)]; ok {
+			current = w
+		}
+		res = append(res, current)
+	}
+	return res
+}
+
+func makeVowKey(s string) string {
+	var sb strings.Builder
+    for i, b := range bytes.ToLower([]byte(s)) {
+		if b == 'a' || b == 'e' || b == 'i' || b == 'o' || b == 'u' {continue}
+        fmt.Fprintf(&sb, "%d%c", i, b)
+	}
+	return sb.String()
+}
+```
+
+### 991. Array of Doubled Pairs
+
+- level: 2-medium
+
+```go
+func canReorderDoubled(A []int) bool {
+    dict := make(map[int]int)
+    var ints []int
+    for _, x := range A {
+        if _, ok := dict[x]; !ok {ints = append(ints, x)}
+        dict[x]++
+    }
+    sort.Slice(ints, func(i, j int) bool {
+        a, b := ints[i], ints[j]
+        if a < 0 {a = -a}
+        if b < 0 {b = -b}
+        return a < b
+    })
+    for _, x := range ints {
+        if dict[x] == 0 {continue}
+        if _, ok := dict[2*x]; !ok || dict[2*x] - dict[x] < 0 {
+            return false
+        }
+        dict[2*x] -= dict[x]
+        dict[x] = 0
+
+    }
+    for _, v := range dict {
+        if v != 0 {return false}
+    }
+    return true
+}
+```
+
+### 990. Verifying an Alien Dictionary
+
+- level: 1-easy
+
+```go
+func isAlienSorted(words []string, order string) bool {
+   
+    dict := make(map[byte]int)
+    for i, c := range []byte(order) {
+        dict[c] = i
+    }
+    
+    isTwoWordsSorted := func(a, b string) bool {
+        i := 0
+        for {
+            if i == len(a) {return true}
+            if i == len(b) {return false}
+            if dict[a[i]] < dict[b[i]] {return true}
+            if dict[a[i]] > dict[b[i]] {return false}
+            i++
+        }
+        return true
+    }
+    
+    for i:=1; i<len(words); i++ {
+        if !isTwoWordsSorted(words[i-1], words[i]) {return false}
+    }
+    return true
+}
+```
+
+### 986. Largest Time for Given Digits
+
+- level: 1-easy
+
+```go
+func largestTimeFromDigits(A []int) string {
+    var ans = -1
+    for i:= 0; i<4; i++ {
+        for j:= 0; j<4; j++ {
+            for k:=0; k<4; k++ {
+                if i == j || i == k || k == j {continue}
+                var l = 6 - i - j - k
+                hours, mins := 10 * A[i] + A[j], 10 * A[k] + A[l]
+                current := hours * 60 + mins
+                if hours < 24 && mins < 60 && current > ans {
+                    ans = current
+                }
+            }
+        }
+    }
+    if ans < 0 {return ""}
+    return fmt.Sprintf("%02d:%02d", ans/60, ans%60)
+}
+```
+
+### 981. Delete Columns to Make Sorted
+
+- level: 1-easy
+
+```go
+func minDeletionSize(A []string) int {
+    n, m := len(A), len(A[0])
+    if n == 1 {
+        return 0
+    }
+    var res int
+    for j:=0; j<m; j++ {
+        var prev byte = 'a'
+        for i:=0; i<n; i++ {
+            if A[i][j] < prev {
+                res++
+                break
+            }
+            prev = A[i][j]
+        }
+    }
+    return res
+} 
+```
+
+### 967. Minimum Falling Path Sum
+
+- level: 2-medium
+
+```go
+func minFallingPathSum(A [][]int) int {
+    n := len(A)
+    for i:=1; i<n; i++ {
+        for j:=0; j<n; j++ {
+            cand := A[i-1][j]
+            if j > 0 && A[i-1][j-1] < cand {cand = A[i-1][j-1]}
+            if j < n-1 && A[i-1][j+1] < cand {cand = A[i-1][j+1]}
+            A[i][j] += cand 
+        }
+    }
+    res := 34243242
+    for i:=0; i<n; i++ {
+        if A[n-1][i] < res {res = A[n-1][i]}
+    }
+    return res
+}
+```
+
+### 965. Unique Email Addresses
+
+- level: 1-easy
+
+```go
+func numUniqueEmails(emails []string) int {
+    var set = make(map[[2]string]bool)
+    clean := func(s string) string {
+        idx := strings.Index(s, "+")
+        if idx == -1 {
+            idx = len(s)
+        }
+        return strings.Replace(s[:idx], ".", "", -1)
+    }
+    for _, email := range emails {
+        var key [2]string
+        arr := strings.Split(email, "@")
+        key[0], key[1] = clean(arr[0]), arr[1]
+        set[key] = true
+        
+    }
+    return len(set) 
+}
+```
+
+### 962. Flip String to Monotone Increasing
+
+- level: 2-medium
+
+```go
+func minFlipsMonoIncr(S string) int {
+    ba := []byte(S)
+    l := len(ba)
+    onesLeft, onesRight := make([]int, l), make([]int, l)
+    var current int
+    for i := range ba {
+        onesLeft[i] = current
+        if S[i] == '1' { current++}
+    }
+    current = 0
+    for i:=l-1; i>=0; i-- {
+        onesRight[i] = current
+        if ba[i] == '0' { current++}
+    }
+    minNum := 342432423432
+    for i := range ba {
+        current = onesLeft[i] + onesRight[i]        
+        if current < minNum {minNum = current}
+    }
+    return minNum
+}
+```
+
+### 933. Increasing Order Search Tree
+
+- level: 1-easy
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func NewNode(n int) *TreeNode {
+    return &TreeNode{n, nil, nil}
+}
+
+func increasingBST(root *TreeNode) *TreeNode {
+    if root == nil {return nil}
+    buffer := dfs(root)
+    prev := NewNode(buffer[0])
+    res := prev
+    for i:=1; i<len(buffer); i++ {
+        current := NewNode(buffer[i])
+        prev.Right = current
+        prev = current
+    }
+    return res
+}
+
+func dfs(root *TreeNode) []int {
+    if root == nil {
+        return []int{}
+    }
+    var res = append(dfs(root.Left), root.Val)
+    res = append(res, dfs(root.Right)...)
+    return res
+}
+```
+
+### 930. All Possible Full Binary Trees
+
+- level: 2-medium
+
+```go
+var visited = map[int][]*TreeNode{1: []*TreeNode{&TreeNode{0, nil, nil}}}
+
+func allPossibleFBT(N int) []*TreeNode {
+    if _, ok := visited[N]; !ok {
+        var res []*TreeNode
+        for x:=0; x<N; x++ {
+            y := N - 1 - x 
+            for _, left := range allPossibleFBT(x) {
+                for _, right := range allPossibleFBT(y) {
+                    res = append(res, &TreeNode{0, left, right})
+                }
+            }
+        }
+        visited[N] = res  
+    }
+    return visited[N]  
+}
+```
+
+### 920. Uncommon Words from Two Sentences
+
+- level: 1-easy
+
+```go
+func uncommonFromSentences(A string, B string) []string {
+    var res []string
+    findDiff := func(a, b string) {
+        hash := make(map[string]int)
+        for _, str := range strings.Fields(a) {
+            hash[str]++
+        }
+        for _, str := range strings.Fields(b) {
+            delete(hash, str)
+        } 
+        for k, v := range hash {
+            if v == 1 {
+                res = append(res, k)
+            }
+        }
+    }
+    findDiff(A, B)
+    findDiff(B, A)
+    return res
+}
+```
+
+### 899. Binary Gap
+
+- level: 1-easy
+
+```go
+func binaryGap(N int) int {
+    current, res := 0, 0
+    hasFirstOne, hasTwoOnes := false, false
+    for N > 0 {
+        d := N % 2
+        if d == 0 {
+            current++
+        } else {
+            if current > res && hasFirstOne {res = current}
+            current = 0
+            if hasFirstOne {hasTwoOnes = true}
+            hasFirstOne = true
+        }
+        N /= 2
+    }
+    if !hasTwoOnes {return 0}
+    return res + 1
+}
+```
+
 ### 851. Goat Latin
 
 - level: 1-easy
@@ -539,6 +1027,29 @@ func abs(a int) int{
 }
 ```
 
+### 804. Rotated Digits
+
+- level: 1-easy
+
+```go
+func rotatedDigits(N int) int {
+    var res int
+    for i:=1; i<=N; i++ {
+        d := make([]int, 10)
+        j := i // the scope puzzle
+        for j > 0 {
+            d[j%10] = 1
+            j /= 10
+        }
+        if d[4] + d[7] + d[3] > 0 {continue}
+        if d[2] + d[5] + d[6] + d[9] > 0 {
+            res++
+        }
+    }
+    return res
+}
+```
+
 ### 803. Cheapest Flights Within K Stops
 
 - level: 2-medium
@@ -659,6 +1170,41 @@ func numJewelsInStones(J string, S string) int {
 }
 ```
 
+### 780. Max Chunks To Make Sorted
+
+- level: 2-medium
+
+```go
+type interval struct {
+    start int
+    end int
+}
+
+func maxChunksToSorted(arr []int) int {
+    var intervals []*interval
+    for i, x := range arr {
+        start, end := i, x
+        if i > x {
+            start, end = x, i
+        }
+        intervals = append(intervals, &interval{start, end})
+    }
+    sort.Slice(intervals, func(i, j int) bool {
+        return intervals[i].start < intervals[j].start
+    })
+    res := []*interval{intervals[0]}
+    for i:=1; i<len(intervals); i++ {
+        current, prev := intervals[i], res[len(res)-1]
+        if current.start < prev.end {
+            if current.end > prev.end {prev.end = current.end}
+        } else {
+            res = append(res, current)
+        }
+    }
+    return len(res)
+}
+```
+
 ### 777. Toeplitz Matrix
 
 - level: 1-easy
@@ -759,7 +1305,7 @@ func anagramMappings(A []int, B []int) []int {
 
 ### 749. Shortest Completing Word
 
-- level: 2-medium
+- level: 1-easy
 
 ```go
 func shortestCompletingWord(licensePlate string, words []string) string {
@@ -843,6 +1389,39 @@ func nextGreatestLetter(letters []byte, target byte) byte {
             } 
     }
     return res
+}
+```
+
+### 744. Network Delay Time
+
+- level: 2-medium
+
+```go
+func networkDelayTime(times [][]int, N int, K int) int {
+    graph := make(map[int][][2]int)
+    for _, time := range times {
+        u, v, w: = time[0], time[1], time[2]
+        graph[u] = append(graph[u], [2]int{v, w})
+    }
+    dist := make([]int, N+1)
+    for i:=1; i<=N; i++ {
+        dist[i] = 4444444
+    }
+    var dfs func(node, elapsed int)
+    dfs = func(node, elapsed int) {
+        if elapsed >= dist[node] {return}
+        dist[node] = elapsed
+        for _, pair := range graph[node] {
+            dfs(pair[0], elapsed+pair[1])
+        }
+    }
+    dfs(K, 0)
+    ans := -1
+    for _, v := range dist[1:]{
+        if v == 4444444 {return -1}
+        if v > ans {ans = v}
+    }
+    return ans
 }
 ```
 
@@ -1036,12 +1615,21 @@ func Constructor() MyCalendar {
     return MyCalendar{[]int{}, []int{}, 0, map[int]int{}}
 }
 
+
+func (this *MyCalendar) add(arr *[]int, i, num int) []int {
+    var res = make([]int, this.n+1)
+    copy(res, (*arr)[:i])
+    copy(res[i+1:], (*arr)[i:])
+    res[i] = num
+    return res
+}
+
 func (this *MyCalendar) Book(start int, end int) bool {
     if _, ok := this.sdic[start]; ok {return false}
     var i = sort.SearchInts(this.starts, start)
     if  (i < this.n && end > this.starts[i]) || (i > 0  && start < this.ends[i-1]) {return false}
-    this.starts = append(this.starts[:i], append([]int{start}, this.starts[i:]...)...)
-    this.ends = append(this.ends[:i], append([]int{end}, this.ends[i:]...)...)
+    this.starts = this.add(&this.starts, i, start)
+    this.ends = this.add(&this.ends, i, end)
     this.n++
     this.sdic[start] = 0
     return true
@@ -1408,7 +1996,7 @@ func countBinarySubstrings(s string) int {
 
 ### 695. Max Area of Island
 
-- level: 1-easy
+- level: 2-medium
 
 ```go
 func maxAreaOfIsland(grid [][]int) int {
@@ -1853,25 +2441,6 @@ func imageSmoother(M [][]int) [][]int {
 }
 ```
 
-### 657. Judge Route Circle
-
-- level: 1-easy
-
-```go
-func judgeCircle(moves string) bool {
-    var v, h = 0, 0
-    for _, x := range moves {
-        switch x {
-            case 'U': v++
-            case 'D': v--
-            case 'L': h--
-            default: h++
-        }
-    }
-    return v == 0 && h == 0
-}
-```
-
 ### 654. Maximum Binary Tree
 
 - level: 2-medium
@@ -2260,6 +2829,21 @@ func tree2str(t *TreeNode) string {
         res += fmt.Sprintf("()(%v)", tree2str(t.Right))
     }
     return res
+}
+
+
+func tree2str(t *TreeNode) string {
+    if t == nil {return ""}
+    var res strings.Builder
+    fmt.Fprintf(&res, "%d", t.Val)
+    if t.Left != nil && t.Right != nil {
+        fmt.Fprintf(&res, "(%v)(%v)", tree2str(t.Left), tree2str(t.Right))
+    } else if t.Left != nil {
+        fmt.Fprintf(&res, "(%v)", tree2str(t.Left))
+    } else if t.Right != nil {
+        fmt.Fprintf(&res, "()(%v)", tree2str(t.Right))
+    }
+    return res.String()
 }
 ```
 
@@ -3853,18 +4437,20 @@ func toHex(num int) string {
  * }
  */
 
-var res int
 
 func sumOfLeftLeaves(root *TreeNode) int {
+    var res int
+    var dfs func(root *TreeNode, isLeft bool)
+    dfs = func(root *TreeNode, isLeft bool) {
+        if root == nil {return}
+        if isLeft && root.Left == nil && root.Right == nil {
+            res += root.Val
+        }
+        dfs(root.Left, true)
+        dfs(root.Right, false)
+    }
     dfs(root, false)
     return res
-}
-
-func dfs(root *TreeNode, isLeft bool) {
-    if root == nil {return}
-    if isLeft {res += root.Val}
-    dfs(root.Left, true)
-    dfs(root.Right, false)
 }
 ```
 
@@ -6571,23 +7157,6 @@ func isValidSudoku(board [][]byte) bool {
 ```go
 func searchInsert(nums []int, target int) int {
     return sort.SearchInts(nums, target)
-}
-```
-
-### 34. Search for a Range
-
-- level: 2-medium
-
-```go
-func searchRange(nums []int, target int) []int {
-    n := len(nums)
-    var i = sort.SearchInts(nums, target)
-    if i >= n || nums[i] != target {return []int{-1, -1}}
-    j := i 
-    for j < n && nums[j] == target {
-        j++
-    }
-    return []int{i, j-1}
 }
 ```
 
