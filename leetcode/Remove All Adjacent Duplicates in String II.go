@@ -14,10 +14,8 @@ func dfs(t []byte, k int) (buf []byte) {
 	countPrev, bytePrev := 1, t[0]
 	for i:=1; i<=len(t); i++ {
 		if i == len(t) || t[i] != bytePrev {
-			countPrev = countPrev % k
-			if countPrev < k {
-				for j:=0; j<countPrev; j++ {buf = append(buf, bytePrev)}
-			}
+			countPrev %= k
+			for j:=0; j<countPrev; j++ {buf = append(buf, bytePrev)}
 			countPrev = 1
 		} else {
 			countPrev++
