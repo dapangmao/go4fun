@@ -1,12 +1,17 @@
 func permute(nums []int) [][]int {
-    n := len(nums)
-    if n == 1 {return [][]int{nums}}
-    var res [][]int    
-    for i, x := range nums {  
-        var others = append(append([]int{}, nums[:i]...), nums[i+1:]...)
-        for _, y := range permute(others) {
-            res = append(res, append(y, x))
-        }
-    }
-    return res
+	if len(nums) == 0 {return [][]int{{}}}
+	var res [][]int
+	n := len(nums)
+	last := nums[n-1]
+	for _, x := range permute(nums[:n-1]) {
+		for i:=0; i<=len(x); i++ {
+			current := make([]int, len(x)+1)
+			copy(current, x[:i])
+			current[i] = last
+			copy(current[i+1:], x[i:])
+			res = append(res, current)
+		}
+	}
+	return res
 }
+
