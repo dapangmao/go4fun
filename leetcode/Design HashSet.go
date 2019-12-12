@@ -1,11 +1,13 @@
 type MyHashSet struct {
-    data map[int]bool
+    data [1000001]bool
 }
 
 
 /** Initialize your data structure here. */
 func Constructor() MyHashSet {
-    return MyHashSet{data: make(map[int]bool)}
+    var res MyHashSet
+    res.data = [1000001]bool{}
+    return res
 }
 
 
@@ -15,7 +17,7 @@ func (this *MyHashSet) Add(key int)  {
 
 
 func (this *MyHashSet) Remove(key int)  {
-    delete(this.data, key)
+    this.data[key] = false
 }
 
 
