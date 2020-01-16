@@ -1,0 +1,1 @@
+- Team is located at Arlington VA, hq2. 一共两轮。 1. OOP design. 设计linux find function. 2. 先是LRU. 讲了讲思路没有写代码。 另外一道，给你一组数据，每个数据包含一个人的名字和他的朋友的名字，找出每个人的朋友圈。 求大米。
